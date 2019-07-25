@@ -23,7 +23,12 @@
 	"main": "./dist/extension.js",
 	"contributes": {
 		"markdown.markdownItPlugins": true,
-		"markdown.previewScripts": []
+    "markdown.previewScripts": [
+      "./dist/page.js"
+    ],
+    "markdown.previewStyles": [
+      "./dist/page.css"
+    ]
 	},
 	"scripts": {
 		"vscode:prepublish": "webpack --mode production",
@@ -38,8 +43,13 @@
 		"@types/mocha": "^5.2.6",
 		"@types/node": "^10.12.21",
 		"@types/vscode": "^1.36.0",
+		"css-loader": "^3.1.0",
 		"glob": "^7.1.4",
+		"ignore-loader": "^0.1.2",
+		"mermaid": "^8.2.3",
+		"mini-css-extract-plugin": "^0.8.0",
 		"mocha": "^6.1.4",
+		"style-loader": "^0.23.1",
 		"ts-loader": "^6.0.4",
 		"tslint": "^5.12.1",
 		"typescript": "^3.3.1",

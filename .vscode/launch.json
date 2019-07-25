@@ -12,7 +12,7 @@
 			"runtimeExecutable": "${execPath}",
 			"args": [
         "--extensionDevelopmentPath=${workspaceFolder}",
-        "${workspaceFolder}"
+        "/Users/yukai/Projects/HackMD/hackmd-production/public/docs/features.md"
 			],
 			"outFiles": [
 				"${workspaceFolder}/out/**/*.js"
