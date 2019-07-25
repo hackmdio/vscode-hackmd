@@ -5,22 +5,27 @@ import * as vscode from 'vscode';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+  return {
+    extendMarkdownIt(md: any) {
+      md.use(require('markdown-it-abbr'));
+      md.use(require('markdown-it-deflist'));
+      md.use(require('markdown-it-mark'));
+      md.use(require('markdown-it-ins'));
+      md.use(require('markdown-it-sub'));
+      md.use(require('markdown-it-sup'));
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "vscode-hackmd" is now active!');
+      md.use(require('markdown-it-mathjax')({
+        beforeMath: '<span class="mathjax raw">',
+        afterMath: '</span>',
+        beforeInlineMath: '<span class="mathjax raw">\\(',
+        afterInlineMath: '\\)</span>',
+        beforeDisplayMath: '<span class="mathjax raw">\\[',
+        afterDisplayMath: '\\]</span>'
+      }));
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('extension.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World!');
-	});
-
-	context.subscriptions.push(disposable);
+      return md;
+    }
+  };
 }
 
 // this method is called when your extension is deactivated
