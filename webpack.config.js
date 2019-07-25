@@ -4,6 +4,7 @@
 
 const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const webpack = require('webpack')
 
 /**@type {import('webpack').Configuration}*/
 const extensionConfig = {
@@ -47,7 +48,10 @@ const pageConfig = {
     path: path.resolve(__dirname, 'dist')
   },
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
+    alias: {
+      raphaelmin: path.join(__dirname, 'node_modules/raphael/raphael.no-deps.min.js')
+    }
   },
   module: {
     rules: [
@@ -70,10 +74,20 @@ const pageConfig = {
       { test: /(\.woff|\.woff2)$/, loader: 'ignore-loader' },
       { test: /\.ttf$/, loader: 'ignore-loader' },
       { test: /\.eot$/, loader: 'ignore-loader' },
-      { test: /\.svg$/, loader: 'ignore-loader' }
+      { test: /\.svg$/, loader: 'ignore-loader' },
+      {
+        test: require.resolve('js-sequence-diagrams'),
+        loader: 'imports-loader?Raphael=raphaelmin&_=lodash'
+      }
     ]
   },
+  externals: 'fs',
   plugins: [
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+    }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
       chunkFilename: "[id].css"
