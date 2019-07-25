@@ -56,10 +56,12 @@
 		"mini-css-extract-plugin": "^0.8.0",
 		"mocha": "^6.1.4",
 		"raphael": "git+ssh://git@github.com/DmitryBaranovskiy/raphael.git#v2.2.7",
+		"script-loader": "^0.7.2",
 		"style-loader": "^0.23.1",
 		"ts-loader": "^6.0.4",
 		"tslint": "^5.12.1",
 		"typescript": "^3.3.1",
+		"viz.js": "^2.1.2",
 		"vscode-test": "^1.0.0-next.0",
 		"webpack": "^4.37.0",
 		"webpack-cli": "^3.3.6"

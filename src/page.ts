@@ -7,6 +7,8 @@ import './style.css';
 import * as mermaid from 'mermaid';
 import * as flowchart from 'flowchart.js';
 import 'js-sequence-diagrams';
+import Viz from 'viz.js';
+import { Module, render } from 'viz.js/full.render.js';
 import * as S from 'string';
 
 const mermaids = $('span.mermaid.raw');
@@ -76,5 +78,36 @@ sequences.each((key, value) => {
     // $value.parent().append(`<div class="alert alert-warning">${S(err).escapeHTML().s}</div>`)
     // console.warn(err)
     $ele.addClass('sequence-diagram')
+  }
+})
+
+let viz = new Viz({ Module, render });
+
+const graphvizs = $('span.graphviz.raw')
+graphvizs.removeClass('raw')
+graphvizs.each(function (key, value) {
+  try {
+    var $value = $(value)
+    var $ele = $(value).parent().parent()
+    $value.unwrap()
+    const option = {
+      engine: $value.attr('data-engine') || undefined
+    }
+    viz.renderString($value.text(), option)
+      .then(result => {
+        if (!result) throw Error('viz.js output empty graph')
+        $value.html(result)
+        $ele.addClass('graphviz')
+        $value.children().unwrap()
+      })
+      .catch(err => {
+        viz = new Viz({ Module, render });
+
+        // $value.parent().append(`<div class="alert alert-warning">${S(err).escapeHTML().s}</div>`)
+        // console.warn(err)
+      })
+  } catch (err) {
+    // $value.parent().append(`<div class="alert alert-warning">${S(err).escapeHTML().s}</div>`)
+    // console.warn(err)
   }
 })
