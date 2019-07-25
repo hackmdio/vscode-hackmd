@@ -46,6 +46,7 @@
 		"css-loader": "^3.1.0",
 		"glob": "^7.1.4",
 		"ignore-loader": "^0.1.2",
+		"jquery": "^3.4.1",
 		"mermaid": "^8.2.3",
 		"mini-css-extract-plugin": "^0.8.0",
 		"mocha": "^6.1.4",
@@ -67,6 +68,7 @@
 		"markdown-it-mathjax": "^2.0.0",
 		"markdown-it-sub": "^1.0.0",
 		"markdown-it-sup": "^1.0.0",
-		"markdown-it-table-of-contents": "^0.4.4"
+		"markdown-it-table-of-contents": "^0.4.4",
+		"string": "git+ssh://git@github.com/hackmdio/string.js.git#a68176b3d"
 	}
 }

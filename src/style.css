@@ -1,0 +1,11 @@
+.vscode-body pre.flow-chart,
+.vscode-body pre.sequence-diagram,
+.vscode-body pre.graphviz,
+.vscode-body pre.mermaid,
+.vscode-body pre.abc {
+  text-align: center;
+  background-color: transparent !important;
+  border-radius: 0;
+  border: none;
+  white-space: pre;
+}
