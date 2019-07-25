@@ -44,6 +44,7 @@
 		"@types/node": "^10.12.21",
 		"@types/vscode": "^1.36.0",
 		"css-loader": "^3.1.0",
+		"flowchart.js": "^1.12.2",
 		"glob": "^7.1.4",
 		"ignore-loader": "^0.1.2",
 		"jquery": "^3.4.1",
