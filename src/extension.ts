@@ -23,6 +23,10 @@ export function activate(context: vscode.ExtensionContext) {
       md.use(require('markdown-it-sub'));
       md.use(require('markdown-it-sup'));
 
+      md.use(require('markdown-it-table-of-contents'), {
+        markerPattern: /^\[toc\]/im,
+      });
+
       md.use(require('markdown-it-mathjax')({
         beforeMath: '<span class="mathjax raw">',
         afterMath: '</span>',

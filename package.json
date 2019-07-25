@@ -23,12 +23,12 @@
 	"main": "./dist/extension.js",
 	"contributes": {
 		"markdown.markdownItPlugins": true,
-    "markdown.previewScripts": [
-      "./dist/page.js"
-    ],
-    "markdown.previewStyles": [
-      "./dist/page.css"
-    ]
+		"markdown.previewScripts": [
+			"./dist/page.js"
+		],
+		"markdown.previewStyles": [
+			"./dist/page.css"
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "webpack --mode production",
@@ -66,6 +66,7 @@
 		"markdown-it-mark": "^2.0.0",
 		"markdown-it-mathjax": "^2.0.0",
 		"markdown-it-sub": "^1.0.0",
-		"markdown-it-sup": "^1.0.0"
+		"markdown-it-sup": "^1.0.0",
+		"markdown-it-table-of-contents": "^0.4.4"
 	}
 }
