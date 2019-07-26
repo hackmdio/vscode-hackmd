@@ -2,10 +2,15 @@
 
 import 'bootstrap3/dist/css/bootstrap.min.css';
 import './mermaid.css';
+import './github-gist.css';
+import 'prismjs/themes/prism.css';
+
+import './markdown.css';
 import './style.css';
 
 import * as mermaid from 'mermaid';
 import * as flowchart from 'flowchart.js';
+
 import 'js-sequence-diagrams';
 import Viz from 'viz.js';
 import { Module, render } from 'viz.js/full.render.js';

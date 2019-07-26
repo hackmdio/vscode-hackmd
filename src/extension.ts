@@ -5,6 +5,60 @@ import * as vscode from 'vscode';
 import * as markdownitContainer from 'markdown-it-container';
 import * as S from 'string';
 
+import * as Prism from 'prismjs';
+
+require('prismjs/components/prism-wiki')
+require('prismjs/components/prism-haskell')
+require('prismjs/components/prism-go')
+require('prismjs/components/prism-typescript')
+require('prismjs/components/prism-jsx')
+require('prismjs/components/prism-makefile')
+require('prismjs/components/prism-gherkin')
+require('prismjs/components/prism-sas')
+require('prismjs/components/prism-javascript')
+require('prismjs/components/prism-json')
+require('prismjs/components/prism-c')
+require('prismjs/components/prism-cpp')
+require('prismjs/components/prism-java')
+require('prismjs/components/prism-csharp')
+require('prismjs/components/prism-objectivec')
+require('prismjs/components/prism-scala')
+require('prismjs/components/prism-kotlin')
+require('prismjs/components/prism-groovy')
+require('prismjs/components/prism-r')
+require('prismjs/components/prism-rust')
+require('prismjs/components/prism-yaml')
+require('prismjs/components/prism-pug')
+require('prismjs/components/prism-sass')
+
+import * as hljs from 'highlight.js/lib/highlight';
+
+hljs.registerLanguage('bash', require('highlight.js/lib/languages/bash'))
+hljs.registerLanguage('clojure', require('highlight.js/lib/languages/clojure'))
+hljs.registerLanguage('coffeescript', require('highlight.js/lib/languages/coffeescript'))
+hljs.registerLanguage('cs', require('highlight.js/lib/languages/cs'))
+hljs.registerLanguage('css', require('highlight.js/lib/languages/css'))
+hljs.registerLanguage('elm', require('highlight.js/lib/languages/elm'))
+hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'))
+hljs.registerLanguage('handlebars', require('highlight.js/lib/languages/handlebars'))
+hljs.registerLanguage('http', require('highlight.js/lib/languages/http'))
+hljs.registerLanguage('ini', require('highlight.js/lib/languages/ini'))
+hljs.registerLanguage('prolog', require('highlight.js/lib/languages/prolog'))
+hljs.registerLanguage('python', require('highlight.js/lib/languages/python'))
+hljs.registerLanguage('ruby', require('highlight.js/lib/languages/ruby'))
+hljs.registerLanguage('sql', require('highlight.js/lib/languages/sql'))
+hljs.registerLanguage('swift', require('highlight.js/lib/languages/swift'))
+hljs.registerLanguage('diff', require('highlight.js/lib/languages/diff'))
+hljs.registerLanguage('shell', require('highlight.js/lib/languages/shell'))
+hljs.registerLanguage('php', require('highlight.js/lib/languages/php'))
+hljs.registerLanguage('lua', require('highlight.js/lib/languages/lua'))
+hljs.registerLanguage('nginx', require('highlight.js/lib/languages/nginx'))
+hljs.registerLanguage('perl', require('highlight.js/lib/languages/perl'))
+hljs.registerLanguage('dockerfile', require('highlight.js/lib/languages/dockerfile'))
+
+let prismLangs = ['haskell', 'go', 'groovy', 'typescript', 'json', 'jsx', 'gherkin', 'sas', 'javascript', 'c', 'cpp', 'java', 'csharp', 'objectivec', 'scala', 'kotlin', 'r', 'rust', 'yaml', 'pug', 'sass']
+
+
 function render( tokens, idx, options, env, self): string {
   tokens[idx].attrJoin('role', 'alert');
   tokens[idx].attrJoin('class', 'alert');
@@ -47,7 +101,10 @@ function parseFenceCodeParams (lang) {
 }
 
 function highlightRender (code, lang) {
-  if (!lang || /no(-?)highlight|plain|text/.test(lang)) { return }
+  if (!lang || /no(-?)highlight|plain|text/.test(lang)) {
+    // fallback
+    return highlight(code, lang);
+  }
   // support adding extra attributes for fence code block
   // ex: ```graphviz {engine="neato"}
   const params = parseFenceCodeParams(lang) as any;
@@ -69,9 +126,30 @@ function highlightRender (code, lang) {
   } else if (lang === 'abc') {
     return `<span class="abc raw">${code}</span>`
   }
+
   const result = {
     value: code
   }
+
+  if (prismLangs.indexOf(lang) !== -1) {
+    code = S(code).unescapeHTML().s
+    result.value = Prism.highlight(code, Prism.languages[lang])
+  } else if (lang === 'tiddlywiki' || lang === 'mediawiki') {
+    code = S(code).unescapeHTML().s
+    result.value = Prism.highlight(code, Prism.languages.wiki)
+  } else if (lang === 'cmake') {
+    code = S(code).unescapeHTML().s
+    result.value = Prism.highlight(code, Prism.languages.makefile)
+  } else {
+    code = S(code).unescapeHTML().s
+    const languages = hljs.listLanguages()
+    if (!languages.includes(lang)) {
+      result.value = hljs.highlightAuto(code).value
+    } else {
+      result.value = hljs.highlight(lang, code).value
+    }
+  }
+
   const showlinenumbers = /=$|=\d+$|=\+$/.test(lang)
   if (showlinenumbers) {
     let startnumber = 1
@@ -86,8 +164,10 @@ function highlightRender (code, lang) {
     const linegutter = `<div class='gutter linenumber${continuelinenumber ? ' continue' : ''}'>${linenumbers.join('\n')}</div>`
     result.value = `<div class='wrapper'>${linegutter}<div class='code'>${result.value}</div></div>`
   }
-  return result.value
+  return result.value;
 }
+
+let highlight
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -121,6 +201,7 @@ export function activate(context: vscode.ExtensionContext) {
 
       md.options.linkify = true;
       md.options.typographer = true;
+      highlight = md.options.highlight;
       md.options.highlight = highlightRender;
 
       return md;

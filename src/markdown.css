@@ -1,0 +1,181 @@
+/* for markdown-body */
+
+.vscode-body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  padding-top: 40px;
+  padding-bottom: 40px;
+  max-width: 758px;
+overflow: visible !important;
+}
+/*fixed style for bootstrap comflict*/
+
+.vscode-body .emoji {
+vertical-align: top;
+}
+
+.vscode-body pre {
+  border: inherit !important;
+}
+
+.vscode-body code {
+  color: inherit !important;
+}
+
+.vscode-body pre code .wrapper {
+  display: -webkit-inline-flex;
+  display: -moz-inline-flex;
+  display: -ms-inline-flex;
+  display: -o-inline-flex;
+  display: inline-flex;
+}
+
+.vscode-body pre code .gutter {
+  float: left;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.vscode-body pre code .gutter.linenumber {
+  text-align: right;
+  position: relative;
+  display: inline-block;
+  cursor: default;
+  z-index: 4;
+  padding: 0 8px 0 0;
+  min-width: 20px;
+  box-sizing: content-box;
+  color: #afafaf !important;
+  border-right: 3px solid #6ce26c !important;
+}
+
+.vscode-body pre code .gutter.linenumber > span:before {
+  content: attr(data-linenumber);
+}
+
+.vscode-body pre code .code {
+  float: left;
+  margin: 0 0 0 16px;
+}
+
+.vscode-body .gist .line-numbers {
+  border-left: none;
+  border-top: none;
+  border-bottom: none;
+}
+
+.vscode-body .gist .line-data {
+  border: none;
+}
+
+.vscode-body .gist table {
+  border-spacing: 0;
+  border-collapse: inherit !important;
+}
+
+.vscode-body code[data-gist-id] {
+  background: none;
+  padding: 0;
+}
+
+.vscode-body code[data-gist-id]:before {
+  content: ''
+}
+
+.vscode-body code[data-gist-id]:after {
+  content: ''
+}
+
+.vscode-body code[data-gist-id] .blob-num {
+  border: unset;
+}
+
+.vscode-body code[data-gist-id] table {
+  overflow: unset;
+  margin-bottom: unset;
+}
+
+.vscode-body code[data-gist-id] table tr {
+  background: unset;
+}
+
+/*fixed style for rtl in pre and code*/
+
+.vscode-body[dir='rtl'] pre {
+  direction: ltr;
+}
+
+.vscode-body[dir='rtl'] code {
+  direction: ltr;
+  unicode-bidi: embed;
+}
+
+.vscode-body .alert > p {
+  margin-bottom: 0;
+}
+
+.vscode-body pre.flow-chart,
+.vscode-body pre.sequence-diagram,
+.vscode-body pre.graphviz,
+.vscode-body pre.mermaid,
+.vscode-body pre.abc {
+  text-align: center;
+  background-color: inherit;
+  border-radius: 0;
+  white-space: inherit;
+}
+
+.vscode-body pre.flow-chart > code,
+.vscode-body pre.sequence-diagram > code,
+.vscode-body pre.graphviz > code,
+.vscode-body pre.mermaid > code,
+.vscode-body pre.abc > code {
+  text-align: left;
+}
+
+.vscode-body pre.flow-chart > svg,
+.vscode-body pre.sequence-diagram > svg,
+.vscode-body pre.graphviz > svg,
+.vscode-body pre.mermaid > svg,
+.vscode-body pre.abc > svg {
+  max-width: 100%;
+  height: 100%;
+}
+
+.vscode-body pre > code.wrap {
+  white-space: pre-wrap;       /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+.vscode-body .alert > p,
+.vscode-body .alert > ul {
+  margin-bottom: 0;
+}
+
+.vscode-body summary {
+  display: list-item;
+}
+
+.vscode-body summary:focus {
+  outline: none;
+}
+
+.vscode-body details summary {
+  cursor: pointer;
+}
+
+.vscode-body details:not([open]) > *:not(summary) {
+  display: none;
+}
+
+.vscode-body figure {
+  margin: 1em 40px;
+}
+
+.vscode-body .mark,
+.vscode-body mark {
+  background-color: #fff1a7;
+}
