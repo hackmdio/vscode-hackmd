@@ -4,12 +4,14 @@ import 'bootstrap3/dist/css/bootstrap.min.css';
 import './mermaid.css';
 import './github-gist.css';
 import 'prismjs/themes/prism.css';
+import 'katex/dist/katex.css';
 
 import './markdown.css';
 import './style.css';
 
 import * as mermaid from 'mermaid';
 import * as flowchart from 'flowchart.js';
+import * as katex from 'katex';
 
 import 'js-sequence-diagrams';
 import Viz from 'viz.js';
@@ -116,3 +118,25 @@ graphvizs.each(function (key, value) {
     // console.warn(err)
   }
 })
+
+$('span.mathjax.raw').removeClass('raw')
+  .each(function (key, value) {
+    var $value = $(value)
+    var $ele = $(value).parent().parent()
+    $value.unwrap()
+
+    let result
+    if ($(value).hasClass('display')) {
+      result = katex.renderToString($value.text(), {
+        throwOnError: false,
+        displayMode: true
+      })
+    } else {
+      result = katex.renderToString($value.text(), {
+        throwOnError: false
+      })
+    }
+
+    $value.html(result)
+    $value.children().unwrap()
+  })

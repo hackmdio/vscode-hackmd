@@ -188,10 +188,10 @@ export function activate(context: vscode.ExtensionContext) {
       md.use(require('markdown-it-mathjax')({
         beforeMath: '<span class="mathjax raw">',
         afterMath: '</span>',
-        beforeInlineMath: '<span class="mathjax raw">\\(',
-        afterInlineMath: '\\)</span>',
-        beforeDisplayMath: '<span class="mathjax raw">\\[',
-        afterDisplayMath: '\\]</span>'
+        beforeInlineMath: '<span class="mathjax raw">',
+        afterInlineMath: '</span>',
+        beforeDisplayMath: '<span class="mathjax raw display">',
+        afterDisplayMath: '</span>'
       }));
 
       md.use(markdownitContainer, 'success', { render });
