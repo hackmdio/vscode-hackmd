@@ -11,6 +11,7 @@ import './style.css';
 
 import * as mermaid from 'mermaid';
 import * as flowchart from 'flowchart.js';
+import * as abcjs from "abcjs";
 import * as katex from 'katex';
 
 import 'js-sequence-diagrams';
@@ -139,4 +140,24 @@ $('span.mathjax.raw').removeClass('raw')
 
     $value.html(result)
     $value.children().unwrap()
+  })
+
+$('span.abc.raw').removeClass('raw')
+  .each((key, value) => {
+    try {
+      var $value = $(value)
+      var $ele = $(value).parent().parent()
+
+      abcjs.renderAbc(value, $value.text())
+
+      $ele.addClass('abc')
+      $value.children().unwrap().unwrap()
+      const svg = $ele.find('> svg')
+      svg[0].setAttribute('viewBox', `0 0 ${svg.attr('width')} ${svg.attr('height')}`)
+      svg[0].setAttribute('preserveAspectRatio', 'xMidYMid meet')
+    } catch (err) {
+      $value.unwrap()
+      $value.parent().append(`<div class="alert alert-warning">${S(err).escapeHTML().s}</div>`)
+      console.warn(err)
+    }
   })
