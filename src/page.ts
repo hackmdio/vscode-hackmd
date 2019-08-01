@@ -161,3 +161,29 @@ $('span.abc.raw').removeClass('raw')
       console.warn(err)
     }
   })
+
+
+// regex for extra tags
+const spaceregex = /\s*/
+const notinhtmltagregex = /(?![^<]*>|[^<>]*<\/)/
+let coloregex = /\[color=([#|(|)|\s|,|\w]*?)\]/
+coloregex = new RegExp(coloregex.source + notinhtmltagregex.source, 'g')
+let nameregex = /\[name=(.*?)\]/
+let timeregex = /\[time=([:|,|+|-|(|)|\s|\w]*?)\]/
+const nameandtimeregex = new RegExp(nameregex.source + spaceregex.source + timeregex.source + notinhtmltagregex.source, 'g')
+nameregex = new RegExp(nameregex.source + notinhtmltagregex.source, 'g')
+timeregex = new RegExp(timeregex.source + notinhtmltagregex.source, 'g')
+
+function replaceExtraTags (html) {
+  html = html.replace(coloregex, '<span class="color" data-color="$1"></span>')
+  html = html.replace(nameandtimeregex, '<small><i class="fa fa-user"></i> $1 <i class="fa fa-clock-o"></i> $2</small>')
+  html = html.replace(nameregex, '<small><i class="fa fa-user"></i> $1</small>')
+  html = html.replace(timeregex, '<small><i class="fa fa-clock-o"></i> $1</small>')
+  return html
+}
+
+
+$('blockquote').removeClass('.raw').each(function (_, elem) {
+  const p = $(elem).find('p')
+  p[0].innerHTML = replaceExtraTags(p[0].innerHTML);
+})
