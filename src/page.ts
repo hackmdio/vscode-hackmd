@@ -8,6 +8,7 @@ import 'katex/dist/katex.css';
 
 import './markdown.css';
 import './style.css';
+import './font-awesome.min.css';
 
 import * as mermaid from 'mermaid';
 import * as flowchart from 'flowchart.js';
