@@ -195,3 +195,13 @@ $('blockquote').removeClass('.raw').each(function (_, elem) {
   })
 })
 
+// update continue line numbers
+const linenumberdivs = $('.gutter.linenumber').toArray()
+for (let i = 0; i < linenumberdivs.length; i++) {
+  if ($(linenumberdivs[i]).hasClass('continue')) {
+    const startnumber = linenumberdivs[i - 1] ? parseInt($(linenumberdivs[i - 1]).find('> span').last().attr('data-linenumber')) : 0
+    $(linenumberdivs[i]).find('> span').each((key, value) => {
+      $(value).attr('data-linenumber', startnumber + key + 1)
+    })
+  }
+}
