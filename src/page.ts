@@ -187,4 +187,11 @@ function replaceExtraTags (html) {
 $('blockquote').removeClass('.raw').each(function (_, elem) {
   const p = $(elem).find('p')
   p[0].innerHTML = replaceExtraTags(p[0].innerHTML);
+
+  // color tag in blockquote will change its left border color
+  const blockquoteColor = $(elem).find('.color')
+  blockquoteColor.each((key, value) => {
+    $(value).closest('blockquote').css('border-left-color', $(value).attr('data-color'))
+  })
 })
+
