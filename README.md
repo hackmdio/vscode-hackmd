@@ -1,4 +1,6 @@
-# The official Markdown VSCode extension
+# The official HackMD Markdown VSCode extension
+
+Use the same [HackMD](https://hackmd.io) supported markdown right in VSCode!
 
 ## Features
 
