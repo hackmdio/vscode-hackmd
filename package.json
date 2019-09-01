@@ -1,11 +1,12 @@
 {
 	"name": "vscode-hackmd",
 	"displayName": "vscode-hackmd",
-	"description": "Official HackMD VSCode extension",
-	"version": "0.0.1",
+	"description": "The official Markdown VSCode extension",
+	"version": "0.1.0",
 	"engines": {
 		"vscode": "^1.36.0"
-	},
+  },
+  "publisher": "HackMD",
 	"extensionDependencies": [
 		"bierner.markdown-preview-github-styles",
 		"bierner.markdown-emoji",
@@ -16,9 +17,6 @@
 	],
 	"categories": [
 		"Other"
-	],
-	"activationEvents": [
-		"onCommand:extension.helloWorld"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
