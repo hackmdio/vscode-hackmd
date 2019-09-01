@@ -7,6 +7,11 @@
 		"vscode": "^1.36.0"
   },
   "publisher": "HackMD",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#333333",
+    "theme": "dark"
+  },
 	"extensionDependencies": [
 		"bierner.markdown-preview-github-styles",
 		"bierner.markdown-emoji",
