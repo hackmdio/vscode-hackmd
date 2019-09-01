@@ -1,19 +1,19 @@
-# HackMD official VSCode extension
+# The official Markdown VSCode extension
 
 ## Features
 
 - HackMD-compatible markdown rendering preview
-    - We bring most HackMD supported syntax into VSCode :tada: 
+  - We bring most HackMD markdown syntax into VSCode :tada:
 
 #### Render codeblock with line numbers
 
-![](https://i.imgur.com/X31HZqm.png)
+![line-numbers](https://i.imgur.com/X31HZqm.png)
 
 #### MathJax, Diagrams
 
-![](https://i.imgur.com/6vpxBbo.png)
-![](https://i.imgur.com/pinXrf6.png)
-![](https://i.imgur.com/M15g6It.png)
+![mathjax](https://i.imgur.com/6vpxBbo.png)
+![Sequence-diagram](https://i.imgur.com/pinXrf6.png)
+![mermaid](https://i.imgur.com/M15g6It.png)
 
 ## Release Notes
 
@@ -24,24 +24,22 @@ Initial Release!
 #### Added
 
 - markdown-it plugins
-    - markdown-it-abbr
-    - markdown-it-container
-    - markdown-it-deflist
-    - markdown-it-ins
-    - markdown-it-mark
-    - markdown-it-mathjax
-    - markdown-it-sub
-    - markdown-it-sup
-    - checkbox (As extension dependency)
-    - markdown-it-emoji
-    - markdown-it-footnote
-    - markdown-it-imsize
+  - markdown-it-abbr
+  - markdown-it-container
+  - markdown-it-deflist
+  - markdown-it-ins
+  - markdown-it-mark
+  - markdown-it-mathjax
+  - markdown-it-sub
+  - markdown-it-sup
+  - checkbox (As extension dependency)
+  - markdown-it-emoji
+  - markdown-it-footnote
+  - markdown-it-imsize
 - External Graph Renderer
-    - Mermaid
-    - Sequence Diagram
-    - Flowchart
-    - Graphviz
-    - abc.js
-    - Mathjax
-
-
+  - Mermaid
+  - Sequence Diagram
+  - Flowchart
+  - Graphviz
+  - abc.js
+  - Mathjax
