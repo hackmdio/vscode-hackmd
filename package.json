@@ -2,29 +2,27 @@
 	"name": "vscode-hackmd",
 	"displayName": "vscode-hackmd",
 	"description": "The official Markdown VSCode extension",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"engines": {
 		"vscode": "^1.36.0"
-  },
-  "publisher": "HackMD",
-  "icon": "images/icon.png",
-  "galleryBanner": {
-    "color": "#333333",
-    "theme": "dark"
-  },
-  "activationEvents": [
-
-  ],
-  "license": "MIT",
-  "homepage": "https://github.com/hackmdio/vscode-hackmd/blob/master/README.md",
-  "bugs": {
-    "url": "https://github.com/hackmdio/vscode-hackmd/issues",
-    "email": "hackmdio@gmail.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/hackmdio/vscode-hackmd.git"
-  },
+	},
+	"publisher": "HackMD",
+	"icon": "images/icon.png",
+	"galleryBanner": {
+		"color": "#333333",
+		"theme": "dark"
+	},
+	"activationEvents": [],
+	"license": "MIT",
+	"homepage": "https://github.com/hackmdio/vscode-hackmd/blob/master/README.md",
+	"bugs": {
+		"url": "https://github.com/hackmdio/vscode-hackmd/issues",
+		"email": "hackmdio@gmail.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/hackmdio/vscode-hackmd.git"
+	},
 	"extensionDependencies": [
 		"bierner.markdown-preview-github-styles",
 		"bierner.markdown-emoji",
