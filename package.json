@@ -12,6 +12,9 @@
     "color": "#333333",
     "theme": "dark"
   },
+  "activationEvents": [
+
+  ],
   "license": "MIT",
   "homepage": "https://github.com/hackmdio/vscode-hackmd/blob/master/README.md",
   "bugs": {
