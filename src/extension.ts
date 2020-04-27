@@ -1,7 +1,10 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
+import axios from 'axios'
+axios.defaults.withCredentials = true
+import * as apiClient from '@hackmd/api'
+import { MdTreeItemProvider } from './mdTreeView'
 import * as vscode from 'vscode';
-
 import * as markdownitContainer from 'markdown-it-container';
 import * as S from 'string';
 
@@ -64,6 +67,7 @@ hljs.registerLanguage(
   'dockerfile',
   require('highlight.js/lib/languages/dockerfile'),
 );
+
 
 let prismLangs = [
   'haskell',
@@ -211,19 +215,87 @@ function highlightRender(code, lang) {
     const continuelinenumber = /=\+$/.test(lang);
     const linegutter = `<div class='gutter linenumber${
       continuelinenumber ? ' continue' : ''
-    }'>${linenumbers.join('\n')}</div>`;
+      }'>${linenumbers.join('\n')}</div>`;
     result.value = `<div class='wrapper'>${linegutter}<div class='code'>${
       result.value
-    }</div></div>`;
+      }</div></div>`;
   }
   return result.value;
 }
 
 let highlight;
-
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+let noteList = [];
+const API = new apiClient.default()
+
+const checkLogin = async () => {
+  return await API.isLogin();
+}
+
+const login = async (context: vscode.ExtensionContext) => {
+  const { email, password } = getLoginCredential(context);
+  if(!email || !password) {
+    vscode.window.showInformationMessage('Please enter email and password to use HackMD extension!')
+    return;
+  }
+  await API.login(email, password);
+  if (checkLogin) {
+    vscode.window.showInformationMessage('Successfully login!')
+  } else {
+    vscode.window.showInformationMessage('Wrong email or password, please enter again')
+  }
+};
+
+const getLoginCredential = (context: vscode.ExtensionContext) => {
+  const email:string = context.globalState.get('email');
+  const password:string = context.globalState.get('password');
+  return { email, password };
+};
+
+
+export async function activate(context: vscode.ExtensionContext) {
+  context.subscriptions.push(vscode.commands.registerCommand('extension.login', async () => {
+    const email = await vscode.window.showInputBox({
+      ignoreFocusOut: true,
+      password: false,
+      placeHolder: 'email',
+      prompt: 'Please enter your email account',
+      validateInput: (text) => {
+        if (text && text !== "") {
+          return undefined;
+        } else {
+          return 'Email cannot be empty';
+        }
+    }});
+    const password = await vscode.window.showInputBox({
+      ignoreFocusOut: true,
+      password: true,
+      placeHolder: 'password',
+      prompt: 'Please enter your password',
+      validateInput: (text) => {
+        if (text && text !== "") {
+          return undefined;
+        } else {
+          return 'password cannot be empty';
+        }
+    }});
+
+    context.globalState.update('email', email);
+    context.globalState.update('password', password);
+    login(context);
+  }));
+
+  const history = await (await API.getHistory()).history;
+
+  history.forEach(item => {
+    noteList.push(item.text);
+  });
+
+  context.subscriptions.push(
+    vscode.window.registerTreeDataProvider('mdTreeItems', new MdTreeItemProvider(noteList))
+  );
+
   return {
     extendMarkdownIt(md: any) {
       md.use(require('markdown-it-abbr'));
@@ -253,10 +325,10 @@ export function activate(context: vscode.ExtensionContext) {
       md.use(markdownitContainer, 'warning', { render });
       md.use(markdownitContainer, 'danger', { render });
       md.use(markdownitContainer, 'spoiler', {
-        validate: function(params) {
+        validate: function (params) {
           return params.trim().match(/^spoiler\s+(.*)$/);
         },
-        render: function(tokens, idx) {
+        render: function (tokens, idx) {
           var m = tokens[idx].info.trim().match(/^spoiler\s+(.*)$/);
 
           if (tokens[idx].nesting === 1) {
@@ -282,4 +354,4 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }

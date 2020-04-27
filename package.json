@@ -12,7 +12,10 @@
 		"color": "#333333",
 		"theme": "dark"
 	},
-	"activationEvents": [],
+	"activationEvents": [
+		"onView:mdTreeItems",
+		"onCommand:extension.login"
+	],
 	"license": "MIT",
 	"homepage": "https://github.com/hackmdio/vscode-hackmd/blob/master/README.md",
 	"bugs": {
@@ -42,6 +45,29 @@
 		],
 		"markdown.previewStyles": [
 			"./dist/page.css"
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "mdTree",
+					"title": "HackMD TreeView",
+					"icon": "src/icon/notes.svg"
+				}
+			]
+		},
+		"views": {
+			"mdTree": [
+				{
+					"id": "mdTreeItems",
+					"name": "HackMD Notes"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "extension.login",
+				"title": "Login"
+			}
 		]
 	},
 	"scripts": {
@@ -85,7 +111,11 @@
 		"webpack-cli": "^3.3.6"
 	},
 	"dependencies": {
+		"@hackmd/api": "^1.0.1",
+		"ajax": "0.0.4",
+		"axios": "^0.19.2",
 		"bootstrap3": "^3.3.5",
+		"fs": "0.0.1-security",
 		"markdown-it-abbr": "^1.0.4",
 		"markdown-it-container": "^2.0.0",
 		"markdown-it-deflist": "^2.0.3",
@@ -95,6 +125,9 @@
 		"markdown-it-sub": "^1.0.0",
 		"markdown-it-sup": "^1.0.0",
 		"markdown-it-table-of-contents": "^0.4.4",
+		"mathjax": "^3.0.1",
+		"mathjax-full": "^3.0.1",
+		"node-fetch": "^2.6.0",
 		"string": "git+ssh://git@github.com/hackmdio/string.js.git#a68176b3d"
 	}
 }
