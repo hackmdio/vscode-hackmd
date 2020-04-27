@@ -286,15 +286,16 @@ export async function activate(context: vscode.ExtensionContext) {
     login(context);
   }));
 
-  const history = await (await API.getHistory()).history;
-
-  history.forEach(item => {
-    noteList.push(item.text);
-  });
-
+  const history = (await API.getHistory()).history;
+  
   context.subscriptions.push(
-    vscode.window.registerTreeDataProvider('mdTreeItems', new MdTreeItemProvider(noteList))
+    vscode.window.registerTreeDataProvider('mdTreeItems', new MdTreeItemProvider(history))
   );
+
+  context.subscriptions.push(vscode.commands.registerCommand('clickTreeItem', (label, noteId) => {
+    vscode.window.showInformationMessage(label)
+    vscode.window.showInformationMessage(noteId);
+  }));
 
   return {
     extendMarkdownIt(md: any) {
