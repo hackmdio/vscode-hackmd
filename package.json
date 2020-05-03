@@ -111,7 +111,7 @@
 		"webpack-cli": "^3.3.6"
 	},
 	"dependencies": {
-		"@hackmd/api": "^1.0.1",
+		"@hackmd/api": "^1.1.0",
 		"ajax": "0.0.4",
 		"axios": "^0.19.2",
 		"bootstrap3": "^3.3.5",
