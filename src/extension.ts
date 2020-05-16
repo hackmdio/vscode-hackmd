@@ -1,16 +1,13 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import axios from 'axios';
-import * as apiClient from '@hackmd/api';
-import { MdTextDocumentContentProvider } from './mdTextDocument';
 import * as vscode from 'vscode';
 import * as markdownitContainer from 'markdown-it-container';
 import * as S from 'string';
 import { store } from './store'
 import { initializeStorage } from './store/storage'
 import * as Prism from 'prismjs';
-import { checkLogin, login, refreshHistoryList } from './tree/index';
-import { HackMDTreeViewProvider } from './tree/index'
+import { registerCommand } from './commands'
 
 require('prismjs/components/prism-wiki');
 require('prismjs/components/prism-haskell');
@@ -228,83 +225,11 @@ function highlightRender(code, lang) {
 let highlight;
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-const API = new apiClient.default();
 axios.defaults.withCredentials = true;
 
 export async function activate(context: vscode.ExtensionContext) {
   initializeStorage(context);
-  context.subscriptions.push(vscode.commands.registerCommand('HackMD.login', async () => {
-    if (await checkLogin()) {
-      vscode.window.showInformationMessage('Already logged in, please log out first.');
-      return;
-    }
-
-    const email = await vscode.window.showInputBox({
-      ignoreFocusOut: true,
-      password: false,
-      placeHolder: 'email',
-      prompt: 'Please enter your email account',
-      validateInput: (text) => {
-        if (text && text !== "") {
-          return undefined;
-        } else {
-          return 'Email cannot be empty';
-        }
-      }
-    });
-    const password = await vscode.window.showInputBox({
-      ignoreFocusOut: true,
-      password: true,
-      placeHolder: 'password',
-      prompt: 'Please enter your password',
-      validateInput: (text) => {
-        if (text && text !== "") {
-          return undefined;
-        } else {
-          return 'password cannot be empty';
-        }
-      }
-    });
-
-    context.globalState.update('email', email);
-    context.globalState.update('password', password);
-
-    await login(context);
-    await refreshHistoryList(context);
-  }));
-
-  context.subscriptions.push(vscode.commands.registerCommand('HackMD.logout', async () => {
-    if (!(await checkLogin())) {
-      vscode.window.showInformationMessage('Currently not logged in.');
-      return;
-    }
-    await API.logout();
-    store.isLogin = false;
-    context.globalState.update('isLogin', false);
-    vscode.window.showInformationMessage('Successfully logged out.');
-    await refreshHistoryList(context);
-  }));
-
-  const hackMDTreeViewProvider = new HackMDTreeViewProvider(store);
-  context.subscriptions.push(
-    vscode.window.registerTreeDataProvider('mdTreeItems', hackMDTreeViewProvider)
-  );
-  context.subscriptions.push(
-    vscode.commands.registerCommand('treeView.refreshList', () => hackMDTreeViewProvider.refresh())
-  );
-
-  context.subscriptions.push(vscode.workspace.registerTextDocumentContentProvider('hackmd', new MdTextDocumentContentProvider()));
-
-  context.subscriptions.push(vscode.commands.registerCommand('clickTreeItem', async (label, noteId) => {
-    if (label && noteId) {
-      const content = await API.exportString(noteId, apiClient.ExportType.MD);
-      if (content) {
-        const uri = vscode.Uri.parse(`hackmd:${label}.md#${noteId}`);
-        const doc = await vscode.workspace.openTextDocument(uri);
-        await vscode.window.showTextDocument(doc, { preview: false });
-      }
-    }
-  }));
+  registerCommand(context, store);
 
   return {
     extendMarkdownIt(md: any) {
