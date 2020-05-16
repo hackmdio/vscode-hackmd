@@ -14,7 +14,8 @@
 	},
 	"activationEvents": [
 		"onView:mdTreeItems",
-		"onCommand:extension.login"
+		"onCommand:HackMD.login",
+		"onCommand::HackMD.logout"
 	],
 	"license": "MIT",
 	"homepage": "https://github.com/hackmdio/vscode-hackmd/blob/master/README.md",
@@ -50,7 +51,7 @@
 			"activitybar": [
 				{
 					"id": "mdTree",
-					"title": "HackMD TreeView",
+					"title": "HackMD Notes",
 					"icon": "src/icon/notes.svg"
 				}
 			]
@@ -59,16 +60,34 @@
 			"mdTree": [
 				{
 					"id": "mdTreeItems",
-					"name": "HackMD Notes"
+					"name": ""
 				}
 			]
 		},
 		"commands": [
 			{
-				"command": "extension.login",
+				"command": "HackMD.login",
 				"title": "Login"
+			},
+			{
+				"command": "HackMD.logout",
+				"title": "Logout"
+			},
+			{
+				"command": "treeView.refreshList",
+				"title": "Refresh!",
+				"icon": "src/icon/refresh.svg"
 			}
-		]
+		],
+		"menus": {
+			"view/title": [
+				{
+					"command": "treeView.refreshList",
+					"when": "view == mdTreeItems",
+					"group": "navigation"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "webpack --mode production",
@@ -127,6 +146,7 @@
 		"markdown-it-table-of-contents": "^0.4.4",
 		"mathjax": "^3.0.1",
 		"mathjax-full": "^3.0.1",
+		"mobx": "^5.15.4",
 		"node-fetch": "^2.6.0",
 		"string": "git+ssh://git@github.com/hackmdio/string.js.git#a68176b3d"
 	}

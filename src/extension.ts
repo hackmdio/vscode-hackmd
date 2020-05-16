@@ -7,7 +7,8 @@ import { MdTextDocumentContentProvider } from './mdTextDocument';
 import * as vscode from 'vscode';
 import * as markdownitContainer from 'markdown-it-container';
 import * as S from 'string';
-
+import { store } from './store'
+import { initializeStorage } from './store/storage'
 import * as Prism from 'prismjs';
 
 require('prismjs/components/prism-wiki');
@@ -229,21 +230,32 @@ let highlight;
 const API = new apiClient.default();
 axios.defaults.withCredentials = true;
 
+
+const refreshHistoryList = async (context) => {
+  if (await checkLogin()) {
+    store.history = (await API.getHistory()).history;
+    context.globalState.update('history', store.history);
+  } else {
+    store.history = [{}];
+    context.globalState.update('history', [{}]);
+  }
+};
+
 const checkLogin = async () => {
-  return await API.isLogin();
-}
+  return (await API.getMe()).status === 'ok';
+};
 
 const login = async (context: vscode.ExtensionContext) => {
   const { email, password } = getLoginCredential(context);
   if (!email || !password) {
-    vscode.window.showInformationMessage('Please enter email and password to use HackMD extension!')
+    vscode.window.showInformationMessage('Please enter your email and password to use HackMD extension!')
     return;
   }
   await API.login(email, password);
-  if (checkLogin) {
-    vscode.window.showInformationMessage('Successfully login!')
+  if (await checkLogin()) {
+    vscode.window.showInformationMessage('Successfully login!');
   } else {
-    vscode.window.showInformationMessage('Wrong email or password, please enter again')
+    vscode.window.showInformationMessage('Wrong email or password, please enter again');
   }
 };
 
@@ -254,7 +266,13 @@ const getLoginCredential = (context: vscode.ExtensionContext) => {
 };
 
 export async function activate(context: vscode.ExtensionContext) {
-  context.subscriptions.push(vscode.commands.registerCommand('extension.login', async () => {
+  initializeStorage(context);
+  context.subscriptions.push(vscode.commands.registerCommand('HackMD.login', async () => {
+    if (await checkLogin()) {
+      vscode.window.showInformationMessage('Already logged in, please log out first.');
+      return;
+    }
+
     const email = await vscode.window.showInputBox({
       ignoreFocusOut: true,
       password: false,
@@ -284,13 +302,27 @@ export async function activate(context: vscode.ExtensionContext) {
 
     context.globalState.update('email', email);
     context.globalState.update('password', password);
-    login(context);
+    
+    await login(context);
+    await refreshHistoryList(context);
   }));
 
+  context.subscriptions.push(vscode.commands.registerCommand('HackMD.logout', async () => {
+    if (!(await checkLogin())) {
+      vscode.window.showInformationMessage('Currently not logged in.');
+      return;
+    }
+    await API.logout();
+    vscode.window.showInformationMessage('Successfully logged out.');
+    await refreshHistoryList(context);
+  }));
 
-  const history = (await API.getHistory()).history;
+  const treeViewProvider = new MdTreeItemProvider(store);
   context.subscriptions.push(
-    vscode.window.registerTreeDataProvider('mdTreeItems', new MdTreeItemProvider(history))
+    vscode.window.registerTreeDataProvider('mdTreeItems', treeViewProvider)
+  );
+  context.subscriptions.push(
+    vscode.commands.registerCommand('treeView.refreshList', () => treeViewProvider.refresh())
   );
 
   context.subscriptions.push(vscode.workspace.registerTextDocumentContentProvider('hackmd', new MdTextDocumentContentProvider()));
