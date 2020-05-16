@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { Store } from './store';
+import { Store, store } from './store';
 import { reaction } from 'mobx';
 // const history = (await API.getHistory()).history;
 export class MdTreeItemProvider implements vscode.TreeDataProvider<TreeNode> {
@@ -21,12 +21,14 @@ export class MdTreeItemProvider implements vscode.TreeDataProvider<TreeNode> {
     }
 
     getChildren(element?: TreeNode): vscode.ProviderResult<TreeNode[]> {
-        if (element === undefined) {
-            return [new TreeNode("history", vscode.TreeItemCollapsibleState.Collapsed)]
-        } else {
-            return this.store.history.map(item =>
-                new NoteTreeNode(item.id, item.text, vscode.TreeItemCollapsibleState.None)
-            );
+        if (store.isLogin) {
+            if (element === undefined) {
+                return [new TreeNode("history", vscode.TreeItemCollapsibleState.Collapsed)]
+            } else {
+                return this.store.history.map(item =>
+                    new NoteTreeNode(item.id, item.text, vscode.TreeItemCollapsibleState.None)
+                );
+            }
         }
     }
 

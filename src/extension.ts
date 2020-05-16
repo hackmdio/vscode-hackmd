@@ -253,6 +253,8 @@ const login = async (context: vscode.ExtensionContext) => {
   }
   await API.login(email, password);
   if (await checkLogin()) {
+    store.isLogin = true;
+    context.globalState.update('isLogin', true);
     vscode.window.showInformationMessage('Successfully login!');
   } else {
     vscode.window.showInformationMessage('Wrong email or password, please enter again');
@@ -313,6 +315,8 @@ export async function activate(context: vscode.ExtensionContext) {
       return;
     }
     await API.logout();
+    store.isLogin = false;
+    context.globalState.update('isLogin', false);
     vscode.window.showInformationMessage('Successfully logged out.');
     await refreshHistoryList(context);
   }));

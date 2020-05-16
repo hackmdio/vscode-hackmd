@@ -75,7 +75,7 @@
 			},
 			{
 				"command": "treeView.refreshList",
-				"title": "Refresh!",
+				"title": "Refresh",
 				"icon": "src/icon/refresh.svg"
 			}
 		],
@@ -87,7 +87,13 @@
 					"group": "navigation"
 				}
 			]
-		}
+		},
+		"viewsWelcome": [
+			{
+			  "view": "mdTreeItems",
+			  "contents": "No notes found. Login first.\n[Login HackMD](command:HackMD.login)"
+			}
+		  ]
 	},
 	"scripts": {
 		"vscode:prepublish": "webpack --mode production",
