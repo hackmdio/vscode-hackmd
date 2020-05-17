@@ -15,7 +15,8 @@
 	"activationEvents": [
 		"onView:mdTreeItems",
 		"onCommand:HackMD.login",
-		"onCommand::HackMD.logout"
+		"onCommand:HackMD.logout",
+		"onCommand:note.newNote"
 	],
 	"license": "MIT",
 	"homepage": "https://github.com/hackmdio/vscode-hackmd/blob/master/README.md",
@@ -87,6 +88,10 @@
 				"command": "note.showPreviewAndEditor",
 				"title": "Show preview to side",
 				"icon": "src/icon/education.svg"
+			},
+			{
+				"command": "note.newNote",
+				"title": "New note"
 			}
 		],
 		"menus": {
