@@ -5,5 +5,5 @@ import { Store } from '../store';
 
 export function registerCommand(context: vscode.ExtensionContext, store: Store) {
     registerUserCommands(context, store);
-    registerTreeViewCommands(context, store)
+    registerTreeViewCommands(context, store);
 }

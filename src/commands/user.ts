@@ -52,7 +52,6 @@ export async function registerUserCommands(context: vscode.ExtensionContext, sto
         }
         await API.logout();
         store.isLogin = false;
-        context.globalState.update('isLogin', false);
         vscode.window.showInformationMessage('Successfully logged out.');
         await refreshHistoryList(context);
       }));

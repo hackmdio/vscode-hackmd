@@ -77,6 +77,16 @@
 				"command": "treeView.refreshList",
 				"title": "Refresh",
 				"icon": "src/icon/refresh.svg"
+			},
+			{
+				"command": "note.showPreview",
+				"title": "Show preview",
+				"icon": "src/icon/eye.svg"
+			},
+			{
+				"command": "note.showPreviewAndEditor",
+				"title": "Show preview to side",
+				"icon": "src/icon/education.svg"
 			}
 		],
 		"menus": {
@@ -86,14 +96,26 @@
 					"when": "view == mdTreeItems",
 					"group": "navigation"
 				}
+			],
+			"view/item/context": [
+				{
+					"command": "note.showPreview",
+					"when": "view == mdTreeItems && viewItem == file",
+					"group": "inline"
+				},
+				{
+					"command": "note.showPreviewAndEditor",
+					"when": "view == mdTreeItems && viewItem == file",
+					"group": "inline"
+				}
 			]
 		},
 		"viewsWelcome": [
 			{
-			  "view": "mdTreeItems",
-			  "contents": "No notes found. Login first.\n[Login HackMD](command:HackMD.login)"
+				"view": "mdTreeItems",
+				"contents": "No notes found. Login first.\n[Login HackMD](command:HackMD.login)"
 			}
-		  ]
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "webpack --mode production",

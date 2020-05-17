@@ -1,7 +1,8 @@
-import * as vscode from 'vscode'
+import * as vscode from 'vscode';
 import { Store } from '../store';
 import * as apiClient from '@hackmd/api';
-import { HackMDTreeViewProvider } from './../tree/index'
+import { HackMDTreeViewProvider } from './../tree/index';
+import { NoteTreeNode } from './../tree/nodes';
 import { MdTextDocumentContentProvider } from './../mdTextDocument';
 const API = new apiClient.default();
 
@@ -20,5 +21,30 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext,
             }
         }
     }));
+
+    context.subscriptions.push(vscode.commands.registerCommand('note.showPreview', async (node: NoteTreeNode) => {
+        const noteNode = node;
+        if (noteNode.label && noteNode.noteId) {
+            const content = await API.exportString(noteNode.noteId, apiClient.ExportType.MD);
+            if (content) {
+                const uri = vscode.Uri.parse(`hackmd:${noteNode.label}.md#${noteNode.noteId}`);
+                vscode.commands.executeCommand('markdown.showPreview', uri);
+            }
+        }
+    }));
+
+    context.subscriptions.push(vscode.commands.registerCommand('note.showPreviewAndEditor', async (node: NoteTreeNode) => {
+        const noteNode = node;
+        if (noteNode.label && noteNode.noteId) {
+            const content = await API.exportString(noteNode.noteId, apiClient.ExportType.MD);
+            if (content) {
+                const uri = vscode.Uri.parse(`hackmd:${noteNode.label}.md#${noteNode.noteId}`);
+                const doc = await vscode.workspace.openTextDocument(uri);
+                await vscode.window.showTextDocument(doc, { preview: false });
+                vscode.commands.executeCommand('markdown.showPreviewToSide', uri);
+            }
+        }
+    }));
+
     context.subscriptions.push(vscode.workspace.registerTextDocumentContentProvider('hackmd', new MdTextDocumentContentProvider()));
 }

@@ -31,5 +31,6 @@ export class NoteTreeNode extends TreeNode {
                 this.noteId
             ]
         };
+        this.contextValue = 'file';
     }
 }

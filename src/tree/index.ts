@@ -43,10 +43,8 @@ export class HackMDTreeViewProvider implements vscode.TreeDataProvider<TreeNode>
 export const refreshHistoryList = async (context) => {
     if (await checkLogin()) {
         store.history = (await API.getHistory()).history;
-        context.globalState.update('history', store.history);
     } else {
         store.history = [{}];
-        context.globalState.update('history', [{}]);
     }
 };
 
@@ -63,7 +61,6 @@ export const login = async (context: vscode.ExtensionContext) => {
     await API.login(email, password);
     if (await checkLogin()) {
         store.isLogin = true;
-        context.globalState.update('isLogin', true);
         vscode.window.showInformationMessage('Successfully login!');
     } else {
         vscode.window.showInformationMessage('Wrong email or password, please enter again');
