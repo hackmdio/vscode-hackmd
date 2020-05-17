@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as apiClient from '@hackmd/api';
-import {checkLogin} from './../tree/index';
+import { checkLogin } from './../utils';
 const API = new apiClient.default();
 
 export async function registerNoteCommands(context: vscode.ExtensionContext) {
