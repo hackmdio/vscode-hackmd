@@ -16,7 +16,7 @@
 		"onView:mdTreeItems",
 		"onCommand:HackMD.login",
 		"onCommand:HackMD.logout",
-		"onCommand:note.newNote"
+		"onCommand:HackMD.createActiveEditorContentToHackMD"
 	],
 	"license": "MIT",
 	"homepage": "https://github.com/hackmdio/vscode-hackmd/blob/master/README.md",
@@ -90,8 +90,8 @@
 				"icon": "src/icon/education.svg"
 			},
 			{
-				"command": "note.newNote",
-				"title": "New note"
+				"command": "HackMD.createActiveEditorContentToHackMD",
+				"title": "HackMD: Create active editor Content to HackMD"
 			}
 		],
 		"menus": {
