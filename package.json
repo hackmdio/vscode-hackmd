@@ -68,30 +68,30 @@
 		"commands": [
 			{
 				"command": "HackMD.login",
-				"title": "Login"
+				"title": "HackMD: Login"
 			},
 			{
 				"command": "HackMD.logout",
-				"title": "Logout"
+				"title": "HackMD: Logout"
 			},
 			{
 				"command": "treeView.refreshList",
-				"title": "Refresh",
+				"title": "HackMD: Refresh",
 				"icon": "src/icon/refresh.svg"
 			},
 			{
 				"command": "note.showPreview",
-				"title": "Show preview",
+				"title": "HackMD: Show Preview",
 				"icon": "src/icon/eye.svg"
 			},
 			{
 				"command": "note.showPreviewAndEditor",
-				"title": "Show preview to side",
+				"title": "HackMD: Show Preview To Side",
 				"icon": "src/icon/education.svg"
 			},
 			{
 				"command": "HackMD.createActiveEditorContentToHackMD",
-				"title": "HackMD: Create active editor Content to HackMD"
+				"title": "HackMD: Create Active Editor Content To HackMD"
 			}
 		],
 		"menus": {
