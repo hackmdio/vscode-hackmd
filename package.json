@@ -41,6 +41,20 @@
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
+		"configuration": {
+			"title": "HackMD",
+			"properties": {
+				"Hackmd.serverURL": {
+					"type": "string",
+					"default": "https://hackmd.io/",
+					"markdownDescription": "Specify the self-hosted server URL for HackMD EE or CodiMD."
+				},
+				"Hackmd.enterprise": {
+					"type": "boolean",
+					"description": "Check this if you are connecting to HackMD Enterprise server which contains more features."
+				}
+			}
+		},
 		"markdown.markdownItPlugins": true,
 		"markdown.previewScripts": [
 			"./dist/page.js"
