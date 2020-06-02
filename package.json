@@ -16,7 +16,8 @@
 		"onView:mdTreeItems",
 		"onCommand:HackMD.login",
 		"onCommand:HackMD.logout",
-		"onCommand:HackMD.createActiveEditorContentToHackMD"
+		"onCommand:HackMD.createActiveEditorContentToHackMD",
+		"onCommand:HackMD.createCodeSnippet"
 	],
 	"license": "MIT",
 	"homepage": "https://github.com/hackmdio/vscode-hackmd/blob/master/README.md",
@@ -75,7 +76,7 @@
 			"mdTree": [
 				{
 					"id": "mdTreeItems",
-					"name": ""
+					"name": "History"
 				}
 			]
 		},
@@ -106,6 +107,10 @@
 			{
 				"command": "HackMD.createActiveEditorContentToHackMD",
 				"title": "HackMD: Create Active Editor Content To HackMD"
+			},
+			{
+				"command": "HackMD.createCodeSnippet",
+				"title": "HackMD: Create a code snippet"
 			}
 		],
 		"menus": {
