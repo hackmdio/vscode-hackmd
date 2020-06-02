@@ -12,7 +12,9 @@
 		"color": "#333333",
 		"theme": "dark"
 	},
-	"activationEvents": [],
+	"activationEvents": [
+		"onCommand:HackMD.createCodeSnippet"
+	],
 	"license": "MIT",
 	"homepage": "https://github.com/hackmdio/vscode-hackmd/blob/master/README.md",
 	"bugs": {
@@ -42,6 +44,12 @@
 		],
 		"markdown.previewStyles": [
 			"./dist/page.css"
+		],
+		"commands": [
+			{
+				"command": "HackMD.createCodeSnippet",
+				"title": "HackMD: Create a code snippet"
+			}
 		]
 	},
 	"scripts": {
@@ -85,6 +93,7 @@
 		"webpack-cli": "^3.3.6"
 	},
 	"dependencies": {
+		"@hackmd/api": "^1.1.1",
 		"bootstrap3": "^3.3.5",
 		"markdown-it-abbr": "^1.0.4",
 		"markdown-it-container": "^2.0.0",

@@ -6,6 +6,7 @@ import * as markdownitContainer from 'markdown-it-container';
 import * as S from 'string';
 
 import * as Prism from 'prismjs';
+import { registerCommand } from './commands/index';
 
 require('prismjs/components/prism-wiki');
 require('prismjs/components/prism-haskell');
@@ -211,10 +212,10 @@ function highlightRender(code, lang) {
     const continuelinenumber = /=\+$/.test(lang);
     const linegutter = `<div class='gutter linenumber${
       continuelinenumber ? ' continue' : ''
-    }'>${linenumbers.join('\n')}</div>`;
+      }'>${linenumbers.join('\n')}</div>`;
     result.value = `<div class='wrapper'>${linegutter}<div class='code'>${
       result.value
-    }</div></div>`;
+      }</div></div>`;
   }
   return result.value;
 }
@@ -224,6 +225,8 @@ let highlight;
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+  registerCommand(context);
+  
   return {
     extendMarkdownIt(md: any) {
       md.use(require('markdown-it-abbr'));
@@ -253,10 +256,10 @@ export function activate(context: vscode.ExtensionContext) {
       md.use(markdownitContainer, 'warning', { render });
       md.use(markdownitContainer, 'danger', { render });
       md.use(markdownitContainer, 'spoiler', {
-        validate: function(params) {
+        validate: function (params) {
           return params.trim().match(/^spoiler\s+(.*)$/);
         },
-        render: function(tokens, idx) {
+        render: function (tokens, idx) {
           var m = tokens[idx].info.trim().match(/^spoiler\s+(.*)$/);
 
           if (tokens[idx].nesting === 1) {
@@ -282,4 +285,4 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
