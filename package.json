@@ -67,7 +67,7 @@
 				{
 					"id": "mdTree",
 					"title": "HackMD Notes",
-					"icon": "src/icon/notes.svg"
+					"icon": "src/icon/activity-bar.svg"
 				}
 			]
 		},
@@ -91,17 +91,26 @@
 			{
 				"command": "treeView.refreshList",
 				"title": "HackMD: Refresh",
-				"icon": "src/icon/refresh.svg"
+				"icon": {
+					"light": "src/icon/light/refresh-dark.svg",
+					"dark": "src/icon/dark/refresh-light.svg"
+				}
 			},
 			{
 				"command": "note.showPreview",
 				"title": "HackMD: Show Preview",
-				"icon": "src/icon/eye.svg"
+				"icon": {
+					"light": "src/icon/light/view-dark.svg",
+					"dark": "src/icon/dark/view-light.svg"
+				}
 			},
 			{
 				"command": "note.showPreviewAndEditor",
 				"title": "HackMD: Show Preview To Side",
-				"icon": "src/icon/education.svg"
+				"icon": {
+					"light": "src/icon/light/column-dark.svg",
+					"dark": "src/icon/dark/column-light.svg"
+				}
 			},
 			{
 				"command": "HackMD.createActiveEditorContentToHackMD",
