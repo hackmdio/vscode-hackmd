@@ -5,7 +5,7 @@ import * as apiClient from '@hackmd/api';
 const API = new apiClient.default();
 export const refreshHistoryList = async (context) => {
     if (await checkLogin()) {
-        store.history = (await API.getHistory()).history;
+        store.history = (await API.getHistory()).history.reverse();
     } else {
         store.history = [{}];
     }

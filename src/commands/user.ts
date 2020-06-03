@@ -1,4 +1,4 @@
-import * as vscode from 'vscode'
+import * as vscode from 'vscode';
 import { checkLogin, login, refreshHistoryList } from './../utils'
 import { Store } from '../store';
 import * as apiClient from '@hackmd/api';
