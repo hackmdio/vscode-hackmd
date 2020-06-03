@@ -42,7 +42,7 @@ export async function registerUserCommands(context: vscode.ExtensionContext, sto
         context.globalState.update('password', password);
 
         await login(context);
-        await refreshHistoryList(context);
+        await refreshHistoryList();
     }));
 
     context.subscriptions.push(vscode.commands.registerCommand('HackMD.logout', async () => {
@@ -53,6 +53,6 @@ export async function registerUserCommands(context: vscode.ExtensionContext, sto
         await API.logout();
         store.isLogin = false;
         vscode.window.showInformationMessage('Successfully logged out.');
-        await refreshHistoryList(context);
+        await refreshHistoryList();
       }));
 }

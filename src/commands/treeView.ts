@@ -4,12 +4,13 @@ import * as apiClient from '@hackmd/api';
 import { HackMDTreeViewProvider } from './../tree/index';
 import { NoteTreeNode } from './../tree/nodes';
 import { MdTextDocumentContentProvider } from './../mdTextDocument';
+import { refreshHistoryList } from './../utils';
 const API = new apiClient.default();
 
 export async function registerTreeViewCommands(context: vscode.ExtensionContext, store: Store) {
     const hackMDTreeViewProvider = new HackMDTreeViewProvider(store);
     context.subscriptions.push(vscode.window.registerTreeDataProvider('mdTreeItems', hackMDTreeViewProvider));
-    context.subscriptions.push(vscode.commands.registerCommand('treeView.refreshList', () => hackMDTreeViewProvider.refresh()));
+    context.subscriptions.push(vscode.commands.registerCommand('treeView.refreshList', async () => await refreshHistoryList()));
 
     context.subscriptions.push(vscode.commands.registerCommand('clickTreeItem', async (label, noteId) => {
         if (label && noteId) {
