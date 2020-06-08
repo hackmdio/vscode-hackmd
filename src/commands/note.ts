@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
-import * as apiClient from '@hackmd/api';
 import { checkLogin } from './../utils';
-const API = new apiClient.default();
+import { API } from './../api';
 
 export async function registerNoteCommands(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand('HackMD.createActiveEditorContentToHackMD', async () => {

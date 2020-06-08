@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
 import { store } from './store';
-import * as apiClient from '@hackmd/api';
+import { API } from './api';
 
-const API = new apiClient.default();
 export const refreshHistoryList = async () => {
     if (await checkLogin()) {
         store.history = (await API.getHistory()).history.reverse();

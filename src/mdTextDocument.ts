@@ -1,11 +1,10 @@
 import * as vscode from 'vscode';
-import * as apiClient from '@hackmd/api';
-const API = new apiClient.default();
+import { API, apiExportType } from './api';
 
 export class MdTextDocumentContentProvider implements vscode.TextDocumentContentProvider {
     async provideTextDocumentContent(uri: vscode.Uri): Promise<string> {
         const noteId = uri.fragment;
-        const content = await API.exportString(noteId, apiClient.ExportType.MD);
+        const content = await API.exportString(noteId, apiExportType.MD);
         return content;
     }
 }

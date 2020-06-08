@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
 import { checkLogin, login, refreshHistoryList } from './../utils'
 import { Store } from '../store';
-import * as apiClient from '@hackmd/api';
-const API = new apiClient.default();
+import { API } from './../api';
 
 export async function registerUserCommands(context: vscode.ExtensionContext, store: Store) {
     context.subscriptions.push(vscode.commands.registerCommand('HackMD.login', async () => {

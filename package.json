@@ -114,7 +114,7 @@
 			},
 			{
 				"command": "HackMD.createActiveEditorContentToHackMD",
-				"title": "HackMD: Create Active Editor Content To HackMD"
+				"title": "HackMD: Create note from editor"
 			}
 		],
 		"menus": {
