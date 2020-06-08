@@ -15,7 +15,7 @@ export function registerSnippetCommands(context: vscode.ExtensionContext) {
         const snippet = `> \`${vscode.workspace.asRelativePath(editor.document.uri.fsPath)}\`\n\n\`\`\`${editor.document.languageId}=${editor.selection.start.line + 1}\n${text}\n\`\`\``;
 
         const noteUrl = await API.newNote(snippet);
-        const clicked = await vscode.window.showInformationMessage('New note Established!', ...['Copy URL to clip board', 'Open in browser']);
+        const clicked = await vscode.window.showInformationMessage('New Snippet Established!', ...['Copy URL to clip board', 'Open in browser']);
         if (clicked === 'Copy URL to clip board') {
             vscode.env.clipboard.writeText(noteUrl);
         } else if (clicked === 'Open in browser') {
