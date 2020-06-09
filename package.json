@@ -51,6 +51,7 @@
 				},
 				"Hackmd.enterprise": {
 					"type": "boolean",
+					"default": false,
 					"description": "Check this if you are connecting to HackMD Enterprise server which contains more features."
 				}
 			}

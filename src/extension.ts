@@ -4,10 +4,10 @@ import axios from 'axios';
 import * as vscode from 'vscode';
 import * as markdownitContainer from 'markdown-it-container';
 import * as S from 'string';
-import { store } from './store'
-import { initializeStorage } from './store/storage'
+import { store } from './store';
+import { initializeStorage } from './store/storage';
 import * as Prism from 'prismjs';
-import { registerCommand } from './commands'
+import { registerCommand } from './commands';
 
 require('prismjs/components/prism-wiki');
 require('prismjs/components/prism-haskell');
