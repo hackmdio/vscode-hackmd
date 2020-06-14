@@ -1,17 +1,18 @@
 import * as vscode from 'vscode';
-import { Store, store } from '../store';
+import { store } from '../store';
 import { reaction } from 'mobx';
 import { TreeNode, NoteTreeNode } from './nodes';
 
 export class HackMDTreeViewProvider implements vscode.TreeDataProvider<TreeNode> {
     private _onDidChangeTreeData = new vscode.EventEmitter<TreeNode>();
     public readonly onDidChangeTreeData: vscode.Event<TreeNode> = this._onDidChangeTreeData.event;
-    constructor(private store: Store) {
+    constructor() {
         reaction(
             () => [
-                store.history
+                store.history,
+                store.isLogin
             ],
-            () => {
+            async () => {
                 this.refresh();
             }
         );
@@ -24,9 +25,9 @@ export class HackMDTreeViewProvider implements vscode.TreeDataProvider<TreeNode>
     getChildren(element?: TreeNode): vscode.ProviderResult<TreeNode[]> {
         if (store.isLogin) {
             if (element === undefined) {
-                return [new TreeNode("history", vscode.TreeItemCollapsibleState.Collapsed)]
+                return [new TreeNode("history", vscode.TreeItemCollapsibleState.Collapsed)];
             } else {
-                return this.store.history.map(item =>
+                return store.history.map(item =>
                     new NoteTreeNode(item.id, item.text, vscode.TreeItemCollapsibleState.None)
                 );
             }

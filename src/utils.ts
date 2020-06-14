@@ -8,6 +8,18 @@ export const refreshHistoryList = async () => {
     } else {
         store.history = [{}];
     }
+
+};
+
+export const refreshLoginStatus = async () => {
+    store.isLogin = await checkLogin();
+};
+
+export const refreshLoginCredential = async (context: vscode.ExtensionContext) => {
+    if (!(await checkLogin())) {
+        context.globalState.update('email', undefined);
+        context.globalState.update('password', undefined);
+    }
 };
 
 export const checkLogin = async () => {
@@ -17,7 +29,7 @@ export const checkLogin = async () => {
 export const login = async (context: vscode.ExtensionContext) => {
     const { email, password } = getLoginCredential(context);
     if (!email || !password) {
-        vscode.window.showInformationMessage('Please enter your email and password to use HackMD extension!')
+        vscode.window.showInformationMessage('Please enter your email and password to use HackMD extension!');
         return;
     }
     await API.login(email, password);

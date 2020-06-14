@@ -1,9 +1,8 @@
 import * as vscode from 'vscode';
-import { checkLogin, login, refreshHistoryList } from './../utils'
-import { Store } from '../store';
+import { checkLogin, login, refreshHistoryList, refreshLoginStatus } from './../utils';
 import { API } from './../api';
 
-export async function registerUserCommands(context: vscode.ExtensionContext, store: Store) {
+export async function registerUserCommands(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand('HackMD.login', async () => {
         if (await checkLogin()) {
             vscode.window.showInformationMessage('Already logged in, please log out first.');
@@ -50,8 +49,8 @@ export async function registerUserCommands(context: vscode.ExtensionContext, sto
           return;
         }
         await API.logout();
-        store.isLogin = false;
-        vscode.window.showInformationMessage('Successfully logged out.');
+        await refreshLoginStatus();
         await refreshHistoryList();
+        vscode.window.showInformationMessage('Successfully logged out.');
       }));
 }

@@ -46,12 +46,12 @@
 			"properties": {
 				"Hackmd.serverURL": {
 					"type": "string",
-					"default": "https://hackmd.io/",
+					"default": "https://hackmd.io",
 					"markdownDescription": "Specify the self-hosted server URL for HackMD EE or CodiMD."
 				},
 				"Hackmd.enterprise": {
 					"type": "boolean",
-					"default": false,
+					"default": true,
 					"description": "Check this if you are connecting to HackMD Enterprise server which contains more features."
 				}
 			}
