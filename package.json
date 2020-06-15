@@ -99,7 +99,7 @@
 				}
 			},
 			{
-				"command": "note.showPreview",
+				"command": "HackMD.showPreview",
 				"title": "HackMD: Show Preview",
 				"icon": {
 					"light": "src/icon/light/view-dark.svg",
@@ -107,7 +107,7 @@
 				}
 			},
 			{
-				"command": "note.showPreviewAndEditor",
+				"command": "HackMD.showPreviewAndEditor",
 				"title": "HackMD: Show Preview To Side",
 				"icon": {
 					"light": "src/icon/light/column-dark.svg",
@@ -133,12 +133,12 @@
 			],
 			"view/item/context": [
 				{
-					"command": "note.showPreview",
+					"command": "HackMD.showPreview",
 					"when": "view == mdTreeItems && viewItem == file",
 					"group": "inline"
 				},
 				{
-					"command": "note.showPreviewAndEditor",
+					"command": "HackMD.showPreviewAndEditor",
 					"when": "view == mdTreeItems && viewItem == file",
 					"group": "inline"
 				}
