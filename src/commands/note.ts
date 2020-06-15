@@ -18,4 +18,14 @@ export async function registerNoteCommands(context: vscode.ExtensionContext) {
             vscode.env.openExternal(vscode.Uri.parse(noteUrl));
         }
     }));
+
+    context.subscriptions.push(vscode.commands.registerCommand('HacKMD.openNoteOnHackMD', () => {
+        const noteId = vscode.window.activeTextEditor.document.uri.fragment;
+        if (!noteId) {
+            vscode.window.showInformationMessage('Please open an editor first');
+        }
+        const serverUrl = vscode.workspace.getConfiguration('Hackmd').get('serverURL') as string;
+        const noteUrl = `${serverUrl}/${noteId}`;
+        vscode.env.openExternal(vscode.Uri.parse(noteUrl));
+    }));
 }

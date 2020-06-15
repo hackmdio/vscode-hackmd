@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { HackMDTreeViewProvider } from './../tree/index';
 import { NoteTreeNode } from './../tree/nodes';
 import { MdTextDocumentContentProvider } from './../mdTextDocument';
-import { refreshHistoryList, refreshLoginStatus, refreshLoginCredential, getLoginCredential } from './../utils';
+import { refreshHistoryList, refreshLoginStatus, refreshLoginCredential } from './../utils';
 import { API, ExportType } from './../api';
 
 export async function registerTreeViewCommands(context: vscode.ExtensionContext) {
@@ -25,8 +25,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
         }
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand('note.showPreview', async (node: NoteTreeNode) => {
-        const noteNode = node;
+    context.subscriptions.push(vscode.commands.registerCommand('note.showPreview', async (noteNode: NoteTreeNode) => {
         if (noteNode.label && noteNode.noteId) {
             const content = await API.exportString(noteNode.noteId, ExportType.MD);
             if (content) {
@@ -36,8 +35,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
         }
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand('note.showPreviewAndEditor', async (node: NoteTreeNode) => {
-        const noteNode = node;
+    context.subscriptions.push(vscode.commands.registerCommand('note.showPreviewAndEditor', async (noteNode: NoteTreeNode) => {
         if (noteNode.label && noteNode.noteId) {
             const content = await API.exportString(noteNode.noteId, ExportType.MD);
             if (content) {
