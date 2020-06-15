@@ -84,15 +84,18 @@
 		"commands": [
 			{
 				"command": "HackMD.login",
-				"title": "HackMD: Login"
+				"title": "Login",
+				"category": "HackMD"
 			},
 			{
 				"command": "HackMD.logout",
-				"title": "HackMD: Logout"
+				"title": "Logout",
+				"category": "HackMD"
 			},
 			{
 				"command": "treeView.refreshList",
-				"title": "HackMD: Refresh",
+				"title": "Refresh",
+				"category": "HackMD",
 				"icon": {
 					"light": "src/icon/light/refresh-dark.svg",
 					"dark": "src/icon/dark/refresh-light.svg"
@@ -100,7 +103,8 @@
 			},
 			{
 				"command": "HackMD.showPreview",
-				"title": "HackMD: Show Preview",
+				"title": "Show Preview",
+				"category": "HackMD",
 				"icon": {
 					"light": "src/icon/light/view-dark.svg",
 					"dark": "src/icon/dark/view-light.svg"
@@ -108,7 +112,8 @@
 			},
 			{
 				"command": "HackMD.showPreviewAndEditor",
-				"title": "HackMD: Show Preview To Side",
+				"title": "Show Preview To Side",
+				"category": "HackMD",
 				"icon": {
 					"light": "src/icon/light/column-dark.svg",
 					"dark": "src/icon/dark/column-light.svg"
@@ -116,11 +121,13 @@
 			},
 			{
 				"command": "HackMD.createActiveEditorContentToHackMD",
-				"title": "HackMD: Create note from editor"
+				"title": "Create note from editor",
+				"category": "HackMD"
 			},
 			{
 				"command": "HacKMD.openNoteOnHackMD",
-				"title": "HacKMD: Open note on HackMD"
+				"title": "Open note on HackMD",
+				"category": "HackMD"
 			}
 		],
 		"menus": {
