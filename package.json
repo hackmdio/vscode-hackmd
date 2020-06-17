@@ -103,7 +103,7 @@
 			},
 			{
 				"command": "HackMD.showPreview",
-				"title": "Show Preview",
+				"title": "Open Preview",
 				"category": "HackMD",
 				"icon": {
 					"light": "src/icon/light/view-dark.svg",
@@ -112,7 +112,7 @@
 			},
 			{
 				"command": "HackMD.showPreviewAndEditor",
-				"title": "Show Preview To Side",
+				"title": "Open Preview to the Side",
 				"category": "HackMD",
 				"icon": {
 					"light": "src/icon/light/column-dark.svg",
@@ -145,9 +145,17 @@
 					"group": "inline"
 				},
 				{
+					"command": "HackMD.showPreview",
+					"when": "view == mdTreeItems && viewItem == file"
+				},
+				{
 					"command": "HackMD.showPreviewAndEditor",
 					"when": "view == mdTreeItems && viewItem == file",
 					"group": "inline"
+				},
+				{
+					"command": "HackMD.showPreviewAndEditor",
+					"when": "view == mdTreeItems && viewItem == file"
 				}
 			]
 		},
