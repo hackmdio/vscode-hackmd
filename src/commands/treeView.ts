@@ -77,6 +77,22 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
         }
     }));
 
+    context.subscriptions.push(vscode.commands.registerCommand('HacKMD.openNoteOnHackMD', async (noteNode: NoteTreeNode) => {
+        let noteId = '';
+        if (noteNode) {
+            noteId = noteNode.noteId;
+        } else {
+            noteId = vscode.window.activeTextEditor.document.uri.fragment;
+        }
+        if (!checkNoteIdExist(noteId)) { return; }
+
+        const serverUrl = vscode.workspace.getConfiguration('Hackmd').get('serverURL') as string;
+        const noteUrl = `${serverUrl}/${noteId}`;
+        vscode.env.openExternal(vscode.Uri.parse(noteUrl));
+    }));
+
+
+
     context.subscriptions.push(vscode.workspace.registerTextDocumentContentProvider('hackmd', new MdTextDocumentContentProvider()));
 }
 

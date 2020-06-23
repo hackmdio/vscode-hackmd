@@ -127,7 +127,11 @@
 			{
 				"command": "HacKMD.openNoteOnHackMD",
 				"title": "Open note on HackMD",
-				"category": "HackMD"
+				"category": "HackMD",
+				"icon": {
+					"light": "src/icon/light/Browser-dark.png",
+					"dark": "src/icon/dark/Browser-light.png"
+				}
 			}
 		],
 		"menus": {
@@ -156,7 +160,17 @@
 				{
 					"command": "HackMD.showPreviewAndEditor",
 					"when": "view == mdTreeItems && viewItem == file"
+				},
+				{
+					"command": "HacKMD.openNoteOnHackMD",
+					"when": "view == mdTreeItems && viewItem == file",
+					"group": "inline"
+				},
+				{
+					"command": "HacKMD.openNoteOnHackMD",
+					"when": "view == mdTreeItems && viewItem == file"
 				}
+
 			]
 		},
 		"viewsWelcome": [
