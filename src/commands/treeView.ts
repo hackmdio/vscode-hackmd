@@ -43,7 +43,8 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
             const content = await API.exportString(noteId, ExportType.MD);
             if (!checkNoteExist(content)) { return; }
 
-            const fileName = editor.document.fileName.split('.')[0];
+            const lastIndex = editor.document.fileName.lastIndexOf('.');
+            const fileName = editor.document.fileName.slice(0, lastIndex+1);
             const uri = vscode.Uri.parse(`hackmd:${fileName}.md#${noteId}`);
             vscode.commands.executeCommand('markdown.showPreview', uri);
         }
@@ -54,6 +55,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
             const content = await API.exportString(noteNode.noteId, ExportType.MD);
             if (!checkNoteExist(content)) { return; }
 
+            console.log(noteNode.label);
             const uri = vscode.Uri.parse(`hackmd:${noteNode.label}.md#${noteNode.noteId}`);
             const doc = await vscode.workspace.openTextDocument(uri);
             await vscode.window.showTextDocument(doc, { preview: false });
@@ -69,7 +71,8 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
             const content = await API.exportString(noteId, ExportType.MD);
             if (!checkNoteExist(content)) { return; }
 
-            const fileName = editor.document.fileName.split('.')[0];
+            const lastIndex = editor.document.fileName.lastIndexOf('.');
+            const fileName = editor.document.fileName.slice(0, lastIndex+1);
             const uri = vscode.Uri.parse(`hackmd:${fileName}.md#${noteId}`);
             const doc = await vscode.workspace.openTextDocument(uri);
             await vscode.window.showTextDocument(doc, { preview: false });
