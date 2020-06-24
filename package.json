@@ -170,7 +170,6 @@
 					"command": "HacKMD.openNoteOnHackMD",
 					"when": "view == mdTreeItems && viewItem == file"
 				}
-
 			]
 		},
 		"viewsWelcome": [
@@ -221,7 +220,7 @@
 		"webpack-cli": "^3.3.6"
 	},
 	"dependencies": {
-		"@hackmd/api": "^1.1.0",
+		"@hackmd/api": "^1.1.1",
 		"ajax": "0.0.4",
 		"axios": "^0.19.2",
 		"bootstrap3": "^3.3.5",
