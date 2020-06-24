@@ -2,7 +2,7 @@
 	"name": "vscode-hackmd",
 	"displayName": "HackMD",
 	"description": "The official HackMD Markdown VSCode extension",
-	"version": "1.0.2",
+	"version": "1.1.0",
 	"engines": {
 		"vscode": "^1.36.0"
 	},
