@@ -2,6 +2,9 @@
 
 Use the same [HackMD](https://hackmd.io) markdown right in VSCode!
 
+![Visual Studio Marketplace Installs](https://img.shields.io/visual-studio-marketplace/i/HackMD.vscode-hackmd)
+![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/HackMD.vscode-hackmd)
+
 ## Features
 
 - **New**: Preview you HackMD notes in VSCode
