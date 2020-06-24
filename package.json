@@ -12,7 +12,13 @@
 		"color": "#333333",
 		"theme": "dark"
 	},
-	"activationEvents": [],
+	"activationEvents": [
+		"onView:mdTreeItems",
+		"onCommand:HackMD.login",
+		"onCommand:HackMD.logout",
+		"onCommand:HackMD.createActiveEditorContentToHackMD",
+		"onCommand:HacKMD.openNoteOnHackMD"
+	],
 	"license": "MIT",
 	"homepage": "https://github.com/hackmdio/vscode-hackmd/blob/master/README.md",
 	"bugs": {
@@ -36,12 +42,142 @@
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
+		"configuration": {
+			"title": "HackMD",
+			"properties": {
+				"Hackmd.serverURL": {
+					"type": "string",
+					"default": "https://hackmd.io",
+					"markdownDescription": "Specify the self-hosted server URL for HackMD EE or CodiMD."
+				},
+				"Hackmd.enterprise": {
+					"type": "boolean",
+					"default": true,
+					"description": "Check this if you are connecting to HackMD Enterprise server which contains more features."
+				}
+			}
+		},
 		"markdown.markdownItPlugins": true,
 		"markdown.previewScripts": [
 			"./dist/page.js"
 		],
 		"markdown.previewStyles": [
 			"./dist/page.css"
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "mdTree",
+					"title": "HackMD Notes",
+					"icon": "src/icon/activity-bar.svg"
+				}
+			]
+		},
+		"views": {
+			"mdTree": [
+				{
+					"id": "mdTreeItems",
+					"name": "History"
+				}
+			]
+		},
+		"commands": [
+			{
+				"command": "HackMD.login",
+				"title": "Login",
+				"category": "HackMD"
+			},
+			{
+				"command": "HackMD.logout",
+				"title": "Logout",
+				"category": "HackMD"
+			},
+			{
+				"command": "treeView.refreshList",
+				"title": "Refresh",
+				"category": "HackMD",
+				"icon": {
+					"light": "src/icon/light/refresh-dark.svg",
+					"dark": "src/icon/dark/refresh-light.svg"
+				}
+			},
+			{
+				"command": "HackMD.showPreview",
+				"title": "Open Preview",
+				"category": "HackMD",
+				"icon": {
+					"light": "src/icon/light/view-dark.svg",
+					"dark": "src/icon/dark/view-light.svg"
+				}
+			},
+			{
+				"command": "HackMD.showPreviewAndEditor",
+				"title": "Open Preview to the Side",
+				"category": "HackMD",
+				"icon": {
+					"light": "src/icon/light/column-dark.svg",
+					"dark": "src/icon/dark/column-light.svg"
+				}
+			},
+			{
+				"command": "HackMD.createActiveEditorContentToHackMD",
+				"title": "Create note from editor",
+				"category": "HackMD"
+			},
+			{
+				"command": "HacKMD.openNoteOnHackMD",
+				"title": "Open note on HackMD",
+				"category": "HackMD",
+				"icon": {
+					"light": "src/icon/light/Browser-dark.png",
+					"dark": "src/icon/dark/Browser-light.png"
+				}
+			}
+		],
+		"menus": {
+			"view/title": [
+				{
+					"command": "treeView.refreshList",
+					"when": "view == mdTreeItems",
+					"group": "navigation"
+				}
+			],
+			"view/item/context": [
+				{
+					"command": "HackMD.showPreview",
+					"when": "view == mdTreeItems && viewItem == file",
+					"group": "inline"
+				},
+				{
+					"command": "HackMD.showPreview",
+					"when": "view == mdTreeItems && viewItem == file"
+				},
+				{
+					"command": "HackMD.showPreviewAndEditor",
+					"when": "view == mdTreeItems && viewItem == file",
+					"group": "inline"
+				},
+				{
+					"command": "HackMD.showPreviewAndEditor",
+					"when": "view == mdTreeItems && viewItem == file"
+				},
+				{
+					"command": "HacKMD.openNoteOnHackMD",
+					"when": "view == mdTreeItems && viewItem == file",
+					"group": "inline"
+				},
+				{
+					"command": "HacKMD.openNoteOnHackMD",
+					"when": "view == mdTreeItems && viewItem == file"
+				}
+
+			]
+		},
+		"viewsWelcome": [
+			{
+				"view": "mdTreeItems",
+				"contents": "No notes found. Login first.\n[Login HackMD](command:HackMD.login)"
+			}
 		]
 	},
 	"scripts": {
@@ -85,7 +221,11 @@
 		"webpack-cli": "^3.3.6"
 	},
 	"dependencies": {
+		"@hackmd/api": "^1.1.0",
+		"ajax": "0.0.4",
+		"axios": "^0.19.2",
 		"bootstrap3": "^3.3.5",
+		"fs": "0.0.1-security",
 		"markdown-it-abbr": "^1.0.4",
 		"markdown-it-container": "^2.0.0",
 		"markdown-it-deflist": "^2.0.3",
@@ -95,6 +235,10 @@
 		"markdown-it-sub": "^1.0.0",
 		"markdown-it-sup": "^1.0.0",
 		"markdown-it-table-of-contents": "^0.4.4",
+		"mathjax": "^3.0.1",
+		"mathjax-full": "^3.0.1",
+		"mobx": "^5.15.4",
+		"node-fetch": "^2.6.0",
 		"string": "git+ssh://git@github.com/hackmdio/string.js.git#a68176b3d"
 	}
 }
