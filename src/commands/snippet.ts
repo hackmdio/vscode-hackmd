@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
-import * as apiClient from '@hackmd/api';
-const API = new apiClient.default();
+import { API } from './../api';
 
 export function registerSnippetCommands(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand('HackMD.createCodeSnippet', async () => {
@@ -12,7 +11,7 @@ export function registerSnippetCommands(context: vscode.ExtensionContext) {
 
         const textRange = new vscode.Range(editor.selection.start.line, editor.selection.start.character, editor.selection.end.line, editor.selection.end.character);
         const text = vscode.window.activeTextEditor.document.getText(textRange);
-        const filePath = vscode.workspace.asRelativePath(editor.document.uri.fsPath)
+        const filePath = vscode.workspace.asRelativePath(editor.document.uri.fsPath);
         const snippet = `---\ntitle: public/${filePath}\n---\n> \`${filePath}\`\n\n\`\`\`${editor.document.languageId}=${editor.selection.start.line + 1}\n${text}\n\`\`\``;
 
         const noteUrl = await API.newNote(snippet);
