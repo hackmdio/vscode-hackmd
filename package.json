@@ -13,7 +13,7 @@
 		"theme": "dark"
 	},
 	"activationEvents": [
-		"onCommand:HackMD.createCodeSnippet"
+		"onCommand:HackMD.createCodeSnippet",
 		"onView:mdTreeItems",
 		"onCommand:HackMD.login",
 		"onCommand:HackMD.logout",
@@ -65,10 +65,6 @@
 		"markdown.previewStyles": [
 			"./dist/page.css"
 		],
-		"commands": [
-			{
-				"command": "HackMD.createCodeSnippet",
-				"title": "HackMD: Create a code snippet"
 		"viewsContainers": {
 			"activitybar": [
 				{
@@ -87,6 +83,10 @@
 			]
 		},
 		"commands": [
+			{
+				"command": "HackMD.createCodeSnippet",
+				"title": "HackMD: Create a code snippet"
+			},
 			{
 				"command": "HackMD.login",
 				"title": "Login",

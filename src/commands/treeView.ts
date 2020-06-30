@@ -55,7 +55,6 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
             const content = await API.exportString(noteNode.noteId, ExportType.MD);
             if (!checkNoteExist(content)) { return; }
 
-            console.log(noteNode.label);
             const uri = vscode.Uri.parse(`hackmd:${noteNode.label}.md#${noteNode.noteId}`);
             const doc = await vscode.workspace.openTextDocument(uri);
             await vscode.window.showTextDocument(doc, { preview: false });
