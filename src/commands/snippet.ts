@@ -1,8 +1,14 @@
 import * as vscode from 'vscode';
 import { API } from './../api';
+import { checkLogin } from './../utils';
 
 export function registerSnippetCommands(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.commands.registerCommand('HackMD.createCodeSnippet', async () => {
+        if (!(await checkLogin())){
+            vscode.window.showInformationMessage('Please login first.');
+            return;
+        }
+
         const editor = vscode.window.activeTextEditor;
         if (editor.selection.isEmpty) {
             vscode.window.showInformationMessage('The code block is empty. Please select a range of text first.');
