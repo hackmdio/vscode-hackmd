@@ -1,12 +1,12 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
+import axios from 'axios';
 import * as vscode from 'vscode';
-
 import * as markdownitContainer from 'markdown-it-container';
 import * as S from 'string';
-
+import { initializeStorage } from './store/storage';
 import * as Prism from 'prismjs';
-import { registerCommand } from './commands/index';
+import { registerCommands } from './commands/index';
 
 require('prismjs/components/prism-wiki');
 require('prismjs/components/prism-haskell');
@@ -65,6 +65,7 @@ hljs.registerLanguage(
   'dockerfile',
   require('highlight.js/lib/languages/dockerfile'),
 );
+
 
 let prismLangs = [
   'haskell',
@@ -221,12 +222,14 @@ function highlightRender(code, lang) {
 }
 
 let highlight;
-
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
-  registerCommand(context);
-  
+axios.defaults.withCredentials = true;
+
+export async function activate(context: vscode.ExtensionContext) {
+  initializeStorage();
+  registerCommands(context);
+
   return {
     extendMarkdownIt(md: any) {
       md.use(require('markdown-it-abbr'));
