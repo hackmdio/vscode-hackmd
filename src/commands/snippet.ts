@@ -12,7 +12,8 @@ export function registerSnippetCommands(context: vscode.ExtensionContext) {
 
         const textRange = new vscode.Range(editor.selection.start.line, editor.selection.start.character, editor.selection.end.line, editor.selection.end.character);
         const text = vscode.window.activeTextEditor.document.getText(textRange);
-        const snippet = `> \`${vscode.workspace.asRelativePath(editor.document.uri.fsPath)}\`\n\n\`\`\`${editor.document.languageId}=${editor.selection.start.line + 1}\n${text}\n\`\`\``;
+        const filePath = vscode.workspace.asRelativePath(editor.document.uri.fsPath)
+        const snippet = `---\ntitle: public/${filePath}\n---\n> \`${filePath}\`\n\n\`\`\`${editor.document.languageId}=${editor.selection.start.line + 1}\n${text}\n\`\`\``;
 
         const noteUrl = await API.newNote(snippet);
         const clicked = await vscode.window.showInformationMessage('New Snippet Established!', ...['Copy URL to clip board', 'Open in browser']);
