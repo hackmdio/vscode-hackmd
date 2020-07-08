@@ -1,9 +1,3 @@
 # Change Log
 
-All notable changes to the "vscode-hackmd" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+[Checkout the complete changelog](https://hackmd.io/@docs/vscode-hackmd-release-notes)
