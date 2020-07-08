@@ -6,7 +6,7 @@ import * as markdownitContainer from 'markdown-it-container';
 import * as S from 'string';
 import { initializeStorage } from './store/storage';
 import * as Prism from 'prismjs';
-import { registerCommands } from './commands';
+import { registerCommands } from './commands/index';
 
 require('prismjs/components/prism-wiki');
 require('prismjs/components/prism-haskell');

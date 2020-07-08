@@ -13,6 +13,7 @@
 		"theme": "dark"
 	},
 	"activationEvents": [
+		"onCommand:HackMD.createCodeSnippet",
 		"onView:mdTreeItems",
 		"onCommand:HackMD.login",
 		"onCommand:HackMD.logout",
@@ -69,7 +70,7 @@
 				{
 					"id": "mdTree",
 					"title": "HackMD Notes",
-					"icon": "src/icon/activity-bar.svg"
+					"icon": "images/icon/activity-bar.svg"
 				}
 			]
 		},
@@ -82,6 +83,10 @@
 			]
 		},
 		"commands": [
+			{
+				"command": "HackMD.createCodeSnippet",
+				"title": "HackMD: Create a code snippet"
+			},
 			{
 				"command": "HackMD.login",
 				"title": "Login",
@@ -97,8 +102,8 @@
 				"title": "Refresh",
 				"category": "HackMD",
 				"icon": {
-					"light": "src/icon/light/refresh-dark.svg",
-					"dark": "src/icon/dark/refresh-light.svg"
+					"light": "images/icon/light/refresh-dark.svg",
+					"dark": "images/icon/dark/refresh-light.svg"
 				}
 			},
 			{
@@ -106,8 +111,8 @@
 				"title": "Open Preview",
 				"category": "HackMD",
 				"icon": {
-					"light": "src/icon/light/view-dark.svg",
-					"dark": "src/icon/dark/view-light.svg"
+					"light": "images/icon/light/view-dark.svg",
+					"dark": "images/icon/dark/view-light.svg"
 				}
 			},
 			{
@@ -115,8 +120,8 @@
 				"title": "Open Preview to the Side",
 				"category": "HackMD",
 				"icon": {
-					"light": "src/icon/light/column-dark.svg",
-					"dark": "src/icon/dark/column-light.svg"
+					"light": "images/icon/light/column-dark.svg",
+					"dark": "images/icon/dark/column-light.svg"
 				}
 			},
 			{
@@ -129,8 +134,8 @@
 				"title": "Open note on HackMD",
 				"category": "HackMD",
 				"icon": {
-					"light": "src/icon/light/Browser-dark.png",
-					"dark": "src/icon/dark/Browser-light.png"
+					"light": "images/icon/light/Browser-dark.png",
+					"dark": "images/icon/dark/Browser-light.png"
 				}
 			}
 		],

@@ -14,6 +14,5 @@ vscode.workspace.onDidChangeConfiguration(async e => {
         }
     }
 });
+
 export { API, ExportType };
-
-
