@@ -10,3 +10,4 @@ vsc-extension-quickstart.md
 **/*.ts
 webpack.config.js
 **/.DS_Store
+*.vslx
