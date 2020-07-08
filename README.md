@@ -32,6 +32,17 @@ Use the same [HackMD](https://hackmd.io) markdown right in VSCode!
 
 [release-notes]: https://hackmd.io/@docs/vscode-hackmd-release-notes
 
+### 1.1.1
+
+#### Added
+
+- HackMD Snippets command
+  - Use command: `HackMD: Create a code snippet` to create a code snippet on HackMD from selected text range
+
+#### Fixed
+
+- Activity icon it not shown ([#23](https://github.com/hackmdio/vscode-hackmd/issues/23))
+
 ### 1.1.0
 
 #### Added
