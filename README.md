@@ -30,7 +30,7 @@ Use the same [HackMD](https://hackmd.io) markdown right in VSCode!
 
 [Read the full Release Note on HackMD.][release-notes]
 
-[release-notes]: https://hackmd.io/@docs/vscode-hackmd-release-notes
+[release-notes]: https://bit.ly/2VXRTrq
 
 ### 1.1.1
 

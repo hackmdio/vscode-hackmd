@@ -1,3 +1,3 @@
 # Change Log
 
-[Checkout the complete changelog](https://hackmd.io/@docs/vscode-hackmd-release-notes)
+[Checkout the complete changelog](https://bit.ly/2VXRTrq)
