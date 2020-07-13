@@ -8,15 +8,16 @@ export function registerSnippetCommands(context: vscode.ExtensionContext) {
             vscode.window.showInformationMessage('Please login first.');
             return;
         }
-
+        
         const editor = vscode.window.activeTextEditor;
+        let text: string;
         if (editor.selection.isEmpty) {
-            vscode.window.showInformationMessage('The code block is empty. Please select a range of text first.');
-            return;
+            text = vscode.window.activeTextEditor.document.getText();
+        } else {
+            const textRange = new vscode.Range(editor.selection.start.line, editor.selection.start.character, editor.selection.end.line, editor.selection.end.character);
+            text = vscode.window.activeTextEditor.document.getText(textRange);
         }
 
-        const textRange = new vscode.Range(editor.selection.start.line, editor.selection.start.character, editor.selection.end.line, editor.selection.end.character);
-        const text = vscode.window.activeTextEditor.document.getText(textRange);
         const filePath = vscode.workspace.asRelativePath(editor.document.uri.fsPath);
         const snippet = 
 `---
