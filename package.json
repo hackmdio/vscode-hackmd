@@ -242,7 +242,7 @@
 		"mathjax": "^3.0.1",
 		"mathjax-full": "^3.0.1",
 		"mobx": "^5.15.4",
-		"node-fetch": "^2.6.0",
+		"node-fetch": "^2.6.1",
 		"string": "git+ssh://git@github.com/hackmdio/string.js.git#a68176b3d"
 	}
 }
