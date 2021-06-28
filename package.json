@@ -212,7 +212,7 @@
 		"mermaid": "^8.4.8",
 		"mini-css-extract-plugin": "^0.8.0",
 		"mocha": "^6.1.4",
-		"prismjs": "^1.17.1",
+		"prismjs": "^1.24.0",
 		"raphael": "git+ssh://git@github.com/DmitryBaranovskiy/raphael.git#v2.2.7",
 		"script-loader": "^0.7.2",
 		"style-loader": "^0.23.1",
