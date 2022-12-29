@@ -227,7 +227,7 @@
 	"dependencies": {
 		"@hackmd/api": "^1.1.1",
 		"ajax": "0.0.4",
-		"axios": "^0.19.2",
+		"axios": "^0.21.2",
 		"bootstrap3": "^3.3.5",
 		"fs": "0.0.1-security",
 		"markdown-it-abbr": "^1.0.4",
