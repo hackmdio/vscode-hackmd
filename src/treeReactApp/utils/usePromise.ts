@@ -1,16 +1,21 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 
-const cache = new Set();
+const usePromiseCache = new Map<FunctionReturningPromise, Map<string, any>>();
 
 // These typings are borrowed from @raycast/utils package
 type PromiseType<P extends Promise<any>> = P extends Promise<infer T> ? T : never;
 type FunctionReturningPromise<T extends any[] = any[]> = (...args: T) => Promise<any>;
 type PromiseReturnType<T extends FunctionReturningPromise> = PromiseType<ReturnType<T>>;
 
+type UsePromiseOptions = {
+  execute?: boolean;
+};
+
 // Thank you Copilot
 export const usePromise = <T extends FunctionReturningPromise>(
   promise: T,
-  deps: any[] = []
+  deps: any[] = [],
+  { execute = true }: UsePromiseOptions = {}
 ): {
   data: PromiseReturnType<T> | undefined;
   error: Error | undefined;
@@ -21,25 +26,40 @@ export const usePromise = <T extends FunctionReturningPromise>(
   const [error, setError] = useState<Error>();
   const [isValidating, setIsValidating] = useState(false);
 
+  const cachedKey = useMemo(() => {
+    return deps.map((dep) => dep.toString()).join('');
+  }, [deps]);
+
   const mutate = useCallback(() => {
+    const currentData = usePromiseCache.get(promise)?.get(cachedKey);
+
+    if (currentData) {
+      setData(currentData);
+    }
+
     setIsValidating(true);
     promise()
       .then((data) => {
         setData(data);
         setIsValidating(false);
+
+        if (!usePromiseCache.has(promise)) {
+          usePromiseCache.set(promise, new Map());
+        }
+
+        usePromiseCache.get(promise)?.set(cachedKey, data);
       })
       .catch((error) => {
         setError(error);
         setIsValidating(false);
       });
-  }, [promise]);
+  }, [cachedKey, promise]);
 
   useEffect(() => {
-    if (!cache.has(promise)) {
-      cache.add(promise);
+    if (execute) {
       mutate();
     }
-  }, deps);
+  }, [execute, mutate]);
 
   return {
     data,
