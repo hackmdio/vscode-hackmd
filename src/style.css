@@ -9,3 +9,7 @@
   border: none;
   white-space: pre;
 }
+
+code[class*="language-"], pre[class*="language-"] {
+  text-shadow: none;
+}
