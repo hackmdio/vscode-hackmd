@@ -3,26 +3,27 @@
 'use strict';
 
 const path = require('path');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const webpack = require('webpack')
+
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpack = require('webpack');
 
 /**@type {import('webpack').Configuration}*/
 const extensionConfig = {
   target: 'node',
   entry: {
-    extension: './src/extension.ts'
+    extension: './src/extension.ts',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
     libraryTarget: 'commonjs2',
-    devtoolModuleFilenameTemplate: '../[resource-path]'
+    devtoolModuleFilenameTemplate: '../[resource-path]',
   },
   devtool: 'source-map',
   externals: {
-    vscode: 'commonjs vscode'
+    vscode: 'commonjs vscode',
   },
   resolve: {
-    extensions: ['.ts', '.js']
+    extensions: ['.ts', '.js'],
   },
   module: {
     rules: [
@@ -31,12 +32,12 @@ const extensionConfig = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'babel-loader'
-          }
-        ]
-      }
-    ]
-  }
+            loader: 'babel-loader',
+          },
+        ],
+      },
+    ],
+  },
 };
 
 /**@type {import('webpack').Configuration}*/
@@ -45,7 +46,7 @@ const pageConfig = {
     page: './src/page.ts',
   },
   output: {
-    path: path.resolve(__dirname, 'dist')
+    path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
     extensions: ['.ts', '.js'],
@@ -55,11 +56,11 @@ const pageConfig = {
       http: false,
       crypto: false,
       fs: false,
-      path: false
+      path: false,
     },
     alias: {
-      'raphael': path.join(__dirname, 'node_modules/raphael/raphael.min.js'),
-    }
+      raphael: path.join(__dirname, 'node_modules/raphael/raphael.min.js'),
+    },
   },
   module: {
     rules: [
@@ -68,16 +69,13 @@ const pageConfig = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'babel-loader'
-          }
-        ]
+            loader: 'babel-loader',
+          },
+        ],
       },
       {
         test: /\.css$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader"
-        ]
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       { test: /(\.woff|\.woff2)$/, loader: 'ignore-loader' },
       { test: /\.ttf$/, loader: 'ignore-loader' },
@@ -89,15 +87,12 @@ const pageConfig = {
           {
             loader: 'imports-loader',
             options: {
-              imports: [
-                'default raphael Raphael',
-                'default lodash _'
-              ]
-            }
-          }
-        ]
-      }
-    ]
+              imports: ['default raphael Raphael', 'default lodash _'],
+            },
+          },
+        ],
+      },
+    ],
   },
   externals: 'fs',
   devtool: 'source-map',
@@ -108,10 +103,10 @@ const pageConfig = {
       'window.jQuery': 'jquery',
     }),
     new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[id].css"
-    })
-  ]
-}
+      filename: '[name].css',
+      chunkFilename: '[id].css',
+    }),
+  ],
+};
 
 module.exports = [extensionConfig, pageConfig];

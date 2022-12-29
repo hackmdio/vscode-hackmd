@@ -8,8 +8,8 @@
 .mermaid .node circle,
 .mermaid .node ellipse,
 .mermaid .node polygon {
-  fill: #ECECFF;
-  stroke: #CCCCFF;
+  fill: #ececff;
+  stroke: #ccccff;
   stroke-width: 1px;
 }
 .mermaid .edgePath .path {
@@ -28,8 +28,8 @@
   fill: #333;
 }
 .mermaid .actor {
-  stroke: #CCCCFF;
-  fill: #ECECFF;
+  stroke: #ccccff;
+  fill: #ececff;
 }
 .mermaid text.actor {
   fill: black;
@@ -40,13 +40,13 @@
 }
 .mermaid .messageLine0 {
   stroke-width: 1.5;
-  stroke-dasharray: "2 2";
-  marker-end: "url(#arrowhead)";
+  stroke-dasharray: '2 2';
+  marker-end: 'url(#arrowhead)';
   stroke: #333;
 }
 .mermaid .messageLine1 {
   stroke-width: 1.5;
-  stroke-dasharray: "2 2";
+  stroke-dasharray: '2 2';
   stroke: #333;
 }
 .mermaid #arrowhead {
@@ -61,8 +61,8 @@
   stroke: none;
 }
 .mermaid .labelBox {
-  stroke: #CCCCFF;
-  fill: #ECECFF;
+  stroke: #ccccff;
+  fill: #ececff;
 }
 .mermaid .labelText {
   fill: black;
@@ -74,9 +74,9 @@
 }
 .mermaid .loopLine {
   stroke-width: 2;
-  stroke-dasharray: "2 2";
-  marker-end: "url(#arrowhead)";
-  stroke: #CCCCFF;
+  stroke-dasharray: '2 2';
+  marker-end: 'url(#arrowhead)';
+  stroke: #ccccff;
 }
 .mermaid .note {
   stroke: #aaaa33;
