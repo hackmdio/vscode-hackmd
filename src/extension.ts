@@ -1,12 +1,15 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import axios from 'axios';
 import * as vscode from 'vscode';
+
+import axios from 'axios';
+import * as hljs from 'highlight.js/lib/highlight';
 import * as markdownitContainer from 'markdown-it-container';
-import * as S from 'string';
-import { initializeStorage } from './store/storage';
 import * as Prism from 'prismjs';
+import * as S from 'string';
+
 import { registerCommands } from './commands/index';
+import { initializeStorage } from './store/storage';
 
 require('prismjs/components/prism-wiki');
 require('prismjs/components/prism-haskell');
@@ -32,22 +35,14 @@ require('prismjs/components/prism-yaml');
 require('prismjs/components/prism-pug');
 require('prismjs/components/prism-sass');
 
-import * as hljs from 'highlight.js/lib/highlight';
-
 hljs.registerLanguage('bash', require('highlight.js/lib/languages/bash'));
 hljs.registerLanguage('clojure', require('highlight.js/lib/languages/clojure'));
-hljs.registerLanguage(
-  'coffeescript',
-  require('highlight.js/lib/languages/coffeescript'),
-);
+hljs.registerLanguage('coffeescript', require('highlight.js/lib/languages/coffeescript'));
 hljs.registerLanguage('cs', require('highlight.js/lib/languages/cs'));
 hljs.registerLanguage('css', require('highlight.js/lib/languages/css'));
 hljs.registerLanguage('elm', require('highlight.js/lib/languages/elm'));
 hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'));
-hljs.registerLanguage(
-  'handlebars',
-  require('highlight.js/lib/languages/handlebars'),
-);
+hljs.registerLanguage('handlebars', require('highlight.js/lib/languages/handlebars'));
 hljs.registerLanguage('http', require('highlight.js/lib/languages/http'));
 hljs.registerLanguage('ini', require('highlight.js/lib/languages/ini'));
 hljs.registerLanguage('prolog', require('highlight.js/lib/languages/prolog'));
@@ -61,13 +56,9 @@ hljs.registerLanguage('php', require('highlight.js/lib/languages/php'));
 hljs.registerLanguage('lua', require('highlight.js/lib/languages/lua'));
 hljs.registerLanguage('nginx', require('highlight.js/lib/languages/nginx'));
 hljs.registerLanguage('perl', require('highlight.js/lib/languages/perl'));
-hljs.registerLanguage(
-  'dockerfile',
-  require('highlight.js/lib/languages/dockerfile'),
-);
+hljs.registerLanguage('dockerfile', require('highlight.js/lib/languages/dockerfile'));
 
-
-let prismLangs = [
+const prismLangs = [
   'haskell',
   'go',
   'groovy',
@@ -95,7 +86,7 @@ function render(tokens, idx, options, env, self): string {
   tokens[idx].attrJoin('role', 'alert');
   tokens[idx].attrJoin('class', 'alert');
   tokens[idx].attrJoin('class', `alert-${tokens[idx].info.trim()}`);
-  return self.renderToken(...arguments);
+  return self.renderToken(tokens, idx, options, env, self);
 }
 
 function parseFenceCodeParams(lang) {
@@ -103,12 +94,10 @@ function parseFenceCodeParams(lang) {
   const params = {};
   if (attrMatch && attrMatch.length >= 2) {
     const attrs = attrMatch[1];
-    const paraMatch = attrs.match(
-      /([#.](\S+?)\s)|((\S+?)\s*=\s*("(.+?)"|'(.+?)'|\[[^\]]*\]|\{[}]*\}|(\S+)))/g,
-    );
+    const paraMatch = attrs.match(/([#.](\S+?)\s)|((\S+?)\s*=\s*("(.+?)"|'(.+?)'|\[[^\]]*\]|\{[}]*\}|(\S+)))/g);
 
     if (paraMatch) {
-      paraMatch.forEach(param => {
+      paraMatch.forEach((param) => {
         param = param.trim();
         if (param[0] === '#') {
           params['id'] = param.slice(1);
@@ -119,18 +108,11 @@ function parseFenceCodeParams(lang) {
           params['class'] = params['class'].concat(param.slice(1));
         } else {
           const offset = param.indexOf('=');
-          const id = param
-            .substring(0, offset)
-            .trim()
-            .toLowerCase();
+          const id = param.substring(0, offset).trim().toLowerCase();
           let val = param.substring(offset + 1).trim();
           const valStart = val[0];
           const valEnd = val[val.length - 1];
-          if (
-            ['"', "'"].indexOf(valStart) !== -1 &&
-            ['"', "'"].indexOf(valEnd) !== -1 &&
-            valStart === valEnd
-          ) {
+          if (['"', "'"].indexOf(valStart) !== -1 && ['"', "'"].indexOf(valEnd) !== -1 && valStart === valEnd) {
             val = val.substring(1, val.length - 1);
           }
           if (id === 'class') {
@@ -155,7 +137,7 @@ function highlightRender(code, lang) {
   }
   // support adding extra attributes for fence code block
   // ex: ```graphviz {engine="neato"}
-  const params = parseFenceCodeParams(lang) as any;
+  const params = parseFenceCodeParams(lang) as Record<string, any>;
   lang = lang.split(/\s+/g)[0];
   code = S(code).escapeHTML().s;
   if (lang === 'sequence') {
@@ -165,6 +147,7 @@ function highlightRender(code, lang) {
   } else if (lang === 'graphviz') {
     // support to specify layout engine of graphviz
     let dataAttrs = '';
+    // eslint-disable-next-line no-prototype-builtins
     if (params.hasOwnProperty('engine')) {
       dataAttrs = ' data-engine="' + params.engine + '"';
     }
@@ -211,12 +194,10 @@ function highlightRender(code, lang) {
       linenumbers[i] = `<span data-linenumber='${startnumber + i}'></span>`;
     }
     const continuelinenumber = /=\+$/.test(lang);
-    const linegutter = `<div class='gutter linenumber${
-      continuelinenumber ? ' continue' : ''
-      }'>${linenumbers.join('\n')}</div>`;
-    result.value = `<div class='wrapper'>${linegutter}<div class='code'>${
-      result.value
-      }</div></div>`;
+    const linegutter = `<div class='gutter linenumber${continuelinenumber ? ' continue' : ''}'>${linenumbers.join(
+      '\n'
+    )}</div>`;
+    result.value = `<div class='wrapper'>${linegutter}<div class='code'>${result.value}</div></div>`;
   }
   return result.value;
 }
@@ -251,7 +232,7 @@ export async function activate(context: vscode.ExtensionContext) {
           afterInlineMath: '</span>',
           beforeDisplayMath: '<span class="mathjax raw display">',
           afterDisplayMath: '</span>',
-        }),
+        })
       );
 
       md.use(markdownitContainer, 'success', { render });
@@ -263,13 +244,11 @@ export async function activate(context: vscode.ExtensionContext) {
           return params.trim().match(/^spoiler\s+(.*)$/);
         },
         render: function (tokens, idx) {
-          var m = tokens[idx].info.trim().match(/^spoiler\s+(.*)$/);
+          const m = tokens[idx].info.trim().match(/^spoiler\s+(.*)$/);
 
           if (tokens[idx].nesting === 1) {
             // opening tag
-            return (
-              '<details><summary>' + md.utils.escapeHtml(m[1]) + '</summary>\n'
-            );
+            return '<details><summary>' + md.utils.escapeHtml(m[1]) + '</summary>\n';
           } else {
             // closing tag
             return '</details>\n';
@@ -288,4 +267,6 @@ export async function activate(context: vscode.ExtensionContext) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() { }
+export function deactivate() {
+  // noop
+}

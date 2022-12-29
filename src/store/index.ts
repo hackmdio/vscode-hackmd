@@ -1,11 +1,11 @@
-import { observable } from "mobx";
+import { observable } from 'mobx';
 
 export interface Store {
-    history: Array<any>;
-    isLogin: boolean;
+  history: Array<any>;
+  isLogin: boolean;
 }
 
 export const store: Store = observable({
-    history: [{}],
-    isLogin: false
+  history: [{}],
+  isLogin: false,
 });

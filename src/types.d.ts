@@ -1,3 +1,3 @@
 interface Window {
-  MathJax: any
+  MathJax: any;
 }
