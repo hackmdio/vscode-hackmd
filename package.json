@@ -14,7 +14,7 @@
   },
   "activationEvents": [
     "onCommand:HackMD.createCodeSnippet",
-    "onView:mdTreeItems",
+    "onView:hackmd.tree.my-notes",
     "onCommand:HackMD.login",
     "onCommand:HackMD.logout",
     "onCommand:HackMD.createActiveEditorContentToHackMD",
@@ -46,7 +46,7 @@
     "configuration": {
       "title": "HackMD",
       "properties": {
-        "HackMD.apiEndPoint": {
+        "Hackmd.apiEndPoint": {
           "type": "string",
           "default": "https://api.hackmd.io/v1/",
           "markdownDescription": "Specify the API endpoint for official instance or HackMD EE"
@@ -63,17 +63,25 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "mdTree",
+          "id": "hackmd-tree",
           "title": "HackMD Notes",
           "icon": "images/icon/activity-bar.svg"
         }
       ]
     },
     "views": {
-      "mdTree": [
+      "hackmd-tree": [
         {
-          "id": "mdTreeItems",
-          "name": "Browser Notes"
+          "id": "hackmd.tree.my-notes",
+          "name": "Browse My Notes"
+        },
+        {
+          "id": "hackmd.tree.recent-notes",
+          "name": "Recent Notes"
+        },
+        {
+          "id": "hackmd.tree.team-notes",
+          "name": "Team Notes"
         }
       ]
     },
@@ -138,43 +146,43 @@
       "view/title": [
         {
           "command": "treeView.refreshList",
-          "when": "view == mdTreeItems",
+          "when": "view =~ /hackmd.tree/",
           "group": "navigation"
         }
       ],
       "view/item/context": [
         {
           "command": "HackMD.showPreview",
-          "when": "view == mdTreeItems && viewItem == file",
+          "when": "view =~ /hackmd.tree/ && viewItem == file",
           "group": "inline"
         },
         {
           "command": "HackMD.showPreview",
-          "when": "view == mdTreeItems && viewItem == file"
+          "when": "view =~ /hackmd.tree/ && viewItem == file"
         },
         {
           "command": "HackMD.showPreviewAndEditor",
-          "when": "view == mdTreeItems && viewItem == file",
+          "when": "view =~ /hackmd.tree/ && viewItem == file",
           "group": "inline"
         },
         {
           "command": "HackMD.showPreviewAndEditor",
-          "when": "view == mdTreeItems && viewItem == file"
+          "when": "view =~ /hackmd.tree/ && viewItem == file"
         },
         {
           "command": "HacKMD.openNoteOnHackMD",
-          "when": "view == mdTreeItems && viewItem == file",
+          "when": "view =~ /hackmd.tree/ && viewItem == file",
           "group": "inline"
         },
         {
           "command": "HacKMD.openNoteOnHackMD",
-          "when": "view == mdTreeItems && viewItem == file"
+          "when": "view =~ /hackmd.tree/ && viewItem == file"
         }
       ]
     },
     "viewsWelcome": [
       {
-        "view": "mdTreeItems",
+        "view": "hackmd.tree.my-notes",
         "contents": "No notes found. Login first.\n[Login HackMD](command:HackMD.login)"
       }
     ]
@@ -187,7 +195,8 @@
     "pretest": "npm run compile",
     "test": "node ./dist/test/runTest.js",
     "lint": "eslint .",
-    "fmt": "prettier --write ."
+    "fmt": "prettier --write .",
+    "postinstall": "patch-package"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.18.6",
@@ -196,6 +205,7 @@
     "@types/jquery": "^3.3.30",
     "@types/mocha": "^5.2.6",
     "@types/node": "^10.12.21",
+    "@types/react": "^18.0.26",
     "@types/vscode": "^1.74.0",
     "@typescript-eslint/eslint-plugin": "^5.47.1",
     "@typescript-eslint/parser": "^5.47.1",
@@ -220,6 +230,7 @@
     "mermaid": "^8.4.8",
     "mini-css-extract-plugin": "^2.7.2",
     "mocha": "^6.2.3",
+    "patch-package": "^6.5.0",
     "prettier": "^2.8.1",
     "prismjs": "^1.17.1",
     "raphael": "2.2.8",

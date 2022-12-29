@@ -32,7 +32,7 @@ export async function initializeAPIClient(context: vscode.ExtensionContext) {
 
 vscode.workspace.onDidChangeConfiguration(async (e) => {
   if (e.affectsConfiguration('Hackmd')) {
-    const extension = vscode.extensions.getExtension<{ context: vscode.ExtensionContext }>('hackmd.hackmd-vscode');
+    const extension = vscode.extensions.getExtension<{ context: vscode.ExtensionContext }>('HackMD.hackmd-vscode');
     await initializeAPIClient(extension.exports.context);
   }
 });

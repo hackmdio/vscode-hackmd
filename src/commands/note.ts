@@ -12,7 +12,7 @@ export async function registerNoteCommands(context: vscode.ExtensionContext) {
       }
 
       const mdText = vscode.window.activeTextEditor.document.getText();
-      const noteUrl = await API.newNote(mdText);
+      const { publishLink: noteUrl } = await API.createNote({ content: mdText });
       const clicked = await vscode.window.showInformationMessage(
         'New note Established!',
         ...['Copy URL to clip board', 'Open in browser']

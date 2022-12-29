@@ -9,10 +9,9 @@ import React from 'react';
 import ReactTreeView from 'react-vsc-treeview';
 import * as S from 'string';
 
-// import { registerCommands } from './commands/index';
-// import { initializeStorage } from './store/storage';
 import { initializeAPIClient } from './api';
-import { TreeApp } from './tree/TreeApp';
+import { registerCommands } from './commands';
+import { History, MyNotes, TeamNotes } from './treeReactApp/pages';
 
 require('prismjs/components/prism-wiki');
 require('prismjs/components/prism-haskell');
@@ -210,10 +209,11 @@ let highlight;
 export async function activate(context: vscode.ExtensionContext) {
   await initializeAPIClient(context);
 
-  // initializeStorage();
-  // registerCommands(context);
+  registerCommands(context);
 
-  ReactTreeView.render(React.createElement(TreeApp), 'mdTreeItems');
+  ReactTreeView.render(React.createElement(MyNotes), 'hackmd.tree.my-notes');
+  ReactTreeView.render(React.createElement(History), 'hackmd.tree.recent-notes');
+  ReactTreeView.render(React.createElement(TeamNotes), 'hackmd.tree.team-notes');
 
   return {
     extendMarkdownIt(md: any) {

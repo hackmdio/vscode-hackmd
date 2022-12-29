@@ -34,7 +34,9 @@ title: public/${filePath}
 ${text}
 \`\`\``;
 
-      const noteUrl = await API.newNote(snippet);
+      const { publishLink: noteUrl } = await API.createNote({
+        content: snippet,
+      });
       const clicked = await vscode.window.showInformationMessage(
         'New Snippet Established!',
         ...['Copy URL to clip board', 'Open in browser']
