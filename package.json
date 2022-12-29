@@ -2,9 +2,9 @@
   "name": "vscode-hackmd",
   "displayName": "HackMD",
   "description": "The official HackMD Markdown VSCode extension",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "engines": {
-    "vscode": "^1.72.0"
+    "vscode": "^1.74.0"
   },
   "publisher": "HackMD",
   "icon": "images/icon.png",
@@ -46,15 +46,10 @@
     "configuration": {
       "title": "HackMD",
       "properties": {
-        "Hackmd.serverURL": {
+        "HackMD.apiEndPoint": {
           "type": "string",
-          "default": "https://hackmd.io",
-          "markdownDescription": "Specify the self-hosted server URL for HackMD EE or CodiMD."
-        },
-        "Hackmd.enterprise": {
-          "type": "boolean",
-          "default": true,
-          "description": "Check this if you are connecting to HackMD Enterprise server which contains more features."
+          "default": "https://api.hackmd.io/v1/",
+          "markdownDescription": "Specify the API endpoint for official instance or HackMD EE"
         }
       }
     },
@@ -201,7 +196,7 @@
     "@types/jquery": "^3.3.30",
     "@types/mocha": "^5.2.6",
     "@types/node": "^10.12.21",
-    "@types/vscode": "^1.36.0",
+    "@types/vscode": "^1.74.0",
     "@typescript-eslint/eslint-plugin": "^5.47.1",
     "@typescript-eslint/parser": "^5.47.1",
     "abcjs": "^5.8.0",
@@ -236,11 +231,8 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
-    "@hackmd/api": "^1.1.1",
-    "ajax": "0.0.4",
-    "axios": "^0.21.2",
+    "@hackmd/api": "^2.2.1",
     "bootstrap3": "^3.3.5",
-    "fs": "0.0.1-security",
     "markdown-it-abbr": "^1.0.4",
     "markdown-it-container": "^2.0.0",
     "markdown-it-deflist": "^2.0.3",
