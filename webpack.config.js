@@ -31,7 +31,7 @@ const extensionConfig = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'ts-loader'
+            loader: 'babel-loader'
           }
         ]
       }
@@ -49,8 +49,16 @@ const pageConfig = {
   },
   resolve: {
     extensions: ['.ts', '.js'],
+    fallback: {
+      os: false,
+      https: false,
+      http: false,
+      crypto: false,
+      fs: false,
+      path: false
+    },
     alias: {
-      raphaelmin: path.join(__dirname, 'node_modules/raphael/raphael.no-deps.min.js')
+      'raphael': path.join(__dirname, 'node_modules/raphael/raphael.min.js'),
     }
   },
   module: {
@@ -60,7 +68,7 @@ const pageConfig = {
         exclude: /node_modules/,
         use: [
           {
-            loader: 'ts-loader'
+            loader: 'babel-loader'
           }
         ]
       },
@@ -77,11 +85,22 @@ const pageConfig = {
       { test: /\.svg$/, loader: 'ignore-loader' },
       {
         test: require.resolve('js-sequence-diagrams'),
-        loader: 'imports-loader?Raphael=raphaelmin&_=lodash'
+        use: [
+          {
+            loader: 'imports-loader',
+            options: {
+              imports: [
+                'default raphael Raphael',
+                'default lodash _'
+              ]
+            }
+          }
+        ]
       }
     ]
   },
   externals: 'fs',
+  devtool: 'source-map',
   plugins: [
     new webpack.ProvidePlugin({
       $: 'jquery',
