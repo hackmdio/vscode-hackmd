@@ -1,3 +1,26 @@
+diff --git a/node_modules/react-vsc-treeview/dist/TreeItem.d.ts b/node_modules/react-vsc-treeview/dist/TreeItem.d.ts
+index 9cbe59e..12a1400 100644
+--- a/node_modules/react-vsc-treeview/dist/TreeItem.d.ts
++++ b/node_modules/react-vsc-treeview/dist/TreeItem.d.ts
+@@ -4,7 +4,7 @@
+  */
+ import * as vscode from 'vscode';
+ import React from 'react';
+-declare const TreeItem: React.FC<TreeItemProps>;
++declare const TreeItem: (props: TreeItemProps) => JSX.Element;
+ export default TreeItem;
+ export interface TreeItemProps {
+     label?: string;
+@@ -19,5 +19,8 @@ export interface TreeItemProps {
+     command?: string | vscode.Command;
+     contextValue?: string;
+     expanded?: boolean;
++    context?: Record<string, any>
++    key?: any;
++    children?: React.ReactNode;
+ }
+ //# sourceMappingURL=TreeItem.d.ts.map
+\ No newline at end of file
 diff --git a/node_modules/react-vsc-treeview/dist/TreeItem.js b/node_modules/react-vsc-treeview/dist/TreeItem.js
 index 91d695c..ab6698d 100644
 --- a/node_modules/react-vsc-treeview/dist/TreeItem.js
