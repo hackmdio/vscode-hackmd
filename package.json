@@ -236,7 +236,7 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
-    "@hackmd/api": "^1.1.1",
+    "@hackmd/api": "^2.2.1",
     "ajax": "0.0.4",
     "axios": "^0.21.2",
     "bootstrap3": "^3.3.5",
