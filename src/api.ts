@@ -1,21 +1,40 @@
 import * as vscode from 'vscode';
 
-import APIClient, { ExportType } from '@hackmd/api';
-const config = {
-  serverUrl: vscode.workspace.getConfiguration('Hackmd').get('serverURL') as string,
-  enterprise: vscode.workspace.getConfiguration('Hackmd').get('enterprise') as boolean,
-};
-const API = new APIClient(config);
+import ApiClient from '@hackmd/api';
+
+import { ACCESS_TOKEN_KEY } from './constants';
+
+let API: ApiClient;
+
+export async function initializeAPIClient(context: vscode.ExtensionContext) {
+  let accessToken = await context.secrets.get(ACCESS_TOKEN_KEY);
+  const apiEndPoint = vscode.workspace.getConfiguration('Hackmd').get('apiEndPoint') as string;
+
+  if (!accessToken) {
+    const input = await vscode.window.showInputBox({
+      prompt: 'Please input your HackMD access token',
+      password: true,
+      ignoreFocusOut: true,
+      placeHolder: 'Access Token',
+      title: 'HackMD Access Token',
+    });
+
+    if (!input) {
+      return;
+    }
+
+    await context.secrets.store(ACCESS_TOKEN_KEY, input);
+    accessToken = input;
+  }
+
+  API = new ApiClient(accessToken, apiEndPoint);
+}
+
 vscode.workspace.onDidChangeConfiguration(async (e) => {
   if (e.affectsConfiguration('Hackmd')) {
-    const clicked = await vscode.window.showInformationMessage(
-      'Setting updated. Restart to apply this change.',
-      ...['Restart']
-    );
-    if (clicked === 'Restart') {
-      vscode.commands.executeCommand('workbench.action.reloadWindow');
-    }
+    const extension = vscode.extensions.getExtension<{ context: vscode.ExtensionContext }>('hackmd.hackmd-vscode');
+    await initializeAPIClient(extension.exports.context);
   }
 });
 
-export { API, ExportType };
+export { API };

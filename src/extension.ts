@@ -2,14 +2,17 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-import axios from 'axios';
 import * as hljs from 'highlight.js/lib/highlight';
 import * as markdownitContainer from 'markdown-it-container';
 import * as Prism from 'prismjs';
+import React from 'react';
+import ReactTreeView from 'react-vsc-treeview';
 import * as S from 'string';
 
-import { registerCommands } from './commands/index';
-import { initializeStorage } from './store/storage';
+// import { registerCommands } from './commands/index';
+// import { initializeStorage } from './store/storage';
+import { initializeAPIClient } from './api';
+import { TreeApp } from './tree/TreeApp';
 
 require('prismjs/components/prism-wiki');
 require('prismjs/components/prism-haskell');
@@ -203,13 +206,14 @@ function highlightRender(code, lang) {
 }
 
 let highlight;
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
-axios.defaults.withCredentials = true;
 
 export async function activate(context: vscode.ExtensionContext) {
-  initializeStorage();
-  registerCommands(context);
+  await initializeAPIClient(context);
+
+  // initializeStorage();
+  // registerCommands(context);
+
+  ReactTreeView.render(React.createElement(TreeApp), 'mdTreeItems');
 
   return {
     extendMarkdownIt(md: any) {
@@ -263,6 +267,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
       return md;
     },
+    context,
   };
 }
 
