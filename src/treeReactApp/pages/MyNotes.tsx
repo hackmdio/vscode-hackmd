@@ -1,9 +1,10 @@
+import useSWR from 'swr';
+
 import { API } from '../../api';
 import { NoteTreeItem } from '../components/NoteTreeItem';
-import { usePromise } from '../utils/usePromise';
 
 export const MyNotes = () => {
-  const { data = [] } = usePromise(() => API.getNoteList(), ['myNotes']);
+  const { data = [] } = useSWR('/my-notes', () => API.getNoteList());
 
   return (
     <>
