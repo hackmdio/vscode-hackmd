@@ -1,5 +1,9 @@
 import * as vscode from 'vscode';
 
+import { Team } from '@hackmd/api/dist/type';
+
+import { teamNotesStore } from '../treeReactApp/store';
+
 import { API } from './../api';
 import { MdTextDocumentContentProvider, getNoteIdPublishLink } from './../mdTextDocument';
 import { ReactVSCTreeNode } from './../tree/nodes';
@@ -20,6 +24,24 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.window.showTextDocument(doc, { preview: false });
       }
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('selectTeam', async () => {
+      const teams = await API.getTeams();
+
+      const getTeamLabel = (team: Team) => `${team.name} [${team.path}]`;
+
+      await vscode.window.showQuickPick(teams.map(getTeamLabel)).then((selectedTeam) => {
+        if (!selectedTeam) {
+          return;
+        }
+
+        const selectedTeamId = teams.find((team) => getTeamLabel(team) === selectedTeam)?.id;
+
+        teamNotesStore.setState({ selectedTeamId });
+      });
     })
   );
 

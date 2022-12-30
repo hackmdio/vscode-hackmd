@@ -211,9 +211,9 @@ export async function activate(context: vscode.ExtensionContext) {
 
   registerCommands(context);
 
-  ReactTreeView.render(React.createElement(MyNotes), 'hackmd.tree.my-notes');
-  ReactTreeView.render(React.createElement(History), 'hackmd.tree.recent-notes');
-  ReactTreeView.render(React.createElement(TeamNotes), 'hackmd.tree.team-notes');
+  context.subscriptions.push(ReactTreeView.render(React.createElement(MyNotes), 'hackmd.tree.my-notes'));
+  context.subscriptions.push(ReactTreeView.render(React.createElement(History), 'hackmd.tree.recent-notes'));
+  context.subscriptions.push(ReactTreeView.render(React.createElement(TeamNotes), 'hackmd.tree.team-notes'));
 
   return {
     extendMarkdownIt(md: any) {
