@@ -1,9 +1,12 @@
+import path from 'path';
+
 import { Team } from '@hackmd/api/dist/type';
 import { useEffect, useMemo, useState } from 'react';
 import { TreeItem } from 'react-vsc-treeview';
 import useSWR from 'swr';
 
 import { API } from '../../api';
+import { useAppContext } from '../AppContainer';
 import { NoteTreeItem } from '../components/NoteTreeItem';
 import { useTeamNotesStore } from '../store';
 
@@ -13,8 +16,20 @@ const TeamTreeItem = ({ team }: { team: Team }) => {
     () => API.getTeamNotes(team.path)
   );
 
+  const { extensionPath } = useAppContext();
+  const iconPath = useMemo(() => {
+    if (extensionPath) {
+      return {
+        light: path.join(extensionPath, 'images/icon/light/users.svg'),
+        dark: path.join(extensionPath, 'images/icon/dark/users.svg'),
+      };
+    } else {
+      return undefined;
+    }
+  }, [extensionPath]);
+
   return (
-    <TreeItem label={team.name} expanded>
+    <TreeItem label={team.name} expanded iconPath={iconPath} description={team.path}>
       {notes.map((note) => {
         return <NoteTreeItem key={note.id} note={note} />;
       })}

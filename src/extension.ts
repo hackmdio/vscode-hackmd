@@ -5,12 +5,12 @@ import * as vscode from 'vscode';
 import * as hljs from 'highlight.js/lib/highlight';
 import * as markdownitContainer from 'markdown-it-container';
 import * as Prism from 'prismjs';
-import React from 'react';
 import ReactTreeView from 'react-vsc-treeview';
 import * as S from 'string';
 
 import { initializeAPIClient } from './api';
 import { registerCommands } from './commands';
+import { createWithContainer } from './treeReactApp/AppContainer';
 import { History, MyNotes, TeamNotes } from './treeReactApp/pages';
 
 require('prismjs/components/prism-wiki');
@@ -211,9 +211,23 @@ export async function activate(context: vscode.ExtensionContext) {
 
   registerCommands(context);
 
-  context.subscriptions.push(ReactTreeView.render(React.createElement(MyNotes), 'hackmd.tree.my-notes'));
-  context.subscriptions.push(ReactTreeView.render(React.createElement(History), 'hackmd.tree.recent-notes'));
-  context.subscriptions.push(ReactTreeView.render(React.createElement(TeamNotes), 'hackmd.tree.team-notes'));
+  console.log(context.extensionPath, 'context.extensionPath');
+
+  context.subscriptions.push(
+    ReactTreeView.render(createWithContainer(MyNotes, { extensionPath: context.extensionPath }), 'hackmd.tree.my-notes')
+  );
+  context.subscriptions.push(
+    ReactTreeView.render(
+      createWithContainer(History, { extensionPath: context.extensionPath }),
+      'hackmd.tree.recent-notes'
+    )
+  );
+  context.subscriptions.push(
+    ReactTreeView.render(
+      createWithContainer(TeamNotes, { extensionPath: context.extensionPath }),
+      'hackmd.tree.team-notes'
+    )
+  );
 
   return {
     extendMarkdownIt(md: any) {
