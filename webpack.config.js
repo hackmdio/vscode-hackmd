@@ -4,6 +4,7 @@
 
 const path = require('path');
 
+const cloneDeep = require('lodash/cloneDeep');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 
@@ -23,12 +24,12 @@ const extensionConfig = {
     vscode: 'commonjs vscode',
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.js', '.tsx'],
   },
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         exclude: /node_modules/,
         use: [
           {
@@ -38,7 +39,47 @@ const extensionConfig = {
       },
     ],
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      React: 'react',
+    }),
+  ],
+  performance: {
+    hints: false,
+  },
+  experiments: {
+    topLevelAwait: true,
+  },
 };
+
+/*
+const browserTargetConfig = cloneDeep(extensionConfig);
+
+browserTargetConfig.mode = 'none';
+browserTargetConfig.target = 'webworker';
+browserTargetConfig.output = {
+  path: path.join(__dirname, './dist/web'),
+  libraryTarget: 'commonjs',
+  devtoolModuleFilenameTemplate: '../[resource-path]',
+};
+browserTargetConfig.resolve = {
+  mainFields: ['browser', 'module', 'main'],
+  extensions: ['.ts', '.js', '.tsx'],
+  fallback: {
+    path: require.resolve('path-browserify'),
+  },
+};
+browserTargetConfig.devtool = 'nosources-source-map';
+browserTargetConfig.plugins = [
+  new webpack.ProvidePlugin({
+    process: 'process/browser',
+    React: 'react',
+  }),
+  new webpack.EnvironmentPlugin({
+    RUNTIME: 'browser',
+  }),
+];
+*/
 
 /**@type {import('webpack').Configuration}*/
 const pageConfig = {
@@ -109,4 +150,4 @@ const pageConfig = {
   ],
 };
 
-module.exports = [extensionConfig, pageConfig];
+module.exports = [extensionConfig, pageConfig /* browserTargetConfig */];

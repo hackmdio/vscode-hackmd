@@ -2,9 +2,9 @@
   "name": "vscode-hackmd",
   "displayName": "HackMD",
   "description": "The official HackMD Markdown VSCode extension",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "engines": {
-    "vscode": "^1.72.0"
+    "vscode": "^1.74.0"
   },
   "publisher": "HackMD",
   "icon": "images/icon.png",
@@ -14,9 +14,10 @@
   },
   "activationEvents": [
     "onCommand:HackMD.createCodeSnippet",
-    "onView:mdTreeItems",
-    "onCommand:HackMD.login",
-    "onCommand:HackMD.logout",
+    "onView:hackmd.tree.my-notes",
+    "onView:hackmd.tree.recent-notes",
+    "onView:hackmd.tree.team-notes",
+    "onCommand:HackMD.apiKey",
     "onCommand:HackMD.createActiveEditorContentToHackMD",
     "onCommand:HacKMD.openNoteOnHackMD"
   ],
@@ -24,20 +25,12 @@
   "homepage": "https://github.com/hackmdio/vscode-hackmd/blob/master/README.md",
   "bugs": {
     "url": "https://github.com/hackmdio/vscode-hackmd/issues",
-    "email": "hackmdio@gmail.com"
+    "email": "support@hackmd.io"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/hackmdio/vscode-hackmd.git"
   },
-  "extensionDependencies": [
-    "bierner.markdown-preview-github-styles",
-    "bierner.markdown-emoji",
-    "bierner.emojisense",
-    "bierner.markdown-image-size",
-    "bierner.markdown-footnotes",
-    "bierner.markdown-checkbox"
-  ],
   "categories": [
     "Other"
   ],
@@ -46,15 +39,10 @@
     "configuration": {
       "title": "HackMD",
       "properties": {
-        "Hackmd.serverURL": {
+        "Hackmd.apiEndPoint": {
           "type": "string",
-          "default": "https://hackmd.io",
-          "markdownDescription": "Specify the self-hosted server URL for HackMD EE or CodiMD."
-        },
-        "Hackmd.enterprise": {
-          "type": "boolean",
-          "default": true,
-          "description": "Check this if you are connecting to HackMD Enterprise server which contains more features."
+          "default": "https://api.hackmd.io/v1/",
+          "markdownDescription": "Specify the API endpoint for official instance or HackMD EE"
         }
       }
     },
@@ -68,17 +56,25 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "mdTree",
+          "id": "hackmd-tree",
           "title": "HackMD Notes",
           "icon": "images/icon/activity-bar.svg"
         }
       ]
     },
     "views": {
-      "mdTree": [
+      "hackmd-tree": [
         {
-          "id": "mdTreeItems",
-          "name": "History"
+          "id": "hackmd.tree.my-notes",
+          "name": "My Notes"
+        },
+        {
+          "id": "hackmd.tree.recent-notes",
+          "name": "Recent Notes"
+        },
+        {
+          "id": "hackmd.tree.team-notes",
+          "name": "Team Notes"
         }
       ]
     },
@@ -88,18 +84,31 @@
         "title": "HackMD: Create a code snippet"
       },
       {
-        "command": "HackMD.login",
-        "title": "Login",
+        "command": "HackMD.apiKey",
+        "title": "API Key",
         "category": "HackMD"
       },
       {
-        "command": "HackMD.logout",
-        "title": "Logout",
-        "category": "HackMD"
+        "command": "treeView.refreshMyNotes",
+        "title": "Refresh My Notes",
+        "category": "HackMD",
+        "icon": {
+          "light": "images/icon/light/refresh-dark.svg",
+          "dark": "images/icon/dark/refresh-light.svg"
+        }
       },
       {
-        "command": "treeView.refreshList",
-        "title": "Refresh",
+        "command": "treeView.refreshHistory",
+        "title": "Refresh History",
+        "category": "HackMD",
+        "icon": {
+          "light": "images/icon/light/refresh-dark.svg",
+          "dark": "images/icon/dark/refresh-light.svg"
+        }
+      },
+      {
+        "command": "treeView.refreshTeamNotes",
+        "title": "Refresh Team Notes",
         "category": "HackMD",
         "icon": {
           "light": "images/icon/light/refresh-dark.svg",
@@ -142,57 +151,77 @@
     "menus": {
       "view/title": [
         {
-          "command": "treeView.refreshList",
-          "when": "view == mdTreeItems",
+          "command": "treeView.refreshMyNotes",
+          "when": "view =~ /hackmd.tree.my-notes/",
+          "group": "navigation"
+        },
+        {
+          "command": "treeView.refreshHistory",
+          "when": "view =~ /hackmd.tree.recent-notes/",
+          "group": "navigation"
+        },
+        {
+          "command": "treeView.refreshTeamNotes",
+          "when": "view =~ /hackmd.tree.team-notes/",
           "group": "navigation"
         }
       ],
       "view/item/context": [
         {
           "command": "HackMD.showPreview",
-          "when": "view == mdTreeItems && viewItem == file",
+          "when": "view =~ /hackmd.tree/ && viewItem == file",
           "group": "inline"
         },
         {
           "command": "HackMD.showPreview",
-          "when": "view == mdTreeItems && viewItem == file"
+          "when": "view =~ /hackmd.tree/ && viewItem == file"
         },
         {
           "command": "HackMD.showPreviewAndEditor",
-          "when": "view == mdTreeItems && viewItem == file",
+          "when": "view =~ /hackmd.tree/ && viewItem == file",
           "group": "inline"
         },
         {
           "command": "HackMD.showPreviewAndEditor",
-          "when": "view == mdTreeItems && viewItem == file"
+          "when": "view =~ /hackmd.tree/ && viewItem == file"
         },
         {
           "command": "HacKMD.openNoteOnHackMD",
-          "when": "view == mdTreeItems && viewItem == file",
+          "when": "view =~ /hackmd.tree/ && viewItem == file",
           "group": "inline"
         },
         {
           "command": "HacKMD.openNoteOnHackMD",
-          "when": "view == mdTreeItems && viewItem == file"
+          "when": "view =~ /hackmd.tree/ && viewItem == file"
         }
       ]
     },
     "viewsWelcome": [
       {
-        "view": "mdTreeItems",
-        "contents": "No notes found. Login first.\n[Login HackMD](command:HackMD.login)"
+        "view": "hackmd.tree.my-notes",
+        "contents": "Loading data... \nEnsure that the access token and correct API endpoint have been properly configured."
+      },
+      {
+        "view": "hackmd.tree.recent-notes",
+        "contents": "Loading data... \nEnsure that the access token and correct API endpoint have been properly configured."
+      },
+      {
+        "view": "hackmd.tree.team-notes",
+        "contents": "Loading data... \nEnsure that the access token and correct API endpoint have been properly configured."
       }
     ]
   },
   "scripts": {
     "vscode:prepublish": "webpack --mode production",
     "compile": "webpack --mode none",
-    "watch": "webpack --mode development --progress --watch",
+    "watch": "webpack --mode none --progress --watch",
     "test-compile": "tsc -p ./",
     "pretest": "npm run compile",
     "test": "node ./dist/test/runTest.js",
     "lint": "eslint .",
-    "fmt": "prettier --write ."
+    "fmt": "prettier --write .",
+    "postinstall": "patch-package",
+    "open-in-browser": "vscode-test-web --extensionDevelopmentPath=. ."
   },
   "devDependencies": {
     "@babel/preset-react": "^7.18.6",
@@ -201,9 +230,11 @@
     "@types/jquery": "^3.3.30",
     "@types/mocha": "^5.2.6",
     "@types/node": "^10.12.21",
-    "@types/vscode": "^1.36.0",
+    "@types/react": "^17.0.52",
+    "@types/vscode": "^1.74.0",
     "@typescript-eslint/eslint-plugin": "^5.47.1",
     "@typescript-eslint/parser": "^5.47.1",
+    "@vscode/test-web": "*",
     "abcjs": "^5.8.0",
     "babel-loader": "^9.1.0",
     "css-loader": "^6.7.3",
@@ -225,8 +256,11 @@
     "mermaid": "^8.4.8",
     "mini-css-extract-plugin": "^2.7.2",
     "mocha": "^6.2.3",
+    "patch-package": "^6.5.0",
+    "path-browserify": "^1.0.1",
     "prettier": "^2.8.1",
     "prismjs": "^1.17.1",
+    "process": "^0.11.10",
     "raphael": "2.2.8",
     "style-loader": "^3.3.1",
     "typescript": "^4.9.4",
@@ -236,11 +270,8 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
-    "@hackmd/api": "^1.1.1",
-    "ajax": "0.0.4",
-    "axios": "^0.21.2",
+    "@hackmd/api": "^2.2.1",
     "bootstrap3": "^3.3.5",
-    "fs": "0.0.1-security",
     "markdown-it-abbr": "^1.0.4",
     "markdown-it-container": "^2.0.0",
     "markdown-it-deflist": "^2.0.3",
@@ -254,6 +285,10 @@
     "mathjax-full": "^3.0.1",
     "mobx": "^5.15.4",
     "node-fetch": "^2.6.7",
-    "string": "git+ssh://git@github.com/hackmdio/string.js.git#a68176b3d"
+    "react": "^17.0.2",
+    "react-vsc-treeview": "^0.2.3",
+    "string": "git+ssh://git@github.com/hackmdio/string.js.git#a68176b3d",
+    "swr": "^1.3.0",
+    "zustand": "^4.1.5"
   }
 }
