@@ -255,7 +255,7 @@
     "lodash": "^4.17.21",
     "mermaid": "^8.4.8",
     "mini-css-extract-plugin": "^2.7.2",
-    "mocha": "^6.2.3",
+    "mocha": "^10.2.0",
     "patch-package": "^6.5.0",
     "path-browserify": "^1.0.1",
     "prettier": "^2.8.1",
