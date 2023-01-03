@@ -16,9 +16,10 @@ export const History = () => {
     <>
       <ErrorListItem error={error} />
 
-      {data.map((note) => {
-        return <NoteTreeItem key={note.id} note={note} />;
-      })}
+      {!error &&
+        data.map((note) => {
+          return <NoteTreeItem key={note.id} note={note} />;
+        })}
     </>
   );
 };

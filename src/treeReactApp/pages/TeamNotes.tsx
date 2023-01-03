@@ -75,7 +75,7 @@ export const TeamNotes = () => {
         />
       )}
 
-      {selectedTeam && <TeamTreeItem team={selectedTeam} />}
+      {!error && selectedTeam && <TeamTreeItem team={selectedTeam} />}
     </>
   );
 };

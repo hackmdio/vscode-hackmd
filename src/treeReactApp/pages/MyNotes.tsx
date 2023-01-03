@@ -14,11 +14,12 @@ export const MyNotes = () => {
 
   return (
     <>
-      {data.map((note) => {
-        return <NoteTreeItem key={note.id} note={note} />;
-      })}
-
       <ErrorListItem error={error} />
+
+      {!error &&
+        data.map((note) => {
+          return <NoteTreeItem key={note.id} note={note} />;
+        })}
     </>
   );
 };
