@@ -4,7 +4,6 @@ import * as vscode from 'vscode';
 
 import * as hljs from 'highlight.js/lib/highlight';
 import * as markdownitContainer from 'markdown-it-container';
-import * as Prism from 'prismjs';
 import ReactTreeView from 'react-vsc-treeview';
 import * as S from 'string';
 
@@ -13,29 +12,37 @@ import { registerCommands } from './commands';
 import { createWithContainer } from './treeReactApp/AppContainer';
 import { History, MyNotes, TeamNotes } from './treeReactApp/pages';
 
-require('prismjs/components/prism-wiki');
-require('prismjs/components/prism-haskell');
-require('prismjs/components/prism-go');
-require('prismjs/components/prism-typescript');
-require('prismjs/components/prism-jsx');
-require('prismjs/components/prism-makefile');
-require('prismjs/components/prism-gherkin');
-require('prismjs/components/prism-sas');
-require('prismjs/components/prism-javascript');
-require('prismjs/components/prism-json');
-require('prismjs/components/prism-c');
-require('prismjs/components/prism-cpp');
-require('prismjs/components/prism-java');
-require('prismjs/components/prism-csharp');
-require('prismjs/components/prism-objectivec');
-require('prismjs/components/prism-scala');
-require('prismjs/components/prism-kotlin');
-require('prismjs/components/prism-groovy');
-require('prismjs/components/prism-r');
-require('prismjs/components/prism-rust');
-require('prismjs/components/prism-yaml');
-require('prismjs/components/prism-pug');
-require('prismjs/components/prism-sass');
+let Prism;
+
+if (process.env.RUNTIME !== 'browser') {
+  Prism = require('prismjs');
+}
+
+if (process.env.RUNTIME !== 'browser') {
+  require('prismjs/components/prism-wiki');
+  require('prismjs/components/prism-haskell');
+  require('prismjs/components/prism-go');
+  require('prismjs/components/prism-typescript');
+  require('prismjs/components/prism-jsx');
+  require('prismjs/components/prism-makefile');
+  require('prismjs/components/prism-gherkin');
+  require('prismjs/components/prism-sas');
+  require('prismjs/components/prism-javascript');
+  require('prismjs/components/prism-json');
+  require('prismjs/components/prism-c');
+  require('prismjs/components/prism-cpp');
+  require('prismjs/components/prism-java');
+  require('prismjs/components/prism-csharp');
+  require('prismjs/components/prism-objectivec');
+  require('prismjs/components/prism-scala');
+  require('prismjs/components/prism-kotlin');
+  require('prismjs/components/prism-groovy');
+  require('prismjs/components/prism-r');
+  require('prismjs/components/prism-rust');
+  require('prismjs/components/prism-yaml');
+  require('prismjs/components/prism-pug');
+  require('prismjs/components/prism-sass');
+}
 
 hljs.registerLanguage('bash', require('highlight.js/lib/languages/bash'));
 hljs.registerLanguage('clojure', require('highlight.js/lib/languages/clojure'));
@@ -164,15 +171,25 @@ function highlightRender(code, lang) {
     value: code,
   };
 
-  if (prismLangs.indexOf(lang) !== -1) {
-    code = S(code).unescapeHTML().s;
-    result.value = Prism.highlight(code, Prism.languages[lang]);
-  } else if (lang === 'tiddlywiki' || lang === 'mediawiki') {
-    code = S(code).unescapeHTML().s;
-    result.value = Prism.highlight(code, Prism.languages.wiki);
-  } else if (lang === 'cmake') {
-    code = S(code).unescapeHTML().s;
-    result.value = Prism.highlight(code, Prism.languages.makefile);
+  if (process.env.RUNTIME !== 'browser') {
+    if (prismLangs.indexOf(lang) !== -1) {
+      code = S(code).unescapeHTML().s;
+      result.value = Prism.highlight(code, Prism.languages[lang]);
+    } else if (lang === 'tiddlywiki' || lang === 'mediawiki') {
+      code = S(code).unescapeHTML().s;
+      result.value = Prism.highlight(code, Prism.languages.wiki);
+    } else if (lang === 'cmake') {
+      code = S(code).unescapeHTML().s;
+      result.value = Prism.highlight(code, Prism.languages.makefile);
+    } else {
+      code = S(code).unescapeHTML().s;
+      const languages = hljs.listLanguages();
+      if (!languages.includes(lang)) {
+        result.value = hljs.highlightAuto(code).value;
+      } else {
+        result.value = hljs.highlight(lang, code).value;
+      }
+    }
   } else {
     code = S(code).unescapeHTML().s;
     const languages = hljs.listLanguages();
@@ -210,8 +227,6 @@ export async function activate(context: vscode.ExtensionContext) {
   await initializeAPIClient(context);
 
   registerCommands(context);
-
-  console.log(context.extensionPath, 'context.extensionPath');
 
   context.subscriptions.push(
     ReactTreeView.render(createWithContainer(MyNotes, { extensionPath: context.extensionPath }), 'hackmd.tree.my-notes')

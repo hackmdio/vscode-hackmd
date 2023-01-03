@@ -15,8 +15,9 @@
   "activationEvents": [
     "onCommand:HackMD.createCodeSnippet",
     "onView:hackmd.tree.my-notes",
-    "onCommand:HackMD.login",
-    "onCommand:HackMD.logout",
+    "onView:hackmd.tree.recent-notes",
+    "onView:hackmd.tree.team-notes",
+    "onCommand:HackMD.apiKey",
     "onCommand:HackMD.createActiveEditorContentToHackMD",
     "onCommand:HacKMD.openNoteOnHackMD"
   ],
@@ -24,24 +25,17 @@
   "homepage": "https://github.com/hackmdio/vscode-hackmd/blob/master/README.md",
   "bugs": {
     "url": "https://github.com/hackmdio/vscode-hackmd/issues",
-    "email": "hackmdio@gmail.com"
+    "email": "support@hackmd.io"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/hackmdio/vscode-hackmd.git"
   },
-  "extensionDependencies": [
-    "bierner.markdown-preview-github-styles",
-    "bierner.markdown-emoji",
-    "bierner.emojisense",
-    "bierner.markdown-image-size",
-    "bierner.markdown-footnotes",
-    "bierner.markdown-checkbox"
-  ],
   "categories": [
     "Other"
   ],
   "main": "./dist/extension.js",
+  "browser": "./dist/web/extension.js",
   "contributes": {
     "configuration": {
       "title": "HackMD",
@@ -89,16 +83,6 @@
       {
         "command": "HackMD.createCodeSnippet",
         "title": "HackMD: Create a code snippet"
-      },
-      {
-        "command": "HackMD.login",
-        "title": "Login",
-        "category": "HackMD"
-      },
-      {
-        "command": "HackMD.logout",
-        "title": "Logout",
-        "category": "HackMD"
       },
       {
         "command": "HackMD.apiKey",
@@ -231,17 +215,19 @@
   "scripts": {
     "vscode:prepublish": "webpack --mode production",
     "compile": "webpack --mode none",
-    "watch": "webpack --mode development --progress --watch",
+    "watch": "webpack --mode none --progress --watch",
     "test-compile": "tsc -p ./",
     "pretest": "npm run compile",
     "test": "node ./dist/test/runTest.js",
     "lint": "eslint .",
     "fmt": "prettier --write .",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "open-in-browser": "vscode-test-web --extensionDevelopmentPath=. ."
   },
   "devDependencies": {
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
+    "@vscode/test-web": "*",
     "@types/glob": "^7.1.1",
     "@types/jquery": "^3.3.30",
     "@types/mocha": "^5.2.6",
@@ -272,8 +258,10 @@
     "mini-css-extract-plugin": "^2.7.2",
     "mocha": "^6.2.3",
     "patch-package": "^6.5.0",
+    "path-browserify": "^1.0.1",
     "prettier": "^2.8.1",
     "prismjs": "^1.17.1",
+    "process": "^0.11.10",
     "raphael": "2.2.8",
     "style-loader": "^3.3.1",
     "typescript": "^4.9.4",

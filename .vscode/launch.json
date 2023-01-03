@@ -29,8 +29,8 @@
         "--extensionDevelopmentKind=web"
       ],
       "outFiles": [
-        "${workspaceFolder}/dist/**/*.js"
-      ],
+        "${workspaceFolder}/dist/web/*.js"
+      ]
     },
     {
       "name": "Extension Tests",
