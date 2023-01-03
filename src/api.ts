@@ -6,17 +6,18 @@ import { ACCESS_TOKEN_KEY } from './constants';
 
 let API: ApiClient;
 
-export async function initializeAPIClient(context: vscode.ExtensionContext) {
+export async function initializeAPIClient(context: vscode.ExtensionContext, forceShowInputBox = false) {
   let accessToken = await context.secrets.get(ACCESS_TOKEN_KEY);
   const apiEndPoint = vscode.workspace.getConfiguration('Hackmd').get('apiEndPoint') as string;
 
-  if (!accessToken) {
+  if (!accessToken || forceShowInputBox) {
     const input = await vscode.window.showInputBox({
       prompt: 'Please input your HackMD access token',
       password: true,
       ignoreFocusOut: true,
       placeHolder: 'Access Token',
       title: 'HackMD Access Token',
+      value: accessToken,
     });
 
     if (!input) {
@@ -28,6 +29,10 @@ export async function initializeAPIClient(context: vscode.ExtensionContext) {
   }
 
   API = new ApiClient(accessToken, apiEndPoint);
+}
+
+export async function forceRefreshAPIClient(context: vscode.ExtensionContext) {
+  await initializeAPIClient(context, true);
 }
 
 vscode.workspace.onDidChangeConfiguration(async (e) => {

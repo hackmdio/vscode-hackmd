@@ -101,8 +101,31 @@
         "category": "HackMD"
       },
       {
-        "command": "treeView.refreshList",
-        "title": "Refresh",
+        "command": "HackMD.apiKey",
+        "title": "API Key",
+        "category": "HackMD"
+      },
+      {
+        "command": "treeView.refreshMyNotes",
+        "title": "Refresh My Notes",
+        "category": "HackMD",
+        "icon": {
+          "light": "images/icon/light/refresh-dark.svg",
+          "dark": "images/icon/dark/refresh-light.svg"
+        }
+      },
+      {
+        "command": "treeView.refreshHistory",
+        "title": "Refresh History",
+        "category": "HackMD",
+        "icon": {
+          "light": "images/icon/light/refresh-dark.svg",
+          "dark": "images/icon/dark/refresh-light.svg"
+        }
+      },
+      {
+        "command": "treeView.refreshTeamNotes",
+        "title": "Refresh Team Notes",
         "category": "HackMD",
         "icon": {
           "light": "images/icon/light/refresh-dark.svg",
@@ -145,8 +168,18 @@
     "menus": {
       "view/title": [
         {
-          "command": "treeView.refreshList",
-          "when": "view =~ /hackmd.tree/",
+          "command": "treeView.refreshMyNotes",
+          "when": "view =~ /hackmd.tree.my-notes/",
+          "group": "navigation"
+        },
+        {
+          "command": "treeView.refreshHistory",
+          "when": "view =~ /hackmd.tree.recent-notes/",
+          "group": "navigation"
+        },
+        {
+          "command": "treeView.refreshTeamNotes",
+          "when": "view =~ /hackmd.tree.team-notes/",
           "group": "navigation"
         }
       ],

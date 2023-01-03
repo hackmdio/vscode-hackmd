@@ -2,18 +2,29 @@ import * as vscode from 'vscode';
 
 import { Team } from '@hackmd/api/dist/type';
 
+import { refreshMyNotesEvent, refreshHistoryEvent, refreshTeamNotesEvent } from '../treeReactApp/events';
 import { teamNotesStore } from '../treeReactApp/store';
 
 import { API } from './../api';
 import { MdTextDocumentContentProvider, getNoteIdPublishLink } from './../mdTextDocument';
 import { ReactVSCTreeNode } from './../tree/nodes';
-// import { refreshHistoryList, refreshLoginStatus } from './../utils';
 
 export async function registerTreeViewCommands(context: vscode.ExtensionContext) {
   context.subscriptions.push(
-    vscode.commands.registerCommand('treeView.refreshList', async () => {
-      // await refreshLoginStatus();
-      // await refreshHistoryList();
+    vscode.commands.registerCommand('treeView.refreshMyNotes', async () => {
+      refreshMyNotesEvent.fire();
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('treeView.refreshHistory', async () => {
+      refreshHistoryEvent.fire();
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('treeView.refreshTeamNotes', async () => {
+      refreshTeamNotesEvent.fire();
     })
   );
 

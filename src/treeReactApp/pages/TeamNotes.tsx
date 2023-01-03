@@ -7,11 +7,13 @@ import useSWR from 'swr';
 
 import { API } from '../../api';
 import { useAppContext } from '../AppContainer';
+import { ErrorListItem } from '../components/ErrorListItem';
 import { NoteTreeItem } from '../components/NoteTreeItem';
+import { refreshTeamNotesEvent, useEventEmitter } from '../events';
 import { useTeamNotesStore } from '../store';
 
 const TeamTreeItem = ({ team }: { team: Team }) => {
-  const { data: notes = [] } = useSWR(
+  const { data: notes = [], mutate } = useSWR(
     () => (team ? `/teams/${team.id}/notes` : null),
     () => API.getTeamNotes(team.path)
   );
@@ -28,6 +30,10 @@ const TeamTreeItem = ({ team }: { team: Team }) => {
     }
   }, [extensionPath]);
 
+  useEventEmitter(refreshTeamNotesEvent, () => {
+    mutate();
+  });
+
   return (
     <TreeItem label={team.name} expanded iconPath={iconPath} description={team.path}>
       {notes.map((note) => {
@@ -40,7 +46,7 @@ const TeamTreeItem = ({ team }: { team: Team }) => {
 };
 
 export const TeamNotes = () => {
-  const { data: teams = [] } = useSWR('/teams', () => API.getTeams());
+  const { data: teams = [], mutate, error } = useSWR('/teams', () => API.getTeams());
   const [selectedTeamId, setSelectedTeamId] = useState(useTeamNotesStore.getState().selectedTeamId);
 
   // I'm not sure why using useTeamNotesStore doesn't trigger re-render
@@ -51,15 +57,23 @@ export const TeamNotes = () => {
 
   const selectedTeam = useMemo(() => teams.find((t) => t.id === selectedTeamId), [teams, selectedTeamId]);
 
+  useEventEmitter(refreshTeamNotesEvent, () => {
+    mutate();
+  });
+
   return (
     <>
-      <TreeItem
-        label="Click to select a team"
-        command={{
-          title: 'Select a team',
-          command: 'selectTeam',
-        }}
-      />
+      <ErrorListItem error={error} />
+
+      {!error && (
+        <TreeItem
+          label="Click to select a team"
+          command={{
+            title: 'Select a team',
+            command: 'selectTeam',
+          }}
+        />
+      )}
 
       {selectedTeam && <TeamTreeItem team={selectedTeam} />}
     </>
