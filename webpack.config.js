@@ -47,8 +47,12 @@ const extensionConfig = {
   performance: {
     hints: false,
   },
+  experiments: {
+    topLevelAwait: true,
+  },
 };
 
+/*
 const browserTargetConfig = cloneDeep(extensionConfig);
 
 browserTargetConfig.mode = 'none';
@@ -75,6 +79,7 @@ browserTargetConfig.plugins = [
     RUNTIME: 'browser',
   }),
 ];
+*/
 
 /**@type {import('webpack').Configuration}*/
 const pageConfig = {
@@ -145,4 +150,4 @@ const pageConfig = {
   ],
 };
 
-module.exports = [extensionConfig, pageConfig, browserTargetConfig];
+module.exports = [extensionConfig, pageConfig /* browserTargetConfig */];

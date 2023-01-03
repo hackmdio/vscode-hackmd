@@ -35,7 +35,6 @@
     "Other"
   ],
   "main": "./dist/extension.js",
-  "browser": "./dist/web/extension.js",
   "contributes": {
     "configuration": {
       "title": "HackMD",
@@ -227,7 +226,6 @@
   "devDependencies": {
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
-    "@vscode/test-web": "*",
     "@types/glob": "^7.1.1",
     "@types/jquery": "^3.3.30",
     "@types/mocha": "^5.2.6",
@@ -236,6 +234,7 @@
     "@types/vscode": "^1.74.0",
     "@typescript-eslint/eslint-plugin": "^5.47.1",
     "@typescript-eslint/parser": "^5.47.1",
+    "@vscode/test-web": "*",
     "abcjs": "^5.8.0",
     "babel-loader": "^9.1.0",
     "css-loader": "^6.7.3",
