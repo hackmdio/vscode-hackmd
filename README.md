@@ -1,3 +1,15 @@
+## We will fix HackMD VSCode extension logging-in issue
+
+Users have been unable to log in to the VSCode extension. We apologize for your hampered workflow.
+
+The logging-in of our VSCode extension broke since we've introduced several measures into the logging-in flow to ward off bot registrations and other spam. 
+
+We will fix this in 2～3 weeks. Instead of email and password, you will use an API token for logging in to the extension in the future.
+
+We could have avoided this issue and have learned a lesson. We apologize for the inconvenience you might experience.
+
+----
+
 # The official HackMD Markdown VSCode extension
 
 Use the same [HackMD](https://hackmd.io) markdown right in VSCode!
