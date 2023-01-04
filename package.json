@@ -253,7 +253,7 @@
     "js-sequence-diagrams": "git+https://github.com/Moeditor/js-sequence-diagrams.git",
     "katex": "^0.10.2",
     "lodash": "^4.17.21",
-    "mermaid": "^8.4.8",
+    "mermaid": "^9.3.0",
     "mini-css-extract-plugin": "^2.7.2",
     "mocha": "^10.2.0",
     "patch-package": "^6.5.0",
