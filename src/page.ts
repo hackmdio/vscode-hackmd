@@ -13,7 +13,7 @@ import './font-awesome.min.css';
 import * as abcjs from 'abcjs';
 import * as flowchart from 'flowchart.js';
 import * as katex from 'katex';
-import * as mermaid from 'mermaid';
+import mermaid from 'mermaid';
 import 'js-sequence-diagrams';
 import * as S from 'string';
 import Viz from 'viz.js';
