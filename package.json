@@ -237,6 +237,7 @@
     "@vscode/test-web": "*",
     "abcjs": "^5.8.0",
     "babel-loader": "^9.1.0",
+    "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.3",
     "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
