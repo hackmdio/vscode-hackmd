@@ -45,6 +45,7 @@ Use the same [HackMD](https://hackmd.io) markdown right in VSCode!
 - Upgrade mermaid
 - Upgrade more dependencies
 - Adopt `react-vsc-treeview` package for implementing the new tree views. It's now easier to add features and fix bugs for the tree view.
+- Reduce bundle size. We accidentally include `node_modules` in our past builds, which is not necessary.
 
 ### 1.1.1
 
