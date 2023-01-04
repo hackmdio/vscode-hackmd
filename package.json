@@ -246,7 +246,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "flowchart.js": "^1.12.2",
     "glob": "^7.1.4",
-    "highlight.js": "^9.15.8",
+    "highlight.js": "^10.4.1",
     "ignore-loader": "^0.1.2",
     "imports-loader": "^4.0.1",
     "jquery": "^3.5.0",
