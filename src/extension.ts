@@ -2,7 +2,8 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-import * as hljs from 'highlight.js/lib/highlight';
+import hljs from 'highlight.js/lib/core';
+import { solidity } from 'highlightjs-solidity';
 import * as markdownitContainer from 'markdown-it-container';
 import ReactTreeView from 'react-vsc-treeview';
 import * as S from 'string';
@@ -47,7 +48,7 @@ if (process.env.RUNTIME !== 'browser') {
 hljs.registerLanguage('bash', require('highlight.js/lib/languages/bash'));
 hljs.registerLanguage('clojure', require('highlight.js/lib/languages/clojure'));
 hljs.registerLanguage('coffeescript', require('highlight.js/lib/languages/coffeescript'));
-hljs.registerLanguage('cs', require('highlight.js/lib/languages/cs'));
+hljs.registerLanguage('cs', require('highlight.js/lib/languages/csharp'));
 hljs.registerLanguage('css', require('highlight.js/lib/languages/css'));
 hljs.registerLanguage('elm', require('highlight.js/lib/languages/elm'));
 hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'));
@@ -66,6 +67,11 @@ hljs.registerLanguage('lua', require('highlight.js/lib/languages/lua'));
 hljs.registerLanguage('nginx', require('highlight.js/lib/languages/nginx'));
 hljs.registerLanguage('perl', require('highlight.js/lib/languages/perl'));
 hljs.registerLanguage('dockerfile', require('highlight.js/lib/languages/dockerfile'));
+hljs.registerLanguage('julia', require('highlight.js/lib/languages/julia'));
+hljs.registerLanguage('ocaml', require('highlight.js/lib/languages/ocaml'));
+hljs.registerLanguage('verilog', require('highlight.js/lib/languages/verilog'));
+hljs.registerLanguage('solidity', solidity);
+hljs.registerLanguage('vb', require('highlight.js/lib/languages/vbnet'));
 
 const prismLangs = [
   'haskell',

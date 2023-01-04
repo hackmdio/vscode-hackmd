@@ -20,53 +20,96 @@ import Viz from 'viz.js';
 import { Module, render } from 'viz.js/full.render.js';
 
 function init() {
-  const mermaids = $('span.mermaid.raw');
-  mermaids.removeClass('raw');
-  mermaids.each((key, value) => {
-    let $ele;
-    try {
-      const $value = $(value);
-      $ele = $(value).closest('pre');
+  try {
+    updateMermaid();
+    updateFlowcharts();
+    updateSequences();
+    updateGraphviz();
+    updateMathjax();
+    updateABC();
+    updateExtraTags();
+    updateLineNumbers();
+  } catch (err) {
+    console.error(err);
+  }
+}
 
-      mermaid.parse($value.text());
-      $ele.addClass('mermaid');
-      $ele.html($value.text());
-      mermaid.init(undefined, $ele);
-    } catch (err) {
-      // $value.unwrap()
-      // $value.parent().append(`<div class="alert alert-warning">${S(err.str).escapeHTML().s}</div>`)
-      // console.warn(err)
-      // console.log($value.text())
-      $ele.addClass('mermaid');
+window.addEventListener('vscode.markdown.updateContent', init);
+
+init();
+
+function updateLineNumbers() {
+  // update continue line numbers
+  const linenumberdivs = $('.gutter.linenumber').toArray();
+  for (let i = 0; i < linenumberdivs.length; i++) {
+    if ($(linenumberdivs[i]).hasClass('continue')) {
+      const startnumber = linenumberdivs[i - 1]
+        ? parseInt(
+            $(linenumberdivs[i - 1])
+              .find('> span')
+              .last()
+              .attr('data-linenumber')
+          )
+        : 0;
+      $(linenumberdivs[i])
+        .find('> span')
+        .each((key, value) => {
+          $(value).attr('data-linenumber', startnumber + key + 1);
+        });
     }
-  });
+  }
+}
 
-  const flows = $('span.flow-chart.raw');
-  flows.removeClass('raw');
-  flows.each((key, value) => {
-    let $ele;
-    try {
+function updateABC() {
+  $('span.abc.raw')
+    .removeClass('raw')
+    .each((key, value) => {
+      let $value;
+      try {
+        $value = $(value);
+        const $ele = $(value).parent().parent();
+
+        abcjs.renderAbc(value, $value.text());
+
+        $ele.addClass('abc');
+        $value.children().unwrap().unwrap();
+        const svg = $ele.find('> svg');
+        svg[0].setAttribute('viewBox', `0 0 ${svg.attr('width')} ${svg.attr('height')}`);
+        svg[0].setAttribute('preserveAspectRatio', 'xMidYMid meet');
+      } catch (err) {
+        $value.unwrap();
+        $value.parent().append(`<div class="alert alert-warning">${S(err).escapeHTML().s}</div>`);
+        console.warn(err);
+      }
+    });
+}
+
+function updateMathjax() {
+  $('span.mathjax.raw')
+    .removeClass('raw')
+    .each(function (key, value) {
       const $value = $(value);
-      $ele = $(value).parent().parent();
+      const $ele = $(value).parent().parent();
+      $value.unwrap();
 
-      const chart = flowchart.parse($value.text());
-      $value.html('');
-      chart.drawSVG(value, {
-        'line-width': 2,
-        fill: 'none',
-        'font-size': '16px',
-        'font-family': "'Andale Mono', monospace",
-      });
-      $ele.addClass('flow-chart');
-      $value.children().unwrap().unwrap();
-    } catch (err) {
-      // $value.unwrap()
-      // $value.parent().append(`<div class="alert alert-warning">${S(err).escapeHTML().s}</div>`)
-      // console.warn(err)
-      $ele.addClass('flow-chart');
-    }
-  });
+      let result;
+      if ($(value).hasClass('display')) {
+        result = katex.renderToString($value.text(), {
+          throwOnError: false,
+          displayMode: true,
+        });
+      } else {
+        result = katex.renderToString($value.text(), {
+          throwOnError: false,
+        });
+      }
 
+      $value.html(result);
+      $value.children().unwrap();
+    });
+}
+
+function updateSequences() {
   const sequences = $('span.sequence-diagram.raw');
   sequences.removeClass('raw');
   sequences.each((key, value) => {
@@ -92,9 +135,64 @@ function init() {
       $ele.addClass('sequence-diagram');
     }
   });
+}
 
+function updateFlowcharts() {
+  const flows = $('span.flow-chart.raw');
+  flows.removeClass('raw');
+  flows.each((key, value) => {
+    let $ele;
+    try {
+      const $value = $(value);
+      $ele = $(value).parent().parent();
+
+      const chart = flowchart.parse($value.text());
+      $value.html('');
+      chart.drawSVG(value, {
+        'line-width': 2,
+        fill: 'none',
+        'font-size': '16px',
+        'font-family': "'Andale Mono', monospace",
+      });
+      $ele.addClass('flow-chart');
+      $value.children().unwrap().unwrap();
+    } catch (err) {
+      // $value.unwrap()
+      // $value.parent().append(`<div class="alert alert-warning">${S(err).escapeHTML().s}</div>`)
+      // console.warn(err)
+      $ele.addClass('flow-chart');
+    }
+  });
+}
+
+function updateMermaid() {
+  const mermaids = $('span.mermaid.raw');
+  mermaids.removeClass('raw');
+  mermaids.each((key, value) => {
+    let $ele;
+    try {
+      const $value = $(value);
+      $ele = $(value).closest('pre');
+
+      const text = $value.text();
+
+      if (mermaid.parse(text)) {
+        $ele.addClass('mermaid');
+        $ele.text(text);
+        mermaid.init(undefined, $ele);
+      }
+    } catch (err) {
+      // $value.unwrap()
+      // $value.parent().append(`<div class="alert alert-warning">${S(err.str).escapeHTML().s}</div>`)
+      console.warn(err);
+      // console.log($value.text())
+      $ele.addClass('mermaid');
+    }
+  });
+}
+
+function updateGraphviz() {
   let viz = new Viz({ Module, render });
-
   const graphvizs = $('span.graphviz.raw');
   graphvizs.removeClass('raw');
   graphvizs.each(function (key, value) {
@@ -116,7 +214,7 @@ function init() {
           $value.children().unwrap();
         })
         .catch((err) => {
-          viz = new Viz({ Module, render });
+          viz = new Viz({ Module, render: init });
 
           // $value.parent().append(`<div class="alert alert-warning">${S(err).escapeHTML().s}</div>`)
           // console.warn(err)
@@ -126,52 +224,9 @@ function init() {
       // console.warn(err)
     }
   });
+}
 
-  $('span.mathjax.raw')
-    .removeClass('raw')
-    .each(function (key, value) {
-      const $value = $(value);
-      const $ele = $(value).parent().parent();
-      $value.unwrap();
-
-      let result;
-      if ($(value).hasClass('display')) {
-        result = katex.renderToString($value.text(), {
-          throwOnError: false,
-          displayMode: true,
-        });
-      } else {
-        result = katex.renderToString($value.text(), {
-          throwOnError: false,
-        });
-      }
-
-      $value.html(result);
-      $value.children().unwrap();
-    });
-
-  $('span.abc.raw')
-    .removeClass('raw')
-    .each((key, value) => {
-      let $value;
-      try {
-        $value = $(value);
-        const $ele = $(value).parent().parent();
-
-        abcjs.renderAbc(value, $value.text());
-
-        $ele.addClass('abc');
-        $value.children().unwrap().unwrap();
-        const svg = $ele.find('> svg');
-        svg[0].setAttribute('viewBox', `0 0 ${svg.attr('width')} ${svg.attr('height')}`);
-        svg[0].setAttribute('preserveAspectRatio', 'xMidYMid meet');
-      } catch (err) {
-        $value.unwrap();
-        $value.parent().append(`<div class="alert alert-warning">${S(err).escapeHTML().s}</div>`);
-        console.warn(err);
-      }
-    });
-
+function updateExtraTags() {
   // regex for extra tags
   const spaceregex = /\s*/;
   const notinhtmltagregex = /(?![^<]*>|[^<>]*<\/)/;
@@ -209,28 +264,4 @@ function init() {
         $(value).closest('blockquote').css('border-left-color', $(value).attr('data-color'));
       });
     });
-
-  // update continue line numbers
-  const linenumberdivs = $('.gutter.linenumber').toArray();
-  for (let i = 0; i < linenumberdivs.length; i++) {
-    if ($(linenumberdivs[i]).hasClass('continue')) {
-      const startnumber = linenumberdivs[i - 1]
-        ? parseInt(
-            $(linenumberdivs[i - 1])
-              .find('> span')
-              .last()
-              .attr('data-linenumber')
-          )
-        : 0;
-      $(linenumberdivs[i])
-        .find('> span')
-        .each((key, value) => {
-          $(value).attr('data-linenumber', startnumber + key + 1);
-        });
-    }
-  }
 }
-
-window.addEventListener('vscode.markdown.updateContent', init);
-
-init();
