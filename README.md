@@ -7,16 +7,16 @@ Use the same [HackMD](https://hackmd.io) markdown right in VSCode!
 
 ## Features
 
-- **New**: Preview you HackMD notes in VSCode
+- **New**: Preview your HackMD notes in VSCode
 - **New**: Create note from editor content
 - HackMD-compatible markdown rendering preview
   - We bring most HackMD markdown syntax into VSCode :tada:
 
 ### HackMD notes explorer
 
-![sidebar](https://i.imgur.com/N5dS5HG.png)
+![sidebar](./docs/media/notes_explorer.png)
 
-### Render codeblock with line numbers
+### Render code block with line numbers
 
 ![line-numbers](https://i.imgur.com/X31HZqm.png)
 
@@ -32,16 +32,31 @@ Use the same [HackMD](https://hackmd.io) markdown right in VSCode!
 
 [release-notes]: https://bit.ly/2VXRTrq
 
+### 2.0.0
+
+#### Added
+
+- Adopt access token based API client. You need to create an access token on the HackMD [settings page](https://hackmd.io/settings#api)
+- Add two more tree views: History and Team Notes.
+
+#### Improvements
+
+- Upgrade highlight.js
+- Upgrade mermaid
+- Upgrade more dependencies
+- Adopt `react-vsc-treeview` package for implementing the new tree views. It's now easier to add features and fix bugs for the tree view.
+- Reduce bundle size. We accidentally include `node_modules` in our past builds, which is not necessary.
+
 ### 1.1.1
 
 #### Added
 
 - HackMD Snippets command
-  - Use command: `HackMD: Create a code snippet` to create a code snippet on HackMD from selected text range
+  - Use the command: `HackMD: Create a code snippet` to create a code snippet on HackMD from the selected text range
 
 #### Fixed
 
-- Activity icon it not shown ([#23](https://github.com/hackmdio/vscode-hackmd/issues/23))
+- Activity icon is not shown ([#23](https://github.com/hackmdio/vscode-hackmd/issues/23))
 
 ### 1.1.0
 
@@ -49,7 +64,7 @@ Use the same [HackMD](https://hackmd.io) markdown right in VSCode!
 
 - HackMD Note explorer
   - Preview your notes on HackMD
-  - Create note from editor content in VSCode
+  - Create a note from editor content in VSCode
 
 ### 1.0.0
 

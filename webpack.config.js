@@ -4,7 +4,8 @@
 
 const path = require('path');
 
-const cloneDeep = require('lodash/cloneDeep');
+// const cloneDeep = require('lodash/cloneDeep');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 
@@ -19,7 +20,6 @@ const extensionConfig = {
     libraryTarget: 'commonjs2',
     devtoolModuleFilenameTemplate: '../[resource-path]',
   },
-  devtool: 'source-map',
   externals: {
     vscode: 'commonjs vscode',
   },
@@ -43,6 +43,7 @@ const extensionConfig = {
     new webpack.ProvidePlugin({
       React: 'react',
     }),
+    new CleanWebpackPlugin(),
   ],
   performance: {
     hints: false,
@@ -136,7 +137,6 @@ const pageConfig = {
     ],
   },
   externals: 'fs',
-  devtool: 'source-map',
   plugins: [
     new webpack.ProvidePlugin({
       $: 'jquery',
