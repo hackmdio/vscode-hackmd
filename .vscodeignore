@@ -11,3 +11,5 @@ vsc-extension-quickstart.md
 webpack.config.js
 **/.DS_Store
 *.vslx
+node_modules
+patches
