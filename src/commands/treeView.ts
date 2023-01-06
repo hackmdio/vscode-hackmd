@@ -40,6 +40,30 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
     })
   );
 
+  // HackMD.deleteMyNote
+  context.subscriptions.push(
+    vscode.commands.registerCommand('HackMD.deleteMyNote', async (noteNode: ReactVSCTreeNode) => {
+      if (noteNode) {
+        const { noteId } = noteNode.value.context;
+
+        // prompt
+        const confirm = await vscode.window.showWarningMessage(
+          'Are you sure to delete this note?',
+          { modal: true },
+          'Yes'
+        );
+
+        if (!confirm) {
+          return;
+        }
+
+        await API.deleteNote(noteId);
+
+        vscode.commands.executeCommand('treeView.refreshMyNotes');
+      }
+    })
+  );
+
   context.subscriptions.push(
     vscode.commands.registerCommand('clickTreeItem', async (label, noteId) => {
       if (label && noteId) {

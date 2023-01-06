@@ -156,6 +156,11 @@
           "light": "images/icon/light/Browser-dark.png",
           "dark": "images/icon/dark/Browser-light.png"
         }
+      },
+      {
+        "command": "HackMD.deleteMyNote",
+        "title": "Delete Note",
+        "category": "HackMD"
       }
     ],
     "menus": {
@@ -208,6 +213,10 @@
         {
           "command": "HacKMD.openNoteOnHackMD",
           "when": "view =~ /hackmd.tree/ && viewItem == file"
+        },
+        {
+          "command": "HackMD.deleteMyNote",
+          "when": "view =~ /hackmd.tree.my-notes/ && viewItem == file"
         }
       ]
     },
