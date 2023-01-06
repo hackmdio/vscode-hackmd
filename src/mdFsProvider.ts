@@ -155,3 +155,7 @@ export function activate(context: vscode.ExtensionContext) {
 export function getProvider() {
   return provider;
 }
+
+export function generateResourceUri(label: string, noteId: string) {
+  return vscode.Uri.parse(`hackmd:/${encodeURIComponent(label)}.md#${noteId}`);
+}

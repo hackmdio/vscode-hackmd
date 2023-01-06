@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 
 import { Team } from '@hackmd/api/dist/type';
 
+import { generateResourceUri } from '../mdFsProvider';
 import { refreshMyNotesEvent, refreshHistoryEvent, refreshTeamNotesEvent } from '../treeReactApp/events';
 import { teamNotesStore } from '../treeReactApp/store';
 
@@ -32,7 +33,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
     vscode.commands.registerCommand('treeView.createMyNotes', async () => {
       const note = await API.createNote({});
 
-      const uri = vscode.Uri.parse(`hackmd:/${note.title}.md#${note.id}`);
+      const uri = generateResourceUri(note.title, note.id);
       const doc = await vscode.workspace.openTextDocument(uri);
       await vscode.window.showTextDocument(doc, { preview: false });
 
@@ -67,7 +68,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
   context.subscriptions.push(
     vscode.commands.registerCommand('clickTreeItem', async (label, noteId) => {
       if (label && noteId) {
-        const uri = vscode.Uri.parse(`hackmd:/${label}.md#${noteId}`);
+        const uri = generateResourceUri(label, noteId);
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.window.showTextDocument(doc, { preview: false });
       }
@@ -98,7 +99,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
         const { noteId } = noteNode.value.context;
         const { label } = noteNode.value;
 
-        const uri = vscode.Uri.parse(`hackmd:/${label}.md#${noteId}`);
+        const uri = generateResourceUri(label.toString(), noteId);
         vscode.commands.executeCommand('markdown.showPreview', uri);
       } else {
         const editor = vscode.window.activeTextEditor;
@@ -113,7 +114,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
 
         const lastIndex = editor.document.fileName.lastIndexOf('.');
         const fileName = editor.document.fileName.slice(0, lastIndex + 1);
-        const uri = vscode.Uri.parse(`hackmd:/${fileName}.md#${noteId}`);
+        const uri = generateResourceUri(fileName, noteId);
         vscode.commands.executeCommand('markdown.showPreview', uri);
       }
     })
@@ -125,7 +126,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
         const { noteId } = noteNode.value.context;
         const { label } = noteNode.value;
 
-        const uri = vscode.Uri.parse(`hackmd:/${label}.md#${noteId}`);
+        const uri = generateResourceUri(label.toString(), noteId);
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.window.showTextDocument(doc, { preview: false });
         vscode.commands.executeCommand('markdown.showPreviewToSide', uri);
@@ -147,7 +148,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
 
         const lastIndex = editor.document.fileName.lastIndexOf('.');
         const fileName = editor.document.fileName.slice(0, lastIndex + 1);
-        const uri = vscode.Uri.parse(`hackmd:/${fileName}.md#${noteId}`);
+        const uri = generateResourceUri(fileName, noteId);
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.window.showTextDocument(doc, { preview: false });
         vscode.commands.executeCommand('markdown.showPreviewToSide', uri);
