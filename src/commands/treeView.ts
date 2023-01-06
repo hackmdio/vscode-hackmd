@@ -31,7 +31,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
   context.subscriptions.push(
     vscode.commands.registerCommand('clickTreeItem', async (label, noteId) => {
       if (label && noteId) {
-        const uri = vscode.Uri.parse(`hackmd:${label}.md#${noteId}`);
+        const uri = vscode.Uri.parse(`hackmd:/${label}.md#${noteId}`);
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.window.showTextDocument(doc, { preview: false });
       }
@@ -62,7 +62,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
         const { noteId } = noteNode.value.context;
         const { label } = noteNode.value;
 
-        const uri = vscode.Uri.parse(`hackmd:${label}.md#${noteId}`);
+        const uri = vscode.Uri.parse(`hackmd:/${label}.md#${noteId}`);
         vscode.commands.executeCommand('markdown.showPreview', uri);
       } else {
         const editor = vscode.window.activeTextEditor;
@@ -77,7 +77,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
 
         const lastIndex = editor.document.fileName.lastIndexOf('.');
         const fileName = editor.document.fileName.slice(0, lastIndex + 1);
-        const uri = vscode.Uri.parse(`hackmd:${fileName}.md#${noteId}`);
+        const uri = vscode.Uri.parse(`hackmd:/${fileName}.md#${noteId}`);
         vscode.commands.executeCommand('markdown.showPreview', uri);
       }
     })
@@ -89,7 +89,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
         const { noteId } = noteNode.value.context;
         const { label } = noteNode.value;
 
-        const uri = vscode.Uri.parse(`hackmd:${label}.md#${noteId}`);
+        const uri = vscode.Uri.parse(`hackmd:/${label}.md#${noteId}`);
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.window.showTextDocument(doc, { preview: false });
         vscode.commands.executeCommand('markdown.showPreviewToSide', uri);
@@ -111,7 +111,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
 
         const lastIndex = editor.document.fileName.lastIndexOf('.');
         const fileName = editor.document.fileName.slice(0, lastIndex + 1);
-        const uri = vscode.Uri.parse(`hackmd:${fileName}.md#${noteId}`);
+        const uri = vscode.Uri.parse(`hackmd:/${fileName}.md#${noteId}`);
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.window.showTextDocument(doc, { preview: false });
         vscode.commands.executeCommand('markdown.showPreviewToSide', uri);

@@ -10,6 +10,7 @@ import * as S from 'string';
 
 import { initializeAPIClient } from './api';
 import { registerCommands } from './commands';
+import { activate as activateFSProvider } from './mdFsProvider';
 import { createWithContainer } from './treeReactApp/AppContainer';
 import { History, MyNotes, TeamNotes } from './treeReactApp/pages';
 
@@ -249,6 +250,8 @@ export async function activate(context: vscode.ExtensionContext) {
       'hackmd.tree.team-notes'
     )
   );
+
+  activateFSProvider(context);
 
   return {
     extendMarkdownIt(md: any) {

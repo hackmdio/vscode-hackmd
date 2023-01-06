@@ -19,7 +19,8 @@
     "onView:hackmd.tree.team-notes",
     "onCommand:HackMD.apiKey",
     "onCommand:HackMD.createActiveEditorContentToHackMD",
-    "onCommand:HacKMD.openNoteOnHackMD"
+    "onCommand:HacKMD.openNoteOnHackMD",
+    "onFileSystem:hackmd"
   ],
   "license": "MIT",
   "homepage": "https://github.com/hackmdio/vscode-hackmd/blob/master/README.md",
