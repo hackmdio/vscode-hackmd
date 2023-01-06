@@ -29,6 +29,18 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
   );
 
   context.subscriptions.push(
+    vscode.commands.registerCommand('treeView.createMyNotes', async () => {
+      const note = await API.createNote({});
+
+      const uri = vscode.Uri.parse(`hackmd:/${note.title}.md#${note.id}`);
+      const doc = await vscode.workspace.openTextDocument(uri);
+      await vscode.window.showTextDocument(doc, { preview: false });
+
+      vscode.commands.executeCommand('treeView.refreshMyNotes');
+    })
+  );
+
+  context.subscriptions.push(
     vscode.commands.registerCommand('clickTreeItem', async (label, noteId) => {
       if (label && noteId) {
         const uri = vscode.Uri.parse(`hackmd:/${label}.md#${noteId}`);

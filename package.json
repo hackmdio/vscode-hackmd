@@ -99,6 +99,15 @@
         }
       },
       {
+        "command": "treeView.createMyNotes",
+        "title": "Create My Note",
+        "category": "HackMD",
+        "icon": {
+          "light": "images/icon/light/plus.svg",
+          "dark": "images/icon/dark/plus.svg"
+        }
+      },
+      {
         "command": "treeView.refreshHistory",
         "title": "Refresh History",
         "category": "HackMD",
@@ -153,6 +162,11 @@
       "view/title": [
         {
           "command": "treeView.refreshMyNotes",
+          "when": "view =~ /hackmd.tree.my-notes/",
+          "group": "navigation"
+        },
+        {
+          "command": "treeView.createMyNotes",
           "when": "view =~ /hackmd.tree.my-notes/",
           "group": "navigation"
         },
