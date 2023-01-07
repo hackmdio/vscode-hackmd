@@ -30,7 +30,6 @@ export const NoteTreeItem = ({ note }: { note: Note }) => {
   return (
     <TreeItem
       label={note.title}
-      id={note.id}
       iconPath={iconPath}
       command={{
         title: '',
