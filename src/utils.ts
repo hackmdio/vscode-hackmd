@@ -1,3 +1,6 @@
+import { connectToDevTools } from 'react-devtools-core';
+import { w3cwebsocket as W3CWebSocket } from 'websocket';
+
 import { API } from './api';
 
 export const checkLogin = async () => {
@@ -8,3 +11,9 @@ export const checkLogin = async () => {
     return false;
   }
 };
+
+export function connect() {
+  connectToDevTools({
+    websocket: new W3CWebSocket('ws://localhost:8097'),
+  });
+}

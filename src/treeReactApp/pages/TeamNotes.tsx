@@ -1,8 +1,8 @@
 import path from 'path';
 
 import { Team } from '@hackmd/api/dist/type';
+import { TreeItem } from '@hackmd/react-vsc-treeview';
 import { useEffect, useMemo, useState } from 'react';
-import { TreeItem } from 'react-vsc-treeview';
 import useSWR from 'swr';
 
 import { API } from '../../api';

@@ -2,10 +2,10 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
+import ReactTreeView from '@hackmd/react-vsc-treeview';
 import hljs from 'highlight.js/lib/core';
 import { solidity } from 'highlightjs-solidity';
 import * as markdownitContainer from 'markdown-it-container';
-import ReactTreeView from 'react-vsc-treeview';
 import * as S from 'string';
 
 import { initializeAPIClient } from './api';

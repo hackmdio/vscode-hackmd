@@ -1,8 +1,8 @@
 import path from 'path';
 
 import { Note } from '@hackmd/api/dist/type';
+import { TreeItem } from '@hackmd/react-vsc-treeview';
 import { useMemo } from 'react';
-import { TreeItem } from 'react-vsc-treeview';
 
 import { useAppContext } from '../AppContainer';
 
