@@ -7,7 +7,6 @@ import { refreshMyNotesEvent, refreshHistoryEvent, refreshTeamNotesEvent } from 
 import { teamNotesStore } from '../treeReactApp/store';
 
 import { API } from './../api';
-import { MdTextDocumentContentProvider, getNoteIdPublishLink } from './../mdTextDocument';
 import { ReactVSCTreeNode } from './../tree/nodes';
 
 export async function registerTreeViewCommands(context: vscode.ExtensionContext) {
@@ -163,17 +162,14 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
         vscode.env.openExternal(vscode.Uri.parse(publishLink));
       } else {
         const noteId = vscode.window.activeTextEditor.document.uri.fragment;
-        const publishLink = getNoteIdPublishLink(noteId);
 
-        if (publishLink) {
-          vscode.env.openExternal(vscode.Uri.parse(publishLink));
+        const note = await API.getNote(noteId);
+
+        if (note && note.publishLink) {
+          vscode.env.openExternal(vscode.Uri.parse(note.publishLink));
         }
       }
     })
-  );
-
-  context.subscriptions.push(
-    vscode.workspace.registerTextDocumentContentProvider('hackmd', new MdTextDocumentContentProvider())
   );
 }
 
