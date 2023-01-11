@@ -1,4 +1,5 @@
 import path from 'path';
+import vscode from 'vscode';
 
 import { Team } from '@hackmd/api/dist/type';
 import { TreeItem } from '@hackmd/react-vsc-treeview';
@@ -15,7 +16,13 @@ import { useTeamNotesStore } from '../store';
 const TeamTreeItem = ({ team }: { team: Team }) => {
   const { data: notes = [], mutate } = useSWR(
     () => (team ? `/teams/${team.id}/notes` : null),
-    () => API.getTeamNotes(team.path)
+    () =>
+      vscode.window.withProgress(
+        {
+          location: { viewId: 'hackmd.tree.team-notes' },
+        },
+        () => API.getTeamNotes(team.path)
+      ) as ReturnType<typeof API.getTeamNotes>
   );
 
   const { extensionPath } = useAppContext();
