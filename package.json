@@ -70,12 +70,12 @@
           "name": "My Notes"
         },
         {
-          "id": "hackmd.tree.recent-notes",
-          "name": "Recent Notes"
-        },
-        {
           "id": "hackmd.tree.team-notes",
           "name": "Team Notes"
+        },
+        {
+          "id": "hackmd.tree.recent-notes",
+          "name": "Recent Notes"
         }
       ]
     },
@@ -94,8 +94,8 @@
         "title": "Refresh My Notes",
         "category": "HackMD",
         "icon": {
-          "light": "images/icon/light/refresh-dark.svg",
-          "dark": "images/icon/dark/refresh-light.svg"
+          "light": "images/icon/light/sync.svg",
+          "dark": "images/icon/dark/sync.svg"
         }
       },
       {
@@ -103,8 +103,8 @@
         "title": "Create My Note",
         "category": "HackMD",
         "icon": {
-          "light": "images/icon/light/plus.svg",
-          "dark": "images/icon/dark/plus.svg"
+          "light": "images/icon/light/new-file.svg",
+          "dark": "images/icon/dark/new-file.svg"
         }
       },
       {
@@ -112,8 +112,8 @@
         "title": "Refresh History",
         "category": "HackMD",
         "icon": {
-          "light": "images/icon/light/refresh-dark.svg",
-          "dark": "images/icon/dark/refresh-light.svg"
+          "light": "images/icon/light/sync.svg",
+          "dark": "images/icon/dark/sync.svg"
         }
       },
       {
@@ -121,8 +121,8 @@
         "title": "Refresh Team Notes",
         "category": "HackMD",
         "icon": {
-          "light": "images/icon/light/refresh-dark.svg",
-          "dark": "images/icon/dark/refresh-light.svg"
+          "light": "images/icon/light/sync.svg",
+          "dark": "images/icon/dark/sync.svg"
         }
       },
       {
@@ -130,8 +130,8 @@
         "title": "Open Preview",
         "category": "HackMD",
         "icon": {
-          "light": "images/icon/light/view-dark.svg",
-          "dark": "images/icon/dark/view-light.svg"
+          "light": "images/icon/light/eye.svg",
+          "dark": "images/icon/dark/eye.svg"
         }
       },
       {
@@ -139,8 +139,8 @@
         "title": "Open Preview to the Side",
         "category": "HackMD",
         "icon": {
-          "light": "images/icon/light/column-dark.svg",
-          "dark": "images/icon/dark/column-light.svg"
+          "light": "images/icon/light/open-preview.svg",
+          "dark": "images/icon/dark/open-preview.svg"
         }
       },
       {
@@ -153,8 +153,8 @@
         "title": "Open note on HackMD",
         "category": "HackMD",
         "icon": {
-          "light": "images/icon/light/Browser-dark.png",
-          "dark": "images/icon/dark/Browser-light.png"
+          "light": "images/icon/light/link-external.svg",
+          "dark": "images/icon/dark/link-external.svg"
         }
       },
       {
@@ -166,12 +166,12 @@
     "menus": {
       "view/title": [
         {
-          "command": "treeView.refreshMyNotes",
+          "command": "treeView.createMyNotes",
           "when": "view =~ /hackmd.tree.my-notes/",
           "group": "navigation"
         },
         {
-          "command": "treeView.createMyNotes",
+          "command": "treeView.refreshMyNotes",
           "when": "view =~ /hackmd.tree.my-notes/",
           "group": "navigation"
         },
@@ -223,15 +223,15 @@
     "viewsWelcome": [
       {
         "view": "hackmd.tree.my-notes",
-        "contents": "Loading data... \nEnsure that the access token and correct API endpoint have been properly configured."
+        "contents": "To view your HackMD notes within VSCode, you need to enter your HackMD API token. \n[Enter HackMD API token](command:HackMD.apiKey) \nFor more information on HackMD API details, [please refer to our documentation.](https://hackmd.io/@hackmd-api/developer-portal/?utm_source=vscode-welcome&utm_medium=inline-cta)"
       },
       {
         "view": "hackmd.tree.recent-notes",
-        "contents": "Loading data... \nEnsure that the access token and correct API endpoint have been properly configured."
+        "contents": "To view your HackMD notes within VSCode, you need to enter your HackMD API token. \n[Enter HackMD API token](command:HackMD.apiKey) \nFor more information on HackMD API details, [please refer to our documentation.](https://hackmd.io/@hackmd-api/developer-portal/?utm_source=vscode-welcome&utm_medium=inline-cta)"
       },
       {
         "view": "hackmd.tree.team-notes",
-        "contents": "Loading data... \nEnsure that the access token and correct API endpoint have been properly configured."
+        "contents": "To view your HackMD notes within VSCode, you need to enter your HackMD API token. \n[Enter HackMD API token](command:HackMD.apiKey) \nFor more information on HackMD API details, [please refer to our documentation.](https://hackmd.io/@hackmd-api/developer-portal/?utm_source=vscode-welcome&utm_medium=inline-cta)"
       }
     ]
   },
