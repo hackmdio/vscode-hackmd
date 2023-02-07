@@ -77,7 +77,7 @@ export const TeamNotes = () => {
           label="Click to select a team"
           command={{
             title: 'Select a team',
-            command: 'selectTeam',
+            command: 'HackMD.selectTeam',
           }}
         />
       )}

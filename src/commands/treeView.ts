@@ -75,7 +75,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('selectTeam', async () => {
+    vscode.commands.registerCommand('HackMD.selectTeam', async () => {
       const teams = await API.getTeams();
 
       const getTeamLabel = (team: Team) => `${team.name} [${team.path}]`;
