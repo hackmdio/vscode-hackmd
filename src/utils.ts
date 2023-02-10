@@ -8,12 +8,3 @@ export const checkLogin = async () => {
     return false;
   }
 };
-
-export function connect() {
-  const { W3CWebSocket } = require('websocket');
-  const { connectToDevTools } = require('react-devtools-core');
-
-  connectToDevTools({
-    websocket: new W3CWebSocket('ws://localhost:8097'),
-  });
-}
