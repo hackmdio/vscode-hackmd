@@ -161,15 +161,19 @@
         "command": "HackMD.deleteMyNote",
         "title": "Delete Note",
         "category": "HackMD"
+      },
+      {
+        "command": "HackMD.selectTeam",
+        "title": "Select Team",
+        "category": "HackMD",
+        "icon": {
+          "light": "images/icon/light/folder.svg",
+          "dark": "images/icon/dark/folder.svg"
+        }
       }
     ],
     "menus": {
       "view/title": [
-        {
-          "command": "treeView.createMyNotes",
-          "when": "view =~ /hackmd.tree.my-notes/",
-          "group": "navigation"
-        },
         {
           "command": "treeView.refreshMyNotes",
           "when": "view =~ /hackmd.tree.my-notes/",
@@ -182,6 +186,16 @@
         },
         {
           "command": "treeView.refreshTeamNotes",
+          "when": "view =~ /hackmd.tree.team-notes/",
+          "group": "navigation"
+        },
+        {
+          "command": "treeView.createMyNotes",
+          "when": "view =~ /hackmd.tree.my-notes/",
+          "group": "navigation"
+        },
+        {
+          "command": "HackMD.selectTeam",
           "when": "view =~ /hackmd.tree.team-notes/",
           "group": "navigation"
         }
