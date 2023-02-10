@@ -88,25 +88,9 @@ export class HackMDFsProvider implements vscode.FileSystemProvider {
       throw vscode.FileSystemError.FileNotFound();
     }
 
-    let teamPath;
-
     try {
-      const note = await API.getNote(noteId);
-
-      teamPath = note.teamPath;
-    } catch (e) {
-      console.error(e);
-      throw vscode.FileSystemError.FileNotFound();
-    }
-
-    const contentString = Buffer.from(content).toString();
-
-    try {
-      if (teamPath) {
-        await API.updateTeamNoteContent(teamPath, noteId, contentString);
-      } else {
-        await API.updateNoteContent(noteId, contentString);
-      }
+      const contentString = Buffer.from(content).toString();
+      await API.updateNoteContent(noteId, contentString);
     } catch (e) {
       console.error(e);
       throw vscode.FileSystemError.Unavailable();
