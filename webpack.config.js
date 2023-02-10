@@ -28,9 +28,9 @@ const extensionConfig = {
   },
   resolve: {
     extensions: ['.ts', '.js', '.tsx'],
-    // alias: {
-    //   windowPolyfill: path.resolve(__dirname, './src/utils/window.js'),
-    // },
+    alias: {
+      windowPolyfill: path.resolve(__dirname, './src/utils/window.js'),
+    },
   },
   module: {
     rules: [
