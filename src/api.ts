@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import ApiClient from '@hackmd/api';
 
 import { ACCESS_TOKEN_KEY } from './constants';
+import { meStore } from './treeReactApp/store';
 
 let API: ApiClient;
 
@@ -29,6 +30,7 @@ export async function initializeAPIClient(context: vscode.ExtensionContext, forc
   }
 
   API = new ApiClient(accessToken, apiEndPoint);
+  await meStore.getState().refreshLogin();
 }
 
 export async function forceRefreshAPIClient(context: vscode.ExtensionContext) {

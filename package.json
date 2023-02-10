@@ -203,34 +203,34 @@
       "view/item/context": [
         {
           "command": "HackMD.showPreview",
-          "when": "view =~ /hackmd.tree/ && viewItem == file",
+          "when": "view =~ /hackmd.tree/ && viewItem =~ /file$/",
           "group": "inline"
         },
         {
           "command": "HackMD.showPreview",
-          "when": "view =~ /hackmd.tree/ && viewItem == file"
+          "when": "view =~ /hackmd.tree/ && viewItem =~ /file$/"
         },
         {
           "command": "HackMD.showPreviewAndEditor",
-          "when": "view =~ /hackmd.tree/ && viewItem == file",
+          "when": "view =~ /hackmd.tree/ && viewItem =~ /file$/",
           "group": "inline"
         },
         {
           "command": "HackMD.showPreviewAndEditor",
-          "when": "view =~ /hackmd.tree/ && viewItem == file"
+          "when": "view =~ /hackmd.tree/ && viewItem =~ /file$/"
         },
         {
           "command": "HacKMD.openNoteOnHackMD",
-          "when": "view =~ /hackmd.tree/ && viewItem == file",
+          "when": "view =~ /hackmd.tree/ && viewItem =~ /file$/",
           "group": "inline"
         },
         {
           "command": "HacKMD.openNoteOnHackMD",
-          "when": "view =~ /hackmd.tree/ && viewItem == file"
+          "when": "view =~ /hackmd.tree/ && viewItem =~ /file$/"
         },
         {
           "command": "HackMD.deleteMyNote",
-          "when": "view =~ /hackmd.tree.my-notes/ && viewItem == file"
+          "when": "view =~ /hackmd.tree.my-notes/ && viewItem =~ /file$/"
         }
       ]
     },

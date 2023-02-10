@@ -5,6 +5,7 @@ import { TreeItem } from '@hackmd/react-vsc-treeview';
 import { useMemo } from 'react';
 
 import { useAppContext } from '../AppContainer';
+import { useMeStore } from '../store';
 
 export const NoteTreeItem = ({ note }: { note: Note }) => {
   const context = useMemo(
@@ -15,24 +16,28 @@ export const NoteTreeItem = ({ note }: { note: Note }) => {
     [note]
   );
 
+  const { checkIsOwner } = useMeStore();
+
+  const isOwner = checkIsOwner(note);
+
   const { extensionPath } = useAppContext();
   const iconPath = useMemo(() => {
     if (extensionPath) {
-      if (note.teamPath) {
-        return {
-          light: path.join(extensionPath, 'images/icon/light/gist-secret.svg'),
-          dark: path.join(extensionPath, 'images/icon/dark/gist-secret.svg'),
-        };
-      } else {
+      if (isOwner) {
         return {
           light: path.join(extensionPath, 'images/icon/light/file-text.svg'),
           dark: path.join(extensionPath, 'images/icon/dark/file-text.svg'),
+        };
+      } else {
+        return {
+          light: path.join(extensionPath, 'images/icon/light/gist-secret.svg'),
+          dark: path.join(extensionPath, 'images/icon/dark/gist-secret.svg'),
         };
       }
     } else {
       return undefined;
     }
-  }, [extensionPath, note.teamPath]);
+  }, [extensionPath, isOwner]);
 
   return (
     <TreeItem
@@ -44,7 +49,7 @@ export const NoteTreeItem = ({ note }: { note: Note }) => {
         arguments: [note.title, note.id],
       }}
       description={note.tags?.join(', ') || ''}
-      contextValue="file"
+      contextValue={isOwner ? 'file' : 'lock-file'}
       context={context}
     />
   );

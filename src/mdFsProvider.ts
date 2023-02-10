@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 
 import { API } from './api';
+import { meStore } from './treeReactApp/store';
 
 export class File implements vscode.FileStat {
   type: vscode.FileType;
@@ -10,13 +11,17 @@ export class File implements vscode.FileStat {
 
   name: string;
   data?: Uint8Array;
+  permissions?: vscode.FilePermission;
 
-  constructor(name: string) {
+  constructor(name: string, canEdit = false) {
     this.type = vscode.FileType.File;
     this.ctime = Date.now();
     this.mtime = Date.now();
     this.size = 0;
     this.name = name;
+    if (!canEdit) {
+      this.permissions = vscode.FilePermission.Readonly;
+    }
   }
 }
 
@@ -120,7 +125,8 @@ export class HackMDFsProvider implements vscode.FileSystemProvider {
     try {
       const note = await API.getNote(noteId);
 
-      const file = new File(`${note.title}.md#${noteId}`);
+      const isOwner = meStore.getState().checkIsOwner(note);
+      const file = new File(`${note.title}.md#${noteId}`, isOwner);
       file.data = Buffer.from(note.content);
 
       // TODO: ctime and size
