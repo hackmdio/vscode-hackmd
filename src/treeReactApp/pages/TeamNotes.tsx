@@ -3,7 +3,7 @@ import vscode from 'vscode';
 
 import { Team } from '@hackmd/api/dist/type';
 import { TreeItem } from '@hackmd/react-vsc-treeview';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import useSWR from 'swr';
 
 import { API } from '../../api';
@@ -54,13 +54,7 @@ const TeamTreeItem = ({ team }: { team: Team }) => {
 
 export const TeamNotes = () => {
   const { data: teams = [], mutate, error } = useSWR('/teams', () => API.getTeams());
-  const [selectedTeamId, setSelectedTeamId] = useState(useTeamNotesStore.getState().selectedTeamId);
-
-  // I'm not sure why using useTeamNotesStore doesn't trigger re-render
-  // So we use useEffect to subscribe to the zustand store and update the useState we use in the component
-  useEffect(() => {
-    useTeamNotesStore.subscribe((state) => setSelectedTeamId(state.selectedTeamId));
-  }, []);
+  const { selectedTeamId } = useTeamNotesStore();
 
   const selectedTeam = useMemo(() => teams.find((t) => t.id === selectedTeamId), [teams, selectedTeamId]);
 

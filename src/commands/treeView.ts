@@ -87,7 +87,8 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
 
         const selectedTeamId = teams.find((team) => getTeamLabel(team) === selectedTeam)?.id;
 
-        teamNotesStore.setState({ selectedTeamId });
+        const { setSelectedTeamId } = teamNotesStore.getState();
+        setSelectedTeamId(selectedTeamId);
       });
     })
   );
