@@ -18,14 +18,21 @@ export const NoteTreeItem = ({ note }: { note: Note }) => {
   const { extensionPath } = useAppContext();
   const iconPath = useMemo(() => {
     if (extensionPath) {
-      return {
-        light: path.join(extensionPath, 'images/icon/light/file-text.svg'),
-        dark: path.join(extensionPath, 'images/icon/dark/file-text.svg'),
-      };
+      if (note.teamPath) {
+        return {
+          light: path.join(extensionPath, 'images/icon/light/gist-secret.svg'),
+          dark: path.join(extensionPath, 'images/icon/dark/gist-secret.svg'),
+        };
+      } else {
+        return {
+          light: path.join(extensionPath, 'images/icon/light/file-text.svg'),
+          dark: path.join(extensionPath, 'images/icon/dark/file-text.svg'),
+        };
+      }
     } else {
       return undefined;
     }
-  }, [extensionPath]);
+  }, [extensionPath, note.teamPath]);
 
   return (
     <TreeItem

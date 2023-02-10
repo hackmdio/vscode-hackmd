@@ -104,7 +104,7 @@ export class HackMDFsProvider implements vscode.FileSystemProvider {
       }
     } catch (e) {
       console.error(e);
-      throw vscode.FileSystemError.NoPermissions();
+      throw vscode.FileSystemError.Unavailable();
     }
   }
 
