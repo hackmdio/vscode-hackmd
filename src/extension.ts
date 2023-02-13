@@ -231,7 +231,11 @@ function highlightRender(code, lang) {
 let highlight;
 
 export async function activate(context: vscode.ExtensionContext) {
-  await initializeAPIClient(context);
+  try {
+    await initializeAPIClient(context);
+  } catch (error) {
+    vscode.window.showErrorMessage('Failed to initialize HackMD API client. Please check your configuration.');
+  }
 
   registerCommands(context);
 
