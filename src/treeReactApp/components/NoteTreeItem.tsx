@@ -12,6 +12,7 @@ export const NoteTreeItem = ({ note }: { note: Note }) => {
     () => ({
       publishLink: note.publishLink,
       noteId: note.id,
+      title: note.title,
     }),
     [note]
   );

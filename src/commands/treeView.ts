@@ -75,6 +75,19 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
   );
 
   context.subscriptions.push(
+    vscode.commands.registerCommand('HackMD.editNote', async (noteNode: ReactVSCTreeNode) => {
+      if (noteNode) {
+        const { noteId } = noteNode.value.context;
+        const { label } = noteNode.value;
+
+        const uri = generateResourceUri(label.toString(), noteId);
+        const doc = await vscode.workspace.openTextDocument(uri);
+        await vscode.window.showTextDocument(doc, { preview: false });
+      }
+    })
+  );
+
+  context.subscriptions.push(
     vscode.commands.registerCommand('HackMD.selectTeam', async () => {
       const teams = await API.getTeams();
 
