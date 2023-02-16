@@ -4,7 +4,7 @@ import { Team } from '@hackmd/api/dist/type';
 
 import { generateResourceUri } from '../mdFsProvider';
 import { refreshMyNotesEvent, refreshHistoryEvent, refreshTeamNotesEvent } from '../treeReactApp/events';
-import { teamNotesStore } from '../treeReactApp/store';
+import { recordUsage, teamNotesStore } from '../treeReactApp/store';
 
 import { API } from './../api';
 import { ReactVSCTreeNode } from './../tree/nodes';
@@ -30,7 +30,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
 
   context.subscriptions.push(
     vscode.commands.registerCommand('treeView.createMyNotes', async () => {
-      const note = await API.createNote({});
+      const note = await recordUsage(API.createNote({}, { unwrapData: false }));
 
       const uri = generateResourceUri(note.title, note.id);
       const doc = await vscode.workspace.openTextDocument(uri);
@@ -57,7 +57,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
           return;
         }
 
-        await API.deleteNote(noteId);
+        await recordUsage(API.deleteNote(noteId, { unwrapData: false }));
 
         vscode.commands.executeCommand('treeView.refreshMyNotes');
       }
@@ -89,7 +89,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
 
   context.subscriptions.push(
     vscode.commands.registerCommand('HackMD.selectTeam', async () => {
-      const teams = await API.getTeams();
+      const teams = await recordUsage(API.getTeams({ unwrapData: false }));
 
       const getTeamLabel = (team: Team) => `${team.name} [${team.path}]`;
 
@@ -154,7 +154,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
           return;
         }
 
-        const { content } = await API.getNote(noteId);
+        const { content } = await recordUsage(API.getNote(noteId, { unwrapData: false }));
         if (!checkNoteExist(content)) {
           return;
         }
@@ -177,7 +177,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
       } else {
         const noteId = vscode.window.activeTextEditor.document.uri.fragment;
 
-        const note = await API.getNote(noteId);
+        const note = await recordUsage(API.getNote(noteId, { unwrapData: false }));
 
         if (note && note.publishLink) {
           vscode.env.openExternal(vscode.Uri.parse(note.publishLink));

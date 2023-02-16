@@ -6,6 +6,7 @@ import { API } from '../../api';
 import { ErrorListItem } from '../components/ErrorListItem';
 import { NoteTreeItem } from '../components/NoteTreeItem';
 import { refreshHistoryEvent, useEventEmitter } from '../events';
+import { recordUsage } from '../store';
 
 export const History = () => {
   const {
@@ -19,7 +20,7 @@ export const History = () => {
         {
           location: { viewId: 'hackmd.tree.recent-notes' },
         },
-        () => API.getHistory()
+        () => recordUsage(API.getHistory({ unwrapData: false }))
       ) as ReturnType<typeof API.getHistory>
   );
 

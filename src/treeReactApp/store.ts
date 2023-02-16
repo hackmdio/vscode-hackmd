@@ -1,4 +1,5 @@
 import { Note } from '@hackmd/api/dist/type';
+import type { AxiosResponse } from 'axios';
 import { useStore } from 'zustand';
 import { createStore } from 'zustand/vanilla';
 
@@ -20,6 +21,35 @@ export function useTeamNotesStore<T>(selector?: (state: TeamNoteState) => T, equ
   return useStore(teamNotesStore, selector!, equals);
 }
 
+// X-RateLimit-UserLimit
+// X-RateLimit-UserRemaining
+type APIUsageState = {
+  userLimit: number;
+  userRemaining: number;
+  updateState: (userLimit: number, userRemaining: number) => void;
+};
+export const apiStore = createStore<APIUsageState>()((set) => ({
+  userLimit: null,
+  userRemaining: null,
+  updateState: (userLimit: number, userRemaining: number) => set({ userLimit, userRemaining }),
+}));
+
+export function useApiStore(): APIUsageState;
+export function useApiStore<T>(selector: (state: APIUsageState) => T, equals?: (a: T, b: T) => boolean): T;
+export function useApiStore<T>(selector?: (state: APIUsageState) => T, equals?: (a: T, b: T) => boolean) {
+  return useStore(apiStore, selector!, equals);
+}
+
+export async function recordUsage<T>(promise: Promise<AxiosResponse<T>>): Promise<T> {
+  const response = await promise;
+  const userLimit = parseInt(response.headers['x-ratelimit-userlimit'] as string, 10);
+  const userRemaining = parseInt(response.headers['x-ratelimit-userremaining'] as string, 10);
+
+  apiStore.getState().updateState(userLimit, userRemaining);
+
+  return response.data;
+}
+
 type UserState = {
   user: Awaited<ReturnType<typeof API.getMe>>;
   refreshLogin: () => Promise<void>;
@@ -29,7 +59,7 @@ type UserState = {
 export const meStore = createStore<UserState>()((set) => ({
   user: null,
   refreshLogin: async () => {
-    const currentUser = await API.getMe();
+    const currentUser = await recordUsage(API.getMe({ unwrapData: false }));
     set({ user: currentUser });
   },
   checkIsOwner: (note: Note) => {

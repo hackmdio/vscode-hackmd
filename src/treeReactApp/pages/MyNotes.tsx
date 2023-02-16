@@ -6,6 +6,7 @@ import { API } from '../../api';
 import { ErrorListItem } from '../components/ErrorListItem';
 import { NoteTreeItem } from '../components/NoteTreeItem';
 import { refreshMyNotesEvent, useEventEmitter } from '../events';
+import { recordUsage } from '../store';
 
 export const MyNotes = () => {
   const {
@@ -19,7 +20,7 @@ export const MyNotes = () => {
         {
           location: { viewId: 'hackmd.tree.my-notes' },
         },
-        () => API.getNoteList()
+        () => recordUsage(API.getNoteList({ unwrapData: false }))
       ) as ReturnType<typeof API.getNoteList>
   );
 

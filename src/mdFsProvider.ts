@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 import { API } from './api';
-import { meStore } from './treeReactApp/store';
+import { meStore, recordUsage } from './treeReactApp/store';
 
 export class File implements vscode.FileStat {
   type: vscode.FileType;
@@ -67,7 +67,7 @@ export class HackMDFsProvider implements vscode.FileSystemProvider {
     const noteId = uri.fragment;
 
     try {
-      const note = await API.getNote(noteId);
+      const note = await recordUsage(API.getNote(noteId, { unwrapData: false }));
       const content = note.content;
 
       return Buffer.from(content);
@@ -90,7 +90,7 @@ export class HackMDFsProvider implements vscode.FileSystemProvider {
 
     try {
       const contentString = Buffer.from(content).toString();
-      await API.updateNoteContent(noteId, contentString);
+      await recordUsage(API.updateNoteContent(noteId, contentString, { unwrapData: false }));
     } catch (e) {
       console.error(e);
 
@@ -110,7 +110,7 @@ export class HackMDFsProvider implements vscode.FileSystemProvider {
     const noteId = uri.fragment;
 
     try {
-      const note = await API.getNote(noteId);
+      const note = await recordUsage(API.getNote(noteId, { unwrapData: false }));
 
       const isOwner = meStore.getState().checkIsOwner(note);
       const file = new File(`${note.title}.md#${noteId}`, isOwner);

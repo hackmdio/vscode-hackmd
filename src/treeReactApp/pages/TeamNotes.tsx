@@ -11,7 +11,7 @@ import { useAppContext } from '../AppContainer';
 import { ErrorListItem } from '../components/ErrorListItem';
 import { NoteTreeItem } from '../components/NoteTreeItem';
 import { refreshTeamNotesEvent, useEventEmitter } from '../events';
-import { useTeamNotesStore } from '../store';
+import { recordUsage, useTeamNotesStore } from '../store';
 
 const TeamTreeItem = ({ team }: { team: Team }) => {
   const { data: notes = [], mutate } = useSWR(
@@ -21,7 +21,7 @@ const TeamTreeItem = ({ team }: { team: Team }) => {
         {
           location: { viewId: 'hackmd.tree.team-notes' },
         },
-        () => API.getTeamNotes(team.path)
+        () => recordUsage(API.getTeamNotes(team.path, { unwrapData: false }))
       ) as ReturnType<typeof API.getTeamNotes>
   );
 
@@ -53,7 +53,7 @@ const TeamTreeItem = ({ team }: { team: Team }) => {
 };
 
 export const TeamNotes = () => {
-  const { data: teams = [], mutate, error } = useSWR('/teams', () => API.getTeams());
+  const { data: teams = [], mutate, error } = useSWR('/teams', () => recordUsage(API.getTeams({ unwrapData: false })));
   const { selectedTeamId } = useTeamNotesStore();
 
   const selectedTeam = useMemo(() => teams.find((t) => t.id === selectedTeamId), [teams, selectedTeamId]);
