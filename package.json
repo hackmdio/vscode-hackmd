@@ -179,6 +179,11 @@
           "light": "images/icon/light/edit.svg",
           "dark": "images/icon/dark/edit.svg"
         }
+      },
+      {
+        "command": "HackMD.upgrade",
+        "title": "Upgrade",
+        "category": "HackMD"
       }
     ],
     "menus": {
