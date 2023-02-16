@@ -93,7 +93,10 @@ export class HackMDFsProvider implements vscode.FileSystemProvider {
       await API.updateNoteContent(noteId, contentString);
     } catch (e) {
       console.error(e);
-      throw vscode.FileSystemError.Unavailable();
+
+      throw vscode.FileSystemError.Unavailable(
+        'Try to save again when the internet connection is back. You can save a local copy on your computer for restoration.'
+      );
     }
   }
 
