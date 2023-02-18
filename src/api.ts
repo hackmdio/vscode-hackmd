@@ -29,7 +29,7 @@ export async function initializeAPIClient(context: vscode.ExtensionContext, forc
     accessToken = input;
   }
 
-  API = new ApiClient(accessToken, apiEndPoint);
+  API = new ApiClient(accessToken, apiEndPoint, { wrapResponseErrors: false });
   await meStore.getState().refreshLogin();
 }
 

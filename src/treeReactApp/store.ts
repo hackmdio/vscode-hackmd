@@ -29,24 +29,32 @@ type APIUsageState = {
   userLimit: number;
   userRemaining: number;
   updateState: (userLimit: number, userRemaining: number) => void;
-  limitReached: boolean;
+
+  // Whether the notification has been sent in current session
   limitReachedNotificationSent: boolean;
+
+  // Whether the notification has been sent in current session
+  // Will be sent if only 20% of the limit is left
   limitAlmostReachedNotificationSent: boolean;
-  setLimitReached: (limitReached: boolean) => void;
+
   setLimitReachedNotificationSent: (limitReachedNotificationSent: boolean) => void;
   setLimitAlmostReachedNotificationSent: (limitAlmostReachedNotificationSent: boolean) => void;
+
+  // Weather the rate limit has been hit
+  rateLimitHit: boolean;
+  setRateLimitHit: (rateLimitHit: boolean) => void;
 };
 export const apiStore = createStore<APIUsageState>()((set) => ({
   userLimit: null,
   userRemaining: null,
   updateState: (userLimit: number, userRemaining: number) => set({ userLimit, userRemaining }),
-  limitReached: false,
   limitReachedNotificationSent: false,
   limitAlmostReachedNotificationSent: false,
-  setLimitReached: (limitReached: boolean) => set({ limitReached }),
   setLimitReachedNotificationSent: (limitReachedNotificationSent: boolean) => set({ limitReachedNotificationSent }),
   setLimitAlmostReachedNotificationSent: (limitAlmostReachedNotificationSent: boolean) =>
     set({ limitAlmostReachedNotificationSent }),
+  rateLimitHit: false,
+  setRateLimitHit: (rateLimitHit: boolean) => set({ rateLimitHit }),
 }));
 
 export function useApiStore(): APIUsageState;
@@ -55,14 +63,32 @@ export function useApiStore<T>(selector?: (state: APIUsageState) => T, equals?: 
   return useStore(apiStore, selector!, equals);
 }
 
-export async function recordUsage<T>(promise: Promise<AxiosResponse<T>>): Promise<T> {
-  const response = await promise;
+const updateUsageLimit = (response: AxiosResponse) => {
   const userLimit = parseInt(response.headers['x-ratelimit-userlimit'] as string, 10);
   const userRemaining = parseInt(response.headers['x-ratelimit-userremaining'] as string, 10);
 
-  apiStore.getState().updateState(userLimit, userRemaining);
+  if (isNaN(userLimit) || isNaN(userRemaining)) {
+    // is a rate limit issue
+    apiStore.getState().setRateLimitHit(true);
+  } else {
+    apiStore.getState().setRateLimitHit(false);
+    apiStore.getState().updateState(userLimit, userRemaining);
+  }
+};
 
-  return response.data;
+export async function recordUsage<T>(promise: Promise<AxiosResponse<T>>): Promise<T> {
+  try {
+    const response = await promise;
+    updateUsageLimit(response);
+
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      updateUsageLimit(error.response);
+    }
+
+    throw error;
+  }
 }
 
 let statusBarItem: vscode.StatusBarItem;
@@ -71,14 +97,19 @@ apiStore.subscribe((state) => {
   const {
     userLimit,
     userRemaining,
-    limitReached,
     limitAlmostReachedNotificationSent,
     setLimitAlmostReachedNotificationSent,
     setLimitReachedNotificationSent,
     limitReachedNotificationSent,
+    rateLimitHit,
   } = state;
 
-  if (limitReached) {
+  if (rateLimitHit) {
+    vscode.window.showErrorMessage('You have reached the rate limit. Please try again later.');
+    return;
+  }
+
+  if (userRemaining === 0) {
     if (!statusBarItem) {
       statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 1);
     }
@@ -158,14 +189,8 @@ type UserState = {
 export const meStore = createStore<UserState>()((set) => ({
   user: null,
   refreshLogin: async () => {
-    try {
-      const currentUser = await recordUsage(API.getMe({ unwrapData: false }));
-      set({ user: currentUser });
-    } catch (error) {
-      if (String(error).includes('429')) {
-        apiStore.getState().setLimitReached(true);
-      }
-    }
+    const currentUser = await recordUsage(API.getMe({ unwrapData: false }));
+    set({ user: currentUser });
   },
   checkIsOwner: (note: Note) => {
     return note.userPath === meStore.getState().user.userPath;
