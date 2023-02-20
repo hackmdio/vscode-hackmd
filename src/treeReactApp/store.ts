@@ -8,6 +8,7 @@ import { createStore } from 'zustand/vanilla';
 import { API } from '../api';
 
 import {
+  hideStatusbarItem,
   sendLimitAlmostReachedNotification,
   sendLimitReachedNotification,
   updateStatusbarItem,
@@ -67,10 +68,6 @@ type APIUsageState = {
 
   teamRecordsById: Record<string, UsageLimitRecord>;
   updateTeamUsageLimitRecord: (teamId: string, limit: number, remaining: number) => void;
-
-  // Weather the rate limit has been hit
-  rateLimitHit: boolean;
-  setRateLimitHit: (rateLimitHit: boolean) => void;
 };
 export const apiStore = createStore<APIUsageState>()((set) => ({
   userRecord: {
@@ -108,13 +105,18 @@ export const apiStore = createStore<APIUsageState>()((set) => ({
       }));
     } else if (userRemaining <= userLimit * 0.2 && !limitAlmostReachedNotificationSent) {
       sendLimitAlmostReachedNotification('Your personal workspace', upgraded);
+
+      set((state) => ({
+        userRecord: {
+          ...state.userRecord,
+          limitAlmostReachedNotificationSent: true,
+        },
+      }));
     }
 
     const limitReached = userRemaining <= 0;
-    updateStatusbarItem('Your personal workspace', limitReached);
+    updateStatusbarItem('Your personal workspace', limitReached, upgraded);
   },
-  rateLimitHit: false,
-  setRateLimitHit: (rateLimitHit: boolean) => set({ rateLimitHit }),
 
   teamRecordsById: {},
   updateTeamUsageLimitRecord: (teamId: string, limit: number, remaining: number) => {
@@ -133,7 +135,7 @@ export const apiStore = createStore<APIUsageState>()((set) => ({
     const { limitReachedNotificationSent, limitAlmostReachedNotificationSent } =
       apiStore.getState().teamRecordsById[teamId];
 
-    const team = meStore.getState().teams.find((team) => team.id === teamId);
+    const team = meStore.getState().user?.teams?.find((team) => team.id === teamId);
     const upgraded = team?.upgraded;
     const workspaceName = team?.name || 'Team workspace';
     const limitReached = remaining <= 0;
@@ -153,7 +155,7 @@ export const apiStore = createStore<APIUsageState>()((set) => ({
       sendLimitAlmostReachedNotification(workspaceName, upgraded);
     }
 
-    updateStatusbarItem(workspaceName, limitReached);
+    updateStatusbarItem(workspaceName, limitReached, upgraded);
   },
 }));
 
@@ -168,11 +170,8 @@ const updateUsageLimit = (response: AxiosResponse) => {
   const remaining = parseInt(response.headers['x-ratelimit-userremaining'] as string, 10);
 
   if (isNaN(limit) || isNaN(remaining)) {
-    // is a rate limit issue
-    apiStore.getState().setRateLimitHit(true);
+    hideStatusbarItem();
   } else {
-    apiStore.getState().setRateLimitHit(false);
-
     // scope: 'user' | 'team', targetId: string
     const scope = response.headers['x-target-scope'] as string;
     const targetId = response.headers['x-target-id'] as string;
@@ -198,17 +197,14 @@ export async function recordUsage<T>(promise: Promise<AxiosResponse<T>>): Promis
   } catch (error) {
     if (error.response) {
       updateUsageLimit(error.response);
+
+      const limitStr = error.response.headers['x-ratelimit-userlimit'];
+
+      if (!limitStr) {
+        vscode.window.showErrorMessage('You are making requests too quickly. Please slow down.', 'Got it');
+      }
     }
 
     throw error;
   }
 }
-
-apiStore.subscribe((state) => {
-  const { rateLimitHit } = state;
-
-  if (rateLimitHit) {
-    vscode.window.showErrorMessage('You have reached the rate limit. Please try again later.');
-    return;
-  }
-});

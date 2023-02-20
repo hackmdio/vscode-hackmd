@@ -10,6 +10,14 @@ const getStatusbarItem = () => {
   return statusBarItem;
 };
 
+export function hideStatusbarItem() {
+  if (!statusBarItem) {
+    return;
+  }
+
+  statusBarItem.hide();
+}
+
 function baseSendLimitNotification(upgraded: boolean, message: string) {
   const contactSupport = 'Contact Support';
   const upgradeNow = 'Upgrade now';
@@ -56,13 +64,15 @@ export function sendLimitReachedNotification(workspaceName: string, upgraded: bo
   return baseSendLimitNotification(upgraded, message);
 }
 
-export function updateStatusbarItem(workspaceName: string, reached: boolean) {
+export function updateStatusbarItem(workspaceName: string, reached: boolean, upgraded: boolean) {
   const statusBarItem = getStatusbarItem();
 
-  const text = reached ? '$(warning) API Limit' : '$(wand) Get API Limit';
+  const text = reached ? '$(warning) Reaching API limit' : '$(wand) Reached limit';
 
   const tooltip = reached
-    ? `${workspaceName} has reached the API limit.`
+    ? upgraded
+      ? `${workspaceName} has run out of API calls. Contact us if you need to increase the limit.`
+      : `${workspaceName} has run out API calls. Please upgrade to increase the limit.`
     : `${workspaceName} is running out of API calls.`;
 
   statusBarItem.text = text;
