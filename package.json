@@ -281,7 +281,6 @@
     "test": "node ./dist/test/runTest.js",
     "lint": "eslint .",
     "fmt": "prettier --write .",
-    "postinstall": "patch-package",
     "open-in-browser": "vscode-test-web --extensionDevelopmentPath=. ."
   },
   "devDependencies": {
@@ -323,7 +322,6 @@
     "mermaid": "9.4.0",
     "mini-css-extract-plugin": "^2.7.2",
     "mocha": "^10.2.0",
-    "patch-package": "^6.5.0",
     "path-browserify": "^1.0.1",
     "prettier": "^2.8.1",
     "prismjs": "^1.27.0",
