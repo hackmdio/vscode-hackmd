@@ -2,14 +2,15 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
+import ReactTreeView from '@hackmd/react-vsc-treeview';
 import hljs from 'highlight.js/lib/core';
 import { solidity } from 'highlightjs-solidity';
 import * as markdownitContainer from 'markdown-it-container';
-import ReactTreeView from 'react-vsc-treeview';
 import * as S from 'string';
 
 import { initializeAPIClient } from './api';
 import { registerCommands } from './commands';
+import { activate as activateFSProvider } from './mdFsProvider';
 import { createWithContainer } from './treeReactApp/AppContainer';
 import { History, MyNotes, TeamNotes } from './treeReactApp/pages';
 
@@ -230,7 +231,11 @@ function highlightRender(code, lang) {
 let highlight;
 
 export async function activate(context: vscode.ExtensionContext) {
-  await initializeAPIClient(context);
+  try {
+    await initializeAPIClient(context);
+  } catch (error) {
+    vscode.window.showErrorMessage('Failed to initialize HackMD API client. Please check your configuration.');
+  }
 
   registerCommands(context);
 
@@ -249,6 +254,8 @@ export async function activate(context: vscode.ExtensionContext) {
       'hackmd.tree.team-notes'
     )
   );
+
+  activateFSProvider(context);
 
   return {
     extendMarkdownIt(md: any) {

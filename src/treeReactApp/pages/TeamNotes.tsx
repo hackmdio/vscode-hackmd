@@ -1,8 +1,9 @@
 import path from 'path';
+import vscode from 'vscode';
 
 import { Team } from '@hackmd/api/dist/type';
-import { useEffect, useMemo, useState } from 'react';
-import { TreeItem } from 'react-vsc-treeview';
+import { TreeItem } from '@hackmd/react-vsc-treeview';
+import { useMemo } from 'react';
 import useSWR from 'swr';
 
 import { API } from '../../api';
@@ -10,12 +11,18 @@ import { useAppContext } from '../AppContainer';
 import { ErrorListItem } from '../components/ErrorListItem';
 import { NoteTreeItem } from '../components/NoteTreeItem';
 import { refreshTeamNotesEvent, useEventEmitter } from '../events';
-import { useTeamNotesStore } from '../store';
+import { recordUsage, useTeamNotesStore } from '../store';
 
 const TeamTreeItem = ({ team }: { team: Team }) => {
   const { data: notes = [], mutate } = useSWR(
     () => (team ? `/teams/${team.id}/notes` : null),
-    () => API.getTeamNotes(team.path)
+    () =>
+      vscode.window.withProgress(
+        {
+          location: { viewId: 'hackmd.tree.team-notes' },
+        },
+        () => recordUsage(API.getTeamNotes(team.path, { unwrapData: false }))
+      ) as ReturnType<typeof API.getTeamNotes>
   );
 
   const { extensionPath } = useAppContext();
@@ -46,14 +53,8 @@ const TeamTreeItem = ({ team }: { team: Team }) => {
 };
 
 export const TeamNotes = () => {
-  const { data: teams = [], mutate, error } = useSWR('/teams', () => API.getTeams());
-  const [selectedTeamId, setSelectedTeamId] = useState(useTeamNotesStore.getState().selectedTeamId);
-
-  // I'm not sure why using useTeamNotesStore doesn't trigger re-render
-  // So we use useEffect to subscribe to the zustand store and update the useState we use in the component
-  useEffect(() => {
-    useTeamNotesStore.subscribe((state) => setSelectedTeamId(state.selectedTeamId));
-  }, []);
+  const { data: teams = [], mutate, error } = useSWR('/teams', () => recordUsage(API.getTeams({ unwrapData: false })));
+  const { selectedTeamId } = useTeamNotesStore();
 
   const selectedTeam = useMemo(() => teams.find((t) => t.id === selectedTeamId), [teams, selectedTeamId]);
 
@@ -70,7 +71,7 @@ export const TeamNotes = () => {
           label="Click to select a team"
           command={{
             title: 'Select a team',
-            command: 'selectTeam',
+            command: 'HackMD.selectTeam',
           }}
         />
       )}

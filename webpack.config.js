@@ -13,7 +13,10 @@ const webpack = require('webpack');
 const extensionConfig = {
   target: 'node',
   entry: {
-    extension: './src/extension.ts',
+    extension: [
+      // 'windowPolyfill',
+      './src/extension.ts',
+    ],
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -25,6 +28,9 @@ const extensionConfig = {
   },
   resolve: {
     extensions: ['.ts', '.js', '.tsx'],
+    alias: {
+      windowPolyfill: path.resolve(__dirname, './src/utils/window.js'),
+    },
   },
   module: {
     rules: [

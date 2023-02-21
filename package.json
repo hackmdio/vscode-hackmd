@@ -19,7 +19,8 @@
     "onView:hackmd.tree.team-notes",
     "onCommand:HackMD.apiKey",
     "onCommand:HackMD.createActiveEditorContentToHackMD",
-    "onCommand:HacKMD.openNoteOnHackMD"
+    "onCommand:HacKMD.openNoteOnHackMD",
+    "onFileSystem:hackmd"
   ],
   "license": "MIT",
   "homepage": "https://github.com/hackmdio/vscode-hackmd/blob/master/README.md",
@@ -69,12 +70,12 @@
           "name": "My Notes"
         },
         {
-          "id": "hackmd.tree.recent-notes",
-          "name": "Recent Notes"
-        },
-        {
           "id": "hackmd.tree.team-notes",
           "name": "Team Notes"
+        },
+        {
+          "id": "hackmd.tree.recent-notes",
+          "name": "Recent Notes"
         }
       ]
     },
@@ -93,8 +94,17 @@
         "title": "Refresh My Notes",
         "category": "HackMD",
         "icon": {
-          "light": "images/icon/light/refresh-dark.svg",
-          "dark": "images/icon/dark/refresh-light.svg"
+          "light": "images/icon/light/sync.svg",
+          "dark": "images/icon/dark/sync.svg"
+        }
+      },
+      {
+        "command": "treeView.createMyNotes",
+        "title": "Create My Note",
+        "category": "HackMD",
+        "icon": {
+          "light": "images/icon/light/new-file.svg",
+          "dark": "images/icon/dark/new-file.svg"
         }
       },
       {
@@ -102,8 +112,8 @@
         "title": "Refresh History",
         "category": "HackMD",
         "icon": {
-          "light": "images/icon/light/refresh-dark.svg",
-          "dark": "images/icon/dark/refresh-light.svg"
+          "light": "images/icon/light/sync.svg",
+          "dark": "images/icon/dark/sync.svg"
         }
       },
       {
@@ -111,8 +121,8 @@
         "title": "Refresh Team Notes",
         "category": "HackMD",
         "icon": {
-          "light": "images/icon/light/refresh-dark.svg",
-          "dark": "images/icon/dark/refresh-light.svg"
+          "light": "images/icon/light/sync.svg",
+          "dark": "images/icon/dark/sync.svg"
         }
       },
       {
@@ -120,8 +130,8 @@
         "title": "Open Preview",
         "category": "HackMD",
         "icon": {
-          "light": "images/icon/light/view-dark.svg",
-          "dark": "images/icon/dark/view-light.svg"
+          "light": "images/icon/light/eye.svg",
+          "dark": "images/icon/dark/eye.svg"
         }
       },
       {
@@ -129,8 +139,8 @@
         "title": "Open Preview to the Side",
         "category": "HackMD",
         "icon": {
-          "light": "images/icon/light/column-dark.svg",
-          "dark": "images/icon/dark/column-light.svg"
+          "light": "images/icon/light/open-preview.svg",
+          "dark": "images/icon/dark/open-preview.svg"
         }
       },
       {
@@ -143,9 +153,37 @@
         "title": "Open note on HackMD",
         "category": "HackMD",
         "icon": {
-          "light": "images/icon/light/Browser-dark.png",
-          "dark": "images/icon/dark/Browser-light.png"
+          "light": "images/icon/light/link-external.svg",
+          "dark": "images/icon/dark/link-external.svg"
         }
+      },
+      {
+        "command": "HackMD.deleteMyNote",
+        "title": "Delete Note",
+        "category": "HackMD"
+      },
+      {
+        "command": "HackMD.selectTeam",
+        "title": "Select Team",
+        "category": "HackMD",
+        "icon": {
+          "light": "images/icon/light/folder.svg",
+          "dark": "images/icon/dark/folder.svg"
+        }
+      },
+      {
+        "command": "HackMD.editNote",
+        "title": "Edit Note",
+        "category": "HackMD",
+        "icon": {
+          "light": "images/icon/light/edit.svg",
+          "dark": "images/icon/dark/edit.svg"
+        }
+      },
+      {
+        "command": "HackMD.upgrade",
+        "title": "Upgrade",
+        "category": "HackMD"
       }
     ],
     "menus": {
@@ -164,50 +202,73 @@
           "command": "treeView.refreshTeamNotes",
           "when": "view =~ /hackmd.tree.team-notes/",
           "group": "navigation"
+        },
+        {
+          "command": "treeView.createMyNotes",
+          "when": "view =~ /hackmd.tree.my-notes/",
+          "group": "navigation"
+        },
+        {
+          "command": "HackMD.selectTeam",
+          "when": "view =~ /hackmd.tree.team-notes/",
+          "group": "navigation"
         }
       ],
       "view/item/context": [
         {
-          "command": "HackMD.showPreview",
-          "when": "view =~ /hackmd.tree/ && viewItem == file",
-          "group": "inline"
-        },
-        {
-          "command": "HackMD.showPreview",
-          "when": "view =~ /hackmd.tree/ && viewItem == file"
-        },
-        {
-          "command": "HackMD.showPreviewAndEditor",
-          "when": "view =~ /hackmd.tree/ && viewItem == file",
-          "group": "inline"
-        },
-        {
-          "command": "HackMD.showPreviewAndEditor",
-          "when": "view =~ /hackmd.tree/ && viewItem == file"
+          "command": "HacKMD.openNoteOnHackMD",
+          "when": "view =~ /hackmd.tree/ && viewItem =~ /file/",
+          "group": "inline@1"
         },
         {
           "command": "HacKMD.openNoteOnHackMD",
-          "when": "view =~ /hackmd.tree/ && viewItem == file",
-          "group": "inline"
+          "when": "view =~ /hackmd.tree/ && viewItem =~ /file/"
         },
         {
-          "command": "HacKMD.openNoteOnHackMD",
+          "command": "HackMD.showPreview",
+          "when": "view =~ /hackmd.tree/ && viewItem =~ /^file$|^lock-file$/"
+        },
+        {
+          "command": "HackMD.showPreview",
+          "when": "view =~ /hackmd.tree/ && viewItem == lock-file",
+          "group": "inline@2"
+        },
+        {
+          "command": "HackMD.editNote",
           "when": "view =~ /hackmd.tree/ && viewItem == file"
+        },
+        {
+          "command": "HackMD.editNote",
+          "when": "view =~ /hackmd.tree/ && viewItem == file",
+          "group": "inline@2"
+        },
+        {
+          "command": "HackMD.showPreviewAndEditor",
+          "when": "view =~ /hackmd.tree/ && viewItem =~ /file/"
+        },
+        {
+          "command": "HackMD.showPreviewAndEditor",
+          "when": "view =~ /hackmd.tree/ && viewItem =~ /file/",
+          "group": "inline@3"
+        },
+        {
+          "command": "HackMD.deleteMyNote",
+          "when": "view =~ /hackmd.tree.my-notes/ && viewItem =~ /file/"
         }
       ]
     },
     "viewsWelcome": [
       {
         "view": "hackmd.tree.my-notes",
-        "contents": "Loading data... \nEnsure that the access token and correct API endpoint have been properly configured."
+        "contents": "To view your HackMD notes within VSCode, you need to enter your HackMD API token. \n[Enter HackMD API token](command:HackMD.apiKey) \nFor more information on HackMD API details, [please refer to our documentation.](https://hackmd.io/@hackmd-api/developer-portal/?utm_source=vscode-welcome&utm_medium=inline-cta)"
       },
       {
         "view": "hackmd.tree.recent-notes",
-        "contents": "Loading data... \nEnsure that the access token and correct API endpoint have been properly configured."
+        "contents": "To view your HackMD notes within VSCode, you need to enter your HackMD API token. \n[Enter HackMD API token](command:HackMD.apiKey) \nFor more information on HackMD API details, [please refer to our documentation.](https://hackmd.io/@hackmd-api/developer-portal/?utm_source=vscode-welcome&utm_medium=inline-cta)"
       },
       {
         "view": "hackmd.tree.team-notes",
-        "contents": "Loading data... \nEnsure that the access token and correct API endpoint have been properly configured."
+        "contents": "To view your HackMD notes within VSCode, you need to enter your HackMD API token. \n[Enter HackMD API token](command:HackMD.apiKey) \nFor more information on HackMD API details, [please refer to our documentation.](https://hackmd.io/@hackmd-api/developer-portal/?utm_source=vscode-welcome&utm_medium=inline-cta)"
       }
     ]
   },
@@ -224,18 +285,22 @@
     "open-in-browser": "vscode-test-web --extensionDevelopmentPath=. ."
   },
   "devDependencies": {
+    "@babel/core": "^7.20.12",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
+    "@hackmd/react-vsc-treeview": "0.2.5",
     "@types/glob": "^7.1.1",
     "@types/jquery": "^3.3.30",
     "@types/mocha": "^5.2.6",
     "@types/node": "^10.12.21",
-    "@types/react": "^17.0.52",
+    "@types/react": "^18.0.26",
     "@types/vscode": "^1.74.0",
+    "@types/websocket": "^1.0.5",
     "@typescript-eslint/eslint-plugin": "^5.47.1",
     "@typescript-eslint/parser": "^5.47.1",
     "@vscode/test-web": "*",
     "abcjs": "^5.8.0",
+    "axios": "^0.25.0",
     "babel-loader": "^9.1.0",
     "clean-webpack-plugin": "^4.0.0",
     "css-loader": "^6.7.3",
@@ -264,15 +329,18 @@
     "prismjs": "^1.27.0",
     "process": "^0.11.10",
     "raphael": "2.2.8",
+    "react": "^18.2.0",
+    "react-devtools": "^4.27.1",
     "style-loader": "^3.3.1",
     "typescript": "^4.9.4",
     "viz.js": "^2.1.2",
     "vscode-test": "^1.6.1",
     "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1"
+    "webpack-cli": "^5.0.1",
+    "websocket": "^1.0.34"
   },
   "dependencies": {
-    "@hackmd/api": "^2.2.1",
+    "@hackmd/api": "2.4.0",
     "@types/mermaid": "^9.1.0",
     "bootstrap3": "^3.3.5",
     "markdown-it-abbr": "^1.0.4",
@@ -286,10 +354,8 @@
     "markdown-it-table-of-contents": "^0.4.4",
     "mathjax": "^3.0.1",
     "mathjax-full": "^3.0.1",
-    "react": "^17.0.2",
-    "react-vsc-treeview": "^0.2.3",
     "string": "git+ssh://git@github.com/hackmdio/string.js.git#a68176b3d",
     "swr": "^1.3.0",
-    "zustand": "^4.1.5"
+    "zustand": "^4.3.2"
   }
 }
