@@ -94,6 +94,8 @@ export const apiStore = createStore<APIUsageState>()((set) => ({
       },
     }));
 
+    const limitAlmostReached = userRemaining <= userLimit * 0.2;
+
     if (userRemaining <= 0 && !limitReachedNotificationSent) {
       sendLimitReachedNotification('Your personal workspace', upgraded);
 
@@ -103,7 +105,7 @@ export const apiStore = createStore<APIUsageState>()((set) => ({
           limitReachedNotificationSent: true,
         },
       }));
-    } else if (userRemaining <= userLimit * 0.2 && !limitAlmostReachedNotificationSent) {
+    } else if (limitAlmostReached && !limitAlmostReachedNotificationSent) {
       sendLimitAlmostReachedNotification('Your personal workspace', upgraded);
 
       set((state) => ({
@@ -114,8 +116,12 @@ export const apiStore = createStore<APIUsageState>()((set) => ({
       }));
     }
 
-    const limitReached = userRemaining <= 0;
-    updateStatusbarItem('Your personal workspace', limitReached, upgraded);
+    if (limitAlmostReached) {
+      const limitReached = userRemaining <= 0;
+      updateStatusbarItem('Your personal workspace', limitReached, upgraded);
+    } else {
+      hideStatusbarItem();
+    }
   },
 
   teamRecordsById: {},
@@ -139,6 +145,7 @@ export const apiStore = createStore<APIUsageState>()((set) => ({
     const upgraded = team?.upgraded;
     const workspaceName = team?.name || 'Team workspace';
     const limitReached = remaining <= 0;
+    const limitAlmostReached = remaining <= limit * 0.2;
 
     if (remaining <= 0 && !limitReachedNotificationSent) {
       sendLimitReachedNotification(workspaceName, upgraded);
@@ -151,11 +158,15 @@ export const apiStore = createStore<APIUsageState>()((set) => ({
           },
         },
       }));
-    } else if (remaining <= limit * 0.2 && !limitAlmostReachedNotificationSent) {
+    } else if (limitAlmostReached && !limitAlmostReachedNotificationSent) {
       sendLimitAlmostReachedNotification(workspaceName, upgraded);
     }
 
-    updateStatusbarItem(workspaceName, limitReached, upgraded);
+    if (limitAlmostReached) {
+      updateStatusbarItem(workspaceName, limitReached, upgraded);
+    } else {
+      hideStatusbarItem();
+    }
   },
 }));
 
