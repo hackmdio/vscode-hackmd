@@ -7,8 +7,10 @@ Use the same [HackMD](https://hackmd.io) markdown right in VSCode!
 
 ## Features
 
-- **New**: Preview your HackMD notes in VSCode
-- **New**: Create note from editor content
+- **New**: Edit your notes right in VSCode!
+- **New**: Browse your team notes in the HackMD explorer view
+- Preview your HackMD notes in VSCode
+- Create the note from editor's content
 - HackMD-compatible markdown rendering preview
   - We bring most HackMD markdown syntax into VSCode :tada:
 
@@ -36,7 +38,7 @@ Use the same [HackMD](https://hackmd.io) markdown right in VSCode!
 
 #### Added
 
-- Adopt access token based API client. You need to create an access token on the HackMD [settings page](https://hackmd.io/settings#api)
+- Adopt access token-based API client. You need to create an access token on the HackMD [settings page](https://hackmd.io/settings#api)
 - Add two more tree views: History and Team Notes.
 
 #### Improvements
