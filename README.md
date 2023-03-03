@@ -7,8 +7,10 @@ Use the same [HackMD](https://hackmd.io) markdown right in VSCode!
 
 ## Features
 
-- **New**: Preview your HackMD notes in VSCode
-- **New**: Create note from editor content
+- **New**: Edit your notes right in VSCode!
+- **New**: Browse your team notes in the HackMD explorer view
+- Preview your HackMD notes in VSCode
+- Create the note from editor's content
 - HackMD-compatible markdown rendering preview
   - We bring most HackMD markdown syntax into VSCode :tada:
 
@@ -32,11 +34,28 @@ Use the same [HackMD](https://hackmd.io) markdown right in VSCode!
 
 [release-notes]: https://bit.ly/2VXRTrq
 
+### 2.1.0
+
+#### Added
+
+- You can now edit notes in your workspace
+- Support deleting files from the notes explorer
+- Add an API limit status bar item. When you're reaching your limit, we'll let you know
+
+#### Improvements
+
+- New iconography to match Visual Studio Code style
+- Update `@hackmd/api` to 2.4.0
+
+#### Fixes
+
+- Update `react-vsc-treeview` to our own maintained fork, fixing bugs when refreshing the tree view
+
 ### 2.0.0
 
 #### Added
 
-- Adopt access token based API client. You need to create an access token on the HackMD [settings page](https://hackmd.io/settings#api)
+- Adopt access token-based API client. You need to create an access token on the HackMD [settings page](https://hackmd.io/settings#api)
 - Add two more tree views: History and Team Notes.
 
 #### Improvements

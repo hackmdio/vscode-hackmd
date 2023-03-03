@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
 
+import { recordUsage } from '../treeReactApp/store';
+
 import { API } from './../api';
 import { checkLogin } from './../utils';
 
@@ -34,9 +36,14 @@ title: public/${filePath}
 ${text}
 \`\`\``;
 
-      const { publishLink: noteUrl } = await API.createNote({
-        content: snippet,
-      });
+      const { publishLink: noteUrl } = await recordUsage(
+        API.createNote(
+          {
+            content: snippet,
+          },
+          { unwrapData: false }
+        )
+      );
       const clicked = await vscode.window.showInformationMessage(
         'New Snippet Established!',
         ...['Copy URL to clip board', 'Open in browser']

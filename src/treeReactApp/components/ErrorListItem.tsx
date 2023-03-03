@@ -1,4 +1,4 @@
-import { TreeItem } from 'react-vsc-treeview';
+import { TreeItem } from '@hackmd/react-vsc-treeview';
 
 export const ErrorListItem = ({ error }: { error: any }) => {
   return (

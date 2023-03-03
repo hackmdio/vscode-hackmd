@@ -2,11 +2,11 @@ import * as vscode from 'vscode';
 
 import { Team } from '@hackmd/api/dist/type';
 
+import { generateResourceUri } from '../mdFsProvider';
 import { refreshMyNotesEvent, refreshHistoryEvent, refreshTeamNotesEvent } from '../treeReactApp/events';
-import { teamNotesStore } from '../treeReactApp/store';
+import { recordUsage, teamNotesStore } from '../treeReactApp/store';
 
 import { API } from './../api';
-import { MdTextDocumentContentProvider, getNoteIdPublishLink } from './../mdTextDocument';
 import { ReactVSCTreeNode } from './../tree/nodes';
 
 export async function registerTreeViewCommands(context: vscode.ExtensionContext) {
@@ -29,9 +29,45 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
   );
 
   context.subscriptions.push(
+    vscode.commands.registerCommand('treeView.createMyNotes', async () => {
+      const note = await recordUsage(API.createNote({}, { unwrapData: false }));
+
+      const uri = generateResourceUri(note.title, note.id);
+      const doc = await vscode.workspace.openTextDocument(uri);
+      await vscode.window.showTextDocument(doc, { preview: false });
+
+      vscode.commands.executeCommand('treeView.refreshMyNotes');
+    })
+  );
+
+  // HackMD.deleteMyNote
+  context.subscriptions.push(
+    vscode.commands.registerCommand('HackMD.deleteMyNote', async (noteNode: ReactVSCTreeNode) => {
+      if (noteNode) {
+        const { noteId } = noteNode.value.context;
+
+        // prompt
+        const confirm = await vscode.window.showWarningMessage(
+          'Are you sure to delete this note?',
+          { modal: true },
+          'Yes'
+        );
+
+        if (!confirm) {
+          return;
+        }
+
+        await recordUsage(API.deleteNote(noteId, { unwrapData: false }));
+
+        vscode.commands.executeCommand('treeView.refreshMyNotes');
+      }
+    })
+  );
+
+  context.subscriptions.push(
     vscode.commands.registerCommand('clickTreeItem', async (label, noteId) => {
       if (label && noteId) {
-        const uri = vscode.Uri.parse(`hackmd:${label}.md#${noteId}`);
+        const uri = generateResourceUri(label, noteId);
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.window.showTextDocument(doc, { preview: false });
       }
@@ -39,8 +75,21 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
   );
 
   context.subscriptions.push(
-    vscode.commands.registerCommand('selectTeam', async () => {
-      const teams = await API.getTeams();
+    vscode.commands.registerCommand('HackMD.editNote', async (noteNode: ReactVSCTreeNode) => {
+      if (noteNode) {
+        const { noteId } = noteNode.value.context;
+        const { label } = noteNode.value;
+
+        const uri = generateResourceUri(label.toString(), noteId);
+        const doc = await vscode.workspace.openTextDocument(uri);
+        await vscode.window.showTextDocument(doc, { preview: false });
+      }
+    })
+  );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('HackMD.selectTeam', async () => {
+      const teams = await recordUsage(API.getTeams({ unwrapData: false }));
 
       const getTeamLabel = (team: Team) => `${team.name} [${team.path}]`;
 
@@ -51,7 +100,8 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
 
         const selectedTeamId = teams.find((team) => getTeamLabel(team) === selectedTeam)?.id;
 
-        teamNotesStore.setState({ selectedTeamId });
+        const { setSelectedTeamId } = teamNotesStore.getState();
+        setSelectedTeamId(selectedTeamId);
       });
     })
   );
@@ -62,7 +112,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
         const { noteId } = noteNode.value.context;
         const { label } = noteNode.value;
 
-        const uri = vscode.Uri.parse(`hackmd:${label}.md#${noteId}`);
+        const uri = generateResourceUri(label.toString(), noteId);
         vscode.commands.executeCommand('markdown.showPreview', uri);
       } else {
         const editor = vscode.window.activeTextEditor;
@@ -77,7 +127,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
 
         const lastIndex = editor.document.fileName.lastIndexOf('.');
         const fileName = editor.document.fileName.slice(0, lastIndex + 1);
-        const uri = vscode.Uri.parse(`hackmd:${fileName}.md#${noteId}`);
+        const uri = generateResourceUri(fileName, noteId);
         vscode.commands.executeCommand('markdown.showPreview', uri);
       }
     })
@@ -89,7 +139,7 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
         const { noteId } = noteNode.value.context;
         const { label } = noteNode.value;
 
-        const uri = vscode.Uri.parse(`hackmd:${label}.md#${noteId}`);
+        const uri = generateResourceUri(label.toString(), noteId);
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.window.showTextDocument(doc, { preview: false });
         vscode.commands.executeCommand('markdown.showPreviewToSide', uri);
@@ -104,14 +154,14 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
           return;
         }
 
-        const { content } = await API.getNote(noteId);
+        const { content } = await recordUsage(API.getNote(noteId, { unwrapData: false }));
         if (!checkNoteExist(content)) {
           return;
         }
 
         const lastIndex = editor.document.fileName.lastIndexOf('.');
         const fileName = editor.document.fileName.slice(0, lastIndex + 1);
-        const uri = vscode.Uri.parse(`hackmd:${fileName}.md#${noteId}`);
+        const uri = generateResourceUri(fileName, noteId);
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.window.showTextDocument(doc, { preview: false });
         vscode.commands.executeCommand('markdown.showPreviewToSide', uri);
@@ -126,17 +176,14 @@ export async function registerTreeViewCommands(context: vscode.ExtensionContext)
         vscode.env.openExternal(vscode.Uri.parse(publishLink));
       } else {
         const noteId = vscode.window.activeTextEditor.document.uri.fragment;
-        const publishLink = getNoteIdPublishLink(noteId);
 
-        if (publishLink) {
-          vscode.env.openExternal(vscode.Uri.parse(publishLink));
+        const note = await recordUsage(API.getNote(noteId, { unwrapData: false }));
+
+        if (note && note.publishLink) {
+          vscode.env.openExternal(vscode.Uri.parse(note.publishLink));
         }
       }
     })
-  );
-
-  context.subscriptions.push(
-    vscode.workspace.registerTextDocumentContentProvider('hackmd', new MdTextDocumentContentProvider())
   );
 }
 

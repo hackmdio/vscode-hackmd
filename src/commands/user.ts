@@ -13,4 +13,10 @@ export async function registerUserCommands(context: vscode.ExtensionContext) {
       refreshTeamNotesEvent.fire();
     })
   );
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand('HackMD.upgrade', async () => {
+      vscode.env.openExternal(vscode.Uri.parse('https://hackmd.io/settings#api'));
+    })
+  );
 }
